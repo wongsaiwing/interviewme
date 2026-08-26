@@ -1,0 +1,66 @@
+using InterviewMe.Infrastructure.Embeddings;
+using InterviewMe.Infrastructure.Knowledge;
+using InterviewMe.Infrastructure.VectorStore;
+using LangChain.Schema;
+using Microsoft.Extensions.Logging.Abstractions;
+
+namespace InterviewMe.Application.Tests;
+
+public class KnowledgeIngestorTests
+{
+    [Fact]
+    public async Task Ingests_facts_but_never_tone_or_avery()
+    {
+        var store = new LangChainVectorStore();
+        var embeddings = new HashingEmbeddingModel();
+        var path = TestSupport.FindKnowledgePath();
+        var ingestor = new MarkdownKnowledgeIngestor(
+            embeddings,
+            store,
+            NullLogger<MarkdownKnowledgeIngestor>.Instance,
+            path);
+
+        await ingestor.IngestAsync();
+
+        var factFiles = Directory.GetFiles(Path.Combine(path, "facts"), "*.md", SearchOption.AllDirectories);
+        Assert.Contains(factFiles, f => Path.GetFileName(f).Contains("haeco", StringComparison.OrdinalIgnoreCase));
+        Assert.DoesNotContain(factFiles, f => Path.GetFileName(f).Contains("bio", StringComparison.OrdinalIgnoreCase));
+
+        Assert.IsType<LangChainVectorStore>(store);
+        Assert.IsAssignableFrom<Microsoft.Extensions.VectorData.VectorStoreCollection<string, LangChainDocumentRecord>>(
+            store.Collection);
+
+        var query = await embeddings.EmbedAsync("HAECO aviation", CancellationToken.None);
+        var hits = await store.SearchAsync(query, "What did you do at HAECO?", 8);
+        Assert.Contains(hits, h => h.Text.Contains("HAECO", StringComparison.OrdinalIgnoreCase));
+        Assert.DoesNotContain(hits, h => h.Text.Contains("Avery Chen", StringComparison.OrdinalIgnoreCase));
+        Assert.DoesNotContain(hits, h => h.Text.Contains("style only", StringComparison.OrdinalIgnoreCase));
+        Assert.DoesNotContain(hits, h => h.Source.Contains("professional.md", StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Fact]
+    public void Compathnion_facts_are_wristband_not_LeaveHomeSafe()
+    {
+        var path = TestSupport.FindKnowledgePath();
+        var file = Path.Combine(path, "facts", "internship-compathnion.md");
+        var markdown = File.ReadAllText(file);
+        Assert.Contains("wristband", markdown, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("home-quarantine", markdown, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("LeaveHomeSafe", markdown, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("安心出行", markdown, StringComparison.Ordinal);
+        Assert.DoesNotContain("StayHomeSafe", markdown, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("居安抗疫", markdown, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Swc_facts_name_Mike_as_boss_and_not_graph_engineering()
+    {
+        var path = TestSupport.FindKnowledgePath();
+        var file = Path.Combine(path, "facts", "swc.md");
+        var markdown = File.ReadAllText(file);
+        Assert.Contains("Mike Berners-Lee", markdown);
+        Assert.Contains("did not work with Tim", markdown, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("graph engineering", markdown, StringComparison.OrdinalIgnoreCase);
+    }
+
+}

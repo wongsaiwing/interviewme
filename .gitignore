@@ -1,0 +1,14 @@
+bin/
+obj/
+node_modules/
+.vs/
+.idea/
+*.user
+*.suo
+.DS_Store
+dist/
+src/InterviewMe.Api/wwwroot/assets/
+.env
+.env.*
+*.pem
+*.key

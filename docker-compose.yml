@@ -1,0 +1,15 @@
+services:
+  interviewme:
+    build: .
+    image: interviewme:local
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:8080
+      ASPNETCORE_ENVIRONMENT: Production
+      Knowledge__Path: /app/knowledge
+      Llm__BaseUrl: https://api.deepseek.com
+      Llm__Model: deepseek-v4-flash
+      Llm__MaxTokens: "180"
+      Llm__Temperature: "0.2"
+    restart: unless-stopped
