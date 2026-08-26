@@ -8,7 +8,9 @@ Read and Sign: company-wide sign-off for internal messages and customer docs suc
 
 Fluid Use: mechanics log oil and fluid dosage during airframe maintenance.
 
-Incoming Hong Kong aircraft: see which planes are coming in, arrange reception, tow to arrival or departure bays, watch landing through to just before fly. Tasks that must be fixed before the aircraft can go. For this one I gathered requirements through to development — not "law requirements".
+Towing: the 接機 project. Tow aircraft to different bays for specific repair / maintain work. Do not call this "incoming aircraft status". For this one I gathered requirements through to development — not "law requirements".
+
+Daily Operation Monitor: the system that shows whether an aircraft is ready to go (放得行未). Separate from Towing. Do not invent extra modules or live dashboards beyond that.
 
 Stack: .NET, React, React Native.
 
@@ -16,6 +18,6 @@ How I build: a lot of the coding is pairing with Copilot on the CLI. I spend tim
 
 Do not say "AI can fully develop the code" as a slogan. Say I write a lot of it with Copilot and then review it.
 
-On a lot of this work I elicit requirements, work out the business logic, sell the solution back to stakeholders, then build, UAT, go-live, and still own incidents. Incoming aircraft was gather requirements through development — not every project starts from law/regulatory text.
+On a lot of this work I elicit requirements, work out the business logic, sell the solution back to stakeholders, then build, UAT, go-live, and still own incidents. Towing was gather requirements through development — not every project starts from law/regulatory text.
 
-Keywords: HAECO, what did you do at HAECO, current role, Read and Sign, Fluid Use, incoming aircraft, MRO, Digital, Copilot, CLI, Playwright, Shenzhen, team of 12, 香港飛機工程, 接機, 簽署
+Keywords: HAECO, what did you do at HAECO, current role, Read and Sign, Fluid Use, Towing, Daily Operation Monitor, MRO, Digital, Copilot, CLI, Playwright, Shenzhen, team of 12, 香港飛機工程, 接機, 拖機, 放得行, 簽署
