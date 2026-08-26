@@ -59,15 +59,25 @@ public sealed class ChatUseCase
             yield break;
         }
 
+        // Icebreakers and obvious abuse must not spend LLM tokens.
+        if (PromptBuilder.IsIcebreaker(command.Message))
+        {
+            yield return ChatStreamEvent.Token(PromptBuilder.IcebreakerReply(command.Message));
+            yield return ChatStreamEvent.Done();
+            yield break;
+        }
+
+        if (PromptBuilder.IsOffTopic(command.Message) || PromptBuilder.LooksLikePromptInjection(command.Message))
+        {
+            yield return ChatStreamEvent.Token(PromptBuilder.OffTopicRefuse(command.Message));
+            yield return ChatStreamEvent.Done();
+            yield break;
+        }
+
         var history = _conversations.GetRecent(command.SessionId, _chatOptions.ConversationTurns);
         var facts = await RetrieveFactsAsync(command.Message, cancellationToken);
 
         var prompt = _promptBuilder.Build(_profile.Name, command.Message, history, facts, _tone.GetFewShots());
-
-        var citations = facts
-            .Select(f => new SourceCitation(f.Id, f.Source, f.Title, f.Score))
-            .ToList();
-        yield return ChatStreamEvent.WithSources(citations);
 
         var assembled = new System.Text.StringBuilder();
         await foreach (var token in _llm.StreamCompletionAsync(prompt, cancellationToken))
@@ -332,6 +342,11 @@ public sealed class ChatUseCase
         if (string.IsNullOrWhiteSpace(command.SessionId))
         {
             return "Session id is required.";
+        }
+
+        if (command.SessionId.Length > 64)
+        {
+            return "Session id is invalid.";
         }
 
         return null;

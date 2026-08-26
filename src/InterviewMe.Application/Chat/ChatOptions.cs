@@ -6,7 +6,8 @@ public sealed class ChatOptions
 
     public int TopK { get; set; } = 4;
     public float MinScore { get; set; } = 0.08f;
-    public int MaxMessageLength { get; set; } = 500;
+    public int MaxMessageLength { get; set; } = 400;
     public int ConversationTurns { get; set; } = 3;
-    public int RateLimitPerMinute { get; set; } = 30;
+    public int RateLimitPerMinute { get; set; } = 10;
+    public int DailyRequestLimit { get; set; } = 80;
 }

@@ -5,21 +5,9 @@ using InterviewMe.Application.Abstractions;
 using InterviewMe.Application.Chat;
 using InterviewMe.Application.Profile;
 using InterviewMe.Infrastructure;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// IP now, domain later: do not reject 47.82.69.6 or swwdomain.hk hostnames.
-// HTTPS is not required yet; HTTP on :80 is the live HR URL.
-builder.Services.Configure<ForwardedHeadersOptions>(options =>
-{
-    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor
-                               | ForwardedHeaders.XForwardedProto
-                               | ForwardedHeaders.XForwardedHost;
-    options.KnownNetworks.Clear();
-    options.KnownProxies.Clear();
-});
 
 builder.Services.AddInterviewMeApplication(builder.Configuration);
 builder.Services.AddInterviewMeInfrastructure(builder.Configuration, builder.Environment);
@@ -31,8 +19,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy("spa", policy =>
     {
         policy.WithOrigins(allowedOrigins)
-            .AllowAnyHeader()
-            .AllowAnyMethod();
+            .WithHeaders("Content-Type")
+            .WithMethods("GET", "POST");
     });
 });
 
@@ -44,7 +32,16 @@ using (var scope = app.Services.CreateScope())
     await ingestor.IngestAsync();
 }
 
-app.UseForwardedHeaders();
+app.Use(async (ctx, next) =>
+{
+    ctx.Response.Headers["X-Content-Type-Options"] = "nosniff";
+    ctx.Response.Headers["X-Frame-Options"] = "DENY";
+    ctx.Response.Headers["Referrer-Policy"] = "no-referrer";
+    ctx.Response.Headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()";
+    ctx.Response.Headers["Content-Security-Policy"] =
+        "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'";
+    await next();
+});
 app.UseCors("spa");
 app.UseDefaultFiles();
 app.UseStaticFiles();
@@ -73,9 +70,7 @@ app.MapPost("/api/chat/stream", async (
     ChatUseCase chat,
     CancellationToken cancellationToken) =>
 {
-    var sessionId = string.IsNullOrWhiteSpace(body.SessionId)
-        ? Guid.NewGuid().ToString("n")
-        : body.SessionId.Trim();
+    var sessionId = SanitizeSessionId(body.SessionId);
     var clientKey = http.Connection.RemoteIpAddress?.ToString() ?? "local";
     var command = new ChatCommand(body.Message ?? string.Empty, sessionId, clientKey);
 
@@ -96,6 +91,33 @@ app.MapPost("/api/chat/stream", async (
 
 app.MapFallbackToFile("index.html");
 app.Run();
+
+
+static string SanitizeSessionId(string? raw)
+{
+    if (string.IsNullOrWhiteSpace(raw))
+    {
+        return Guid.NewGuid().ToString("n");
+    }
+
+    var trimmed = raw.Trim();
+    var buf = new char[Math.Min(trimmed.Length, 64)];
+    var n = 0;
+    foreach (var c in trimmed)
+    {
+        if (n >= 64)
+        {
+            break;
+        }
+
+        if (char.IsAsciiLetterOrDigit(c) || c is '-' or '_')
+        {
+            buf[n++] = c;
+        }
+    }
+
+    return n == 0 ? Guid.NewGuid().ToString("n") : new string(buf, 0, n);
+}
 
 public sealed record ChatRequestBody(string? Message, string? SessionId);
 

@@ -1,31 +1,21 @@
-# Assistant Solution Analyst, HAECO
+# HAECO
 
-July 2024 – Current. Assistant Solution Analyst at Hong Kong Aircraft Engineering Company Limited (HAECO), Hong Kong.
+July 2024 – now. Assistant Solution Analyst, HAECO Digital, MRO (Maintenance, Repair, Overhaul). Team of twelve including the manager; two UI/UX; the rest full-stack / Solution Analysts like me.
 
-When asked what I do at HAECO, name the systems. Do not only recite generic resume bullets.
+When asked what I do at HAECO, name the systems. Do not recite resume bullets.
 
-I work in HAECO Digital on MRO (Maintenance, Repair, Overhaul). Named systems I work on:
+Read and Sign: company-wide sign-off for internal messages and customer docs such as the aircraft maintenance manual. This is also my AI POC. Front and back and DB schema were vibe-coded with AI. It is not fully complete; it is near wrapping up. The point of the POC is to show this way of building works and saves money. Do not invent user counts or dollar savings. Do not say it is fully in production.
 
-- Read and Sign: company-wide message / document sign-off, including customer documents such as the aircraft maintenance manual. This is also my AI POC (near wrapping up, not fully complete).
-- Fluid Use: airframe maintenance logging so mechanics record oil and fluid dosage.
-- Incoming Hong Kong aircraft status: see incoming planes, arrange reception, tow to arrival or departure bays, monitor landing to pre-flight, including tasks that must be fixed before the aircraft can fly.
+Fluid Use: mechanics log oil and fluid dosage during airframe maintenance.
 
-Stack is .NET, React, and React Native. A large part of the programming is pairing with AI (Copilot CLI), then reviewing the output. I also work with a Shenzhen team as a partner: I give requirements, they implement.
+Incoming Hong Kong aircraft: see which planes are coming in, arrange reception, tow to arrival or departure bays, watch landing through to just before fly. Tasks that must be fixed before the aircraft can go. For this one I gathered requirements through to development — not "law requirements".
 
-Keywords: HAECO, what did you do at HAECO, what do you do at HAECO, current role, HAECO experience, HAECO projects, Read and Sign, Fluid Use, incoming aircraft, MRO, Digital, 香港飛機工程, 助理解決方案分析員, aviation, .NET Core, React, React Native, UAT, 做過咩
+Stack: .NET, React, React Native.
 
-## Resume bullets (do not use these as the whole answer)
+How I build: a lot of the coding is pairing with Copilot on the CLI. I spend time on context engineering, then I check the output. UAT is still people, plus AI automation testing, especially Playwright. I also give requirements to a Shenzhen partner team who implement, including harder / edge pieces.
 
-Elicited and documented business requirements for aviation engineering IT solutions, translating stakeholder needs into actionable functional specifications.
+Do not say "AI can fully develop the code" as a slogan. Say I write a lot of it with Copilot and then review it.
 
-Designed and developed full-stack web and internal applications (.NET Core, React / React Native) from scratch.
+Do not say every project starts from regulatory law. Some HAECO work does go requirements → solution → sell it back to the business → build → UAT → go-live → incidents. Incoming aircraft was gather requirements through development.
 
-Led end-to-end full-stack implementation and User Acceptance Testing (UAT). Delivered post-implementation support, bug fixes, and continuous system improvements.
-
-## Team
-
-Interview answers from Silas Wong, 2026-08-26. Facts only. Do not invent the manager's name or a reporting line.
-
-The team is currently twelve people, including the manager. Two of them are UI/UX designers. The rest are full-stack developers / Solution Analysts like me.
-
-Keywords: team of 12, twelve people, manager, UI UX designer, full-stack, Solution Analyst, 十二人, 團隊, how big is the team, team size, how many people
+Keywords: HAECO, what did you do at HAECO, current role, Read and Sign, Fluid Use, incoming aircraft, MRO, Digital, Copilot, CLI, Playwright, Shenzhen, team of 12, 香港飛機工程, 接機, 簽署

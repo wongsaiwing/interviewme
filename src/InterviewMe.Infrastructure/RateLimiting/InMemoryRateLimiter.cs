@@ -7,7 +7,8 @@ namespace InterviewMe.Infrastructure.RateLimiting;
 
 public sealed class InMemoryRateLimiter : IChatRateLimiter
 {
-    private readonly ConcurrentDictionary<string, ConcurrentQueue<long>> _hits = new();
+    private readonly ConcurrentDictionary<string, ConcurrentQueue<long>> _minute = new();
+    private readonly ConcurrentDictionary<string, DayBucket> _day = new();
     private readonly ChatOptions _options;
 
     public InMemoryRateLimiter(IOptions<ChatOptions> options)
@@ -17,22 +18,47 @@ public sealed class InMemoryRateLimiter : IChatRateLimiter
 
     public bool TryAcquire(string clientKey)
     {
-        var key = string.IsNullOrWhiteSpace(clientKey) ? "anonymous" : clientKey;
-        var window = _hits.GetOrAdd(key, _ => new ConcurrentQueue<long>());
+        var key = string.IsNullOrWhiteSpace(clientKey) ? "anonymous" : clientKey.Trim();
         var now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-        var cutoff = now - 60_000;
 
-        while (window.TryPeek(out var oldest) && oldest < cutoff)
+        var minute = _minute.GetOrAdd(key, _ => new ConcurrentQueue<long>());
+        var cutoff = now - 60_000;
+        while (minute.TryPeek(out var oldest) && oldest < cutoff)
         {
-            window.TryDequeue(out _);
+            minute.TryDequeue(out _);
         }
 
-        if (window.Count >= Math.Max(1, _options.RateLimitPerMinute))
+        if (minute.Count >= Math.Max(1, _options.RateLimitPerMinute))
         {
             return false;
         }
 
-        window.Enqueue(now);
+        var today = DateTime.UtcNow.ToString("yyyyMMdd");
+        var bucket = _day.GetOrAdd(key, _ => new DayBucket { Day = today });
+        lock (bucket)
+        {
+            if (bucket.Day != today)
+            {
+                bucket.Day = today;
+                bucket.Count = 0;
+            }
+
+            var dailyCap = Math.Max(1, _options.DailyRequestLimit);
+            if (bucket.Count >= dailyCap)
+            {
+                return false;
+            }
+
+            bucket.Count++;
+        }
+
+        minute.Enqueue(now);
         return true;
+    }
+
+    private sealed class DayBucket
+    {
+        public string Day { get; set; } = "";
+        public int Count { get; set; }
     }
 }

@@ -45,7 +45,7 @@ export default function App() {
   }, [messages]);
 
   async function send(text) {
-    const message = (text ?? input).trim();
+    const message = (text ?? input).trim().slice(0, 400);
     if (!message || busy) {
       return;
     }
@@ -66,8 +66,6 @@ export default function App() {
             const last = { ...next[next.length - 1] };
             if (evt.type === "token") {
               last.content = (last.content || "") + (evt.text || "");
-            } else if (evt.type === "sources") {
-              last.sources = evt.sources || [];
             } else if (evt.type === "error") {
               last.content = evt.error || t.errorChat;
               last.streaming = false;
@@ -140,7 +138,7 @@ export default function App() {
             onChange={(e) => setInput(e.target.value)}
             placeholder={t.placeholder}
             disabled={busy}
-            maxLength={2000}
+            maxLength={400}
           />
           <button type="submit" disabled={busy || !input.trim()}>
             {t.send}
