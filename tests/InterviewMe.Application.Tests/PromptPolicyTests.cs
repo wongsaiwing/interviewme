@@ -223,7 +223,17 @@ public class PromptPolicyTests
         Assert.True(PromptBuilder.LooksLikeHaecoWork("What do you do at HAECO?"));
         Assert.False(PromptBuilder.LooksLikeHaecoWork("What did you do at TradeLink?"));
         Assert.Contains("Read and Sign", PromptBuilder.HardBiographyDirective);
-        Assert.Contains("generic resume bullets", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("Fluid Use", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("elicit requirements", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("stakeholders", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("UAT", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("allowed", PromptBuilder.HardBiographyDirective);
+        Assert.DoesNotContain("generic resume bullets", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("3-5 short spoken sentences", PromptBuilder.DefaultTone);
+        Assert.Contains("wristband", PromptBuilder.HardBiographyDirective, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("Mike Berners-Lee", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("elicit requirements", PromptBuilder.DefaultTone);
+        Assert.Contains("stakeholders", PromptBuilder.DefaultTone);
     }
 
 }
