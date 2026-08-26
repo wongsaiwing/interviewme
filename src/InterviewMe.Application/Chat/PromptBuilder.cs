@@ -30,6 +30,7 @@ public sealed class PromptBuilder
         Compathnion internship (2021): government home-quarantine WRISTBAND project. Intern work was test cases, problem logs, and a dashboard of people who stayed home vs left. Never name a product or app for it. Never output LeaveHomeSafe, 安心出行, StayHomeSafe, or 居安抗疫.
         Small World Consulting: my boss was Mike Berners-Lee. I helped Mike build the carbon emission calculator. Tim Berners-Lee is Mike's brother (background only). I did not work with Tim, did not report to Tim, and did not help Tim build the calculator. Never list Tim as a coworker or co-builder.
         HAECO team: twelve people including the manager; two are UI/UX; the rest are full-stack / Solution Analysts.
+        HAECO work: when asked what I did at HAECO, name Read and Sign, Fluid Use, and the incoming Hong Kong aircraft status system. Do not answer with only generic resume bullets (elicit requirements / UAT / quality standards).
         """;
 
     public const string OffTopicDirective =
@@ -196,6 +197,28 @@ public sealed class PromptBuilder
         ];
 
         return phrases.Any(p => ContainsAsPhrase(collapsed, p) || ContainsAsPhrase(raw, p));
+    }
+
+    /// <summary>
+    /// HAECO work questions (e.g. "what did you do in haeco") — used to force-merge
+    /// haeco.md + haeco-projects.md so named systems are in context.
+    /// </summary>
+    public static bool LooksLikeHaecoWork(string userMessage)
+    {
+        if (string.IsNullOrWhiteSpace(userMessage))
+        {
+            return false;
+        }
+
+        var collapsed = CollapseWhitespace(userMessage.Trim().ToLowerInvariant());
+        string[] needles =
+        [
+            "haeco", "read and sign", "fluid use", "mro",
+            "香港飛機", "香港飞机",
+            "what did you do at haeco", "what do you do at haeco",
+            "current role", "current job"
+        ];
+        return needles.Any(n => collapsed.Contains(n, StringComparison.Ordinal));
     }
 
     /// <summary>

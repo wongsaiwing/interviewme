@@ -216,4 +216,14 @@ public class PromptPolicyTests
         Assert.True(PromptBuilder.IsIntroduction("tell me about you"));
     }
 
+    [Fact]
+    public void What_did_you_do_in_haeco_is_haeco_work()
+    {
+        Assert.True(PromptBuilder.LooksLikeHaecoWork("what did you do in haeco"));
+        Assert.True(PromptBuilder.LooksLikeHaecoWork("What do you do at HAECO?"));
+        Assert.False(PromptBuilder.LooksLikeHaecoWork("What did you do at TradeLink?"));
+        Assert.Contains("Read and Sign", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("generic resume bullets", PromptBuilder.HardBiographyDirective);
+    }
+
 }

@@ -103,6 +103,7 @@ public sealed class ChatUseCase
             .ToList();
 
         facts = await ExpandSameSourceAsync(facts, cancellationToken);
+        facts = await ExpandHaecoProjectsAsync(message, facts, cancellationToken);
 
         var expandIntro = PromptBuilder.IsIntroduction(message)
                           || (facts.Count == 0 && PromptBuilder.LooksLikeAboutMe(message));
@@ -186,7 +187,8 @@ public sealed class ChatUseCase
         {
             "internship-compathnion.md",
             "swc.md",
-            "haeco.md"
+            "haeco.md",
+            "haeco-projects.md"
         };
 
     private async Task<List<RetrievedFact>> ExpandSameSourceAsync(
@@ -242,6 +244,63 @@ public sealed class ChatUseCase
         return byId.Values
             .OrderByDescending(f => f.Score)
             .Take(Math.Max(_chatOptions.TopK, 8))
+            .ToList();
+    }
+
+    private static readonly string[] HaecoWorkSources =
+    [
+        "haeco.md",
+        "haeco-projects.md"
+    ];
+
+    /// <summary>
+    /// Questions like "what did you do in haeco" force-merge haeco-projects.md + haeco.md
+    /// so named systems (Read and Sign, Fluid Use, incoming aircraft) are in context.
+    /// </summary>
+    private async Task<List<RetrievedFact>> ExpandHaecoProjectsAsync(
+        string message,
+        List<RetrievedFact> facts,
+        CancellationToken cancellationToken)
+    {
+        if (!PromptBuilder.LooksLikeHaecoWork(message))
+        {
+            return facts;
+        }
+
+        var byId = facts.ToDictionary(f => f.Id, StringComparer.Ordinal);
+        var best = facts.Select(f => f.Score).DefaultIfEmpty(0.9f).Max();
+
+        foreach (var source in HaecoWorkSources)
+        {
+            IReadOnlyList<RetrievedFact> chunks;
+            try
+            {
+                chunks = await _store.GetBySourcePrefixAsync(source, cancellationToken);
+            }
+            catch (NotImplementedException)
+            {
+                continue;
+            }
+
+            foreach (var chunk in chunks)
+            {
+                if (byId.ContainsKey(chunk.Id))
+                {
+                    continue;
+                }
+
+                byId[chunk.Id] = new RetrievedFact(
+                    chunk.Id,
+                    chunk.Source,
+                    chunk.Title,
+                    chunk.Text,
+                    Math.Min(Math.Max(best, 0.9f) * 0.99f, 0.99f));
+            }
+        }
+
+        return byId.Values
+            .OrderByDescending(f => f.Score)
+            .Take(Math.Max(_chatOptions.TopK, 16))
             .ToList();
     }
 
