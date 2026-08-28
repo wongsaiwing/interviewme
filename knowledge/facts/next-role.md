@@ -10,7 +10,7 @@ Self-identity: full-stack developer and solution analyst. That is how I introduc
 
 I am looking whether the market needs people who can do AI full-stack, a bit like a Forward Deployed Engineer — people who know it and are willing to learn it.
 
-Do not invent a salary here. Expected pay is industry standard only. Never mention current package.
+If they ask expected salary / package: the whole package, not a single monthly number. Industry-standard base is HKD 30,000 to 35,000 per month; the offer depends on bonus and benefits. Do not pin only 35k. Do not annualise unless asked. Do not volunteer notice or current package.
 
 ## Why hire me
 

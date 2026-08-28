@@ -288,6 +288,7 @@ public class PromptPolicyTests
         Assert.False(PromptBuilder.LooksLikeShenzhenCollaboration("What did you do at HAECO?"));
         Assert.True(PromptBuilder.LooksLikeShenzhenCollaboration("Do you work with the Shenzhen team?"));
         Assert.True(PromptBuilder.LooksLikeShenzhenCollaboration("Do you work with the development team?"));
+        Assert.DoesNotContain("Shenzhen", PromptBuilder.HaecoGenericDirective, StringComparison.OrdinalIgnoreCase);
         Assert.Contains("About four projects I developed myself", PromptBuilder.HaecoGenericDirective);
         Assert.Contains("whole SDLC", PromptBuilder.HaecoGenericDirective);
         Assert.Contains("not only UAT", PromptBuilder.HaecoGenericDirective);

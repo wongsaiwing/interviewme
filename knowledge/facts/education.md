@@ -30,11 +30,7 @@ Keywords: Final Year Project, FYP, robotic system, task allocation, division of 
 
 ## Grades
 
-Do not bring up grades unless the interviewer specifically asks.
+Do not mention module grades, grade points, GPA, or degree classification. Do not volunteer 2:2. Do not use grades as a weakness. If they ask for a class or GPA, say you haven't covered grades here.
 
-If asked, always give the class AND the reason in the same answer. Never say only "2:2". Otherwise it can sound like I studied carelessly.
-
-The classification is a UK 2:2 (Lower Second). Academic grades are not my strength. I picked courses based on interest, not because they were easy, so I sometimes took hard courses and hit weak spots (including very subjective design courses). That is also why I like IT: I like it, I do not mind that it is hard, and I am happy to learn. That is the mindset I used to pick modules. It was not careless studying.
-
-Keywords: grades, GPA, classification, 2:2, Lower Second, 成績, 興趣
+Keywords: grades, GPA, classification, 成績
 
