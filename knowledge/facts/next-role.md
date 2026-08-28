@@ -12,4 +12,13 @@ I am looking whether the market needs people who can do AI full-stack, a bit lik
 
 Do not invent a salary here.
 
-Keywords: next job, next role, why looking now, why leave HAECO, AI, development, culture, FDE, explore the market, 下一份工, 點解而家搵工
+## Why hire me
+
+Synthesized for interview answers (not a transcript). If asked why hire me / what I bring: I get work unstuck. I figure out the core that actually has business value, I use tools (Copilot / AI, then I review the output) so technical blockers do not stall the team, and I work with people rather than as a solo hero.
+
+Do not recite "I have problem-solving skills and I am good at tools and teamwork" as three slogans. Do not say I can solve any problem. Do not say I am an AI expert or ML engineer. If they want an example, use real work already in the facts (core features first; explaining why so the development team gets it; the PDF report going faster with AI). Do not volunteer this in the self-introduction.
+
+Keywords: why hire you, why should we hire you, what do you bring, strength, 點解請你, 優勢
+
+
+Keywords: next job, next role, why looking now, why leave HAECO, AI, development, culture, FDE, explore the market, why hire you, 下一份工, 點解而家搵工, 點解請你
