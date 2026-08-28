@@ -53,6 +53,18 @@ public class BiographyGuardTests
     }
 
     [Fact]
+    public void Drops_ielts_decline_sentence()
+    {
+        var raw = "I'd say my English is fluent. I haven't taken IELTS or any formal grading recently, so I don't have a score to quote.";
+        var clean = BiographyGuard.Sanitize(raw);
+
+        Assert.DoesNotContain("IELTS", clean, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("formal grading", clean, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("score", clean, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("fluent", clean, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
     public void Does_not_strip_csharp_as_a_cefr_level()
     {
         var raw = "My stack is C# and .NET Core.";

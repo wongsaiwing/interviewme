@@ -37,6 +37,10 @@ public static class BiographyGuard
         @"Tim(?: Berners-Lee)? was my boss",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+    private static readonly Regex LanguageExamSentence = new(
+        @"[^.!?]*\b(?:IELTS|TOEFL|PTE|CEFR|formal grading|language exam|language test|band score|score to quote|(?:don't|do not|didn't|did not)\s+have\s+a\s+score)\b[^.!?]*[.!?]?",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
     private static readonly Regex Ielts = new(
         @"\bIELTS\b(?:\s*(?:band\s*)?\d+(?:\.\d+)?)?",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -63,6 +67,9 @@ public static class BiographyGuard
 
     private static readonly Regex ExtraSpaces = new(@"[ \t]{2,}", RegexOptions.Compiled);
 
+    public const string LanguageFallback =
+        "Cantonese is my mother tongue. Mandarin is fluent. English is fluent.";
+
     public static string Sanitize(string text)
     {
         if (string.IsNullOrWhiteSpace(text))
@@ -81,6 +88,7 @@ public static class BiographyGuard
         result = WorkedWithTim.Replace(result, "worked with Mike Berners-Lee");
         result = TimWasBoss.Replace(result, "Mike Berners-Lee was my boss");
 
+        result = LanguageExamSentence.Replace(result, "");
         result = Ielts.Replace(result, "");
         result = Toefl.Replace(result, "");
         result = Pte.Replace(result, "");
@@ -88,6 +96,11 @@ public static class BiographyGuard
         result = LanguageBand.Replace(result, "");
         result = CefrLevel.Replace(result, "fluent");
         result = ExtraSpaces.Replace(result, " ").Trim();
+
+        if (string.IsNullOrWhiteSpace(result))
+        {
+            return LanguageFallback;
+        }
 
         return result;
     }

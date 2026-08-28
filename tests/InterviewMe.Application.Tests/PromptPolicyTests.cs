@@ -266,6 +266,8 @@ public class PromptPolicyTests
         Assert.Contains("NEVER output CEFR", PromptBuilder.HardBiographyDirective);
         Assert.Contains("Do not echo the grade", PromptBuilder.LanguageGradeDirective);
         Assert.Contains("English is fluent", PromptBuilder.LanguageGradeDirective);
+        Assert.Contains("not even to say you have not taken one", PromptBuilder.LanguageGradeDirective);
+        Assert.Contains("Never mention an exam even to say you have not taken one", PromptBuilder.HardBiographyDirective);
     }
 
     [Fact]
