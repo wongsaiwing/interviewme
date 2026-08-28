@@ -265,7 +265,7 @@ public sealed class ChatUseCase
 
     /// <summary>
     /// Questions like "what did you do in haeco" force-merge haeco-projects.md + haeco.md
-    /// so named systems (Read and Sign, Fluid Use, Towing, Daily Operation Monitor) are in context.
+    /// so named systems (Read and Sign, Fluid Use, Towing, Daily Operation Monitor, Operation Remarks) are in context.
     /// </summary>
     private async Task<List<RetrievedFact>> ExpandHaecoProjectsAsync(
         string message,

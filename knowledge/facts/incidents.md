@@ -12,9 +12,9 @@ Keywords: urgent aircraft, reception, nobody picking up, data streaming, pipelin
 
 ## Shenzhen delivery partner
 
-Besides pairing with AI to write code, I also work with a Shenzhen team as a partner. I give them requirements; they take the work and implement it in a structured way, including the harder / edge pieces.
+Besides pairing with AI to write code, I also work with the HAECO Shenzhen team. Strictly they are still a HAECO division / 分部, not an outside vendor. The working relationship feels like we are 夾方 and they are 乙方. I give them requirements; they implement in a structured way, including the harder / edge pieces. Do not lead with 外包 or outsourced. Do not say I replaced or fired them.
 
-Keywords: Shenzhen, 深圳, partner, 夾方, requirements, implementation
+Keywords: Shenzhen, 深圳, 分部, 夾方, 乙方, requirements, implementation
 
 ## Typo / edge-case missed in UAT
 
