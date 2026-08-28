@@ -302,9 +302,10 @@ public class PromptPolicyTests
     {
         Assert.True(PromptBuilder.LooksLikeExpectedSalary("What is your expected salary?"));
         Assert.False(PromptBuilder.LooksLikeExpectedSalary("What is your current package?"));
-        Assert.Contains("WHOLE package", PromptBuilder.ExpectedSalaryDirective);
         Assert.Contains("30,000 to 35,000", PromptBuilder.ExpectedSalaryDirective);
-        Assert.Contains("bonus and benefits", PromptBuilder.ExpectedSalaryDirective);
+        Assert.Contains("industry standard and years of experience", PromptBuilder.ExpectedSalaryDirective);
+        Assert.DoesNotContain("WHOLE package", PromptBuilder.ExpectedSalaryDirective);
+        Assert.DoesNotContain("WFH day", PromptBuilder.ExpectedSalaryDirective);
         Assert.Contains("Do not copy HAECO WFH", PromptBuilder.ExpectedSalaryDirective);
         Assert.Contains("Do not pin only 35k", PromptBuilder.ExpectedSalaryDirective);
         Assert.Contains("補假", PromptBuilder.CurrentPayDirective);
@@ -316,7 +317,8 @@ public class PromptPolicyTests
         Assert.Contains("about two I partnered", PromptBuilder.HaecoGenericDirective);
         Assert.DoesNotContain("six", PromptBuilder.HaecoGenericDirective, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("About six", PromptBuilder.HaecoGenericDirective);
-        Assert.Contains("WHOLE package", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("industry standard and years of experience", PromptBuilder.HardBiographyDirective);
+        Assert.DoesNotContain("WHOLE package", PromptBuilder.HardBiographyDirective);
         Assert.Contains("Cursor Skills", PromptBuilder.AiReviewDirective);
     }
 
