@@ -82,12 +82,24 @@ public sealed class ChatUseCase
         var prompt = _promptBuilder.Build(_profile.Name, command.Message, history, facts, _tone.GetFewShots());
 
         var assembled = new System.Text.StringBuilder();
-        await foreach (var token in _llm.StreamCompletionAsync(prompt, cancellationToken))
+        try
         {
-            assembled.Append(token);
+            await foreach (var token in _llm.StreamCompletionAsync(prompt, cancellationToken))
+            {
+                assembled.Append(token);
+            }
+        }
+        catch (Exception)
+        {
+            assembled.Clear();
+            assembled.Append(PromptBuilder.MissingDetailEnglish);
         }
 
         var reply = BiographyGuard.Sanitize(assembled.ToString());
+        if (string.IsNullOrWhiteSpace(reply))
+        {
+            reply = PromptBuilder.MissingDetailEnglish;
+        }
         foreach (var piece in ChunkReply(reply, 24))
         {
             yield return ChatStreamEvent.Token(piece);
@@ -557,6 +569,8 @@ public sealed class ChatUseCase
             sources = ["notice.md"];
         else if (PromptBuilder.LooksLikeExpectedSalary(message))
             sources = ["compensation.md"];
+        else if (PromptBuilder.LooksLikeGitHub(message))
+            sources = ["github.md"];
         else if (PromptBuilder.LooksLikeAiReview(message))
             sources = ["ai-practice.md"];
 

@@ -301,13 +301,19 @@ public class PromptPolicyTests
     public void LooksLikeExpectedSalary_is_a_package_band()
     {
         Assert.True(PromptBuilder.LooksLikeExpectedSalary("What is your expected salary?"));
+        Assert.True(PromptBuilder.LooksLikeExpectedSalary("What salary are you expecting?"));
+        Assert.True(PromptBuilder.LooksLikeExpectedSalary("what salary"));
         Assert.False(PromptBuilder.LooksLikeExpectedSalary("What is your current package?"));
         Assert.Contains("30,000 to 35,000", PromptBuilder.ExpectedSalaryDirective);
         Assert.Contains("That is enough", PromptBuilder.ExpectedSalaryDirective);
+        Assert.Contains("matching industry standard", PromptBuilder.ExpectedSalaryDirective);
         Assert.Contains("Do not say it depends on bonus", PromptBuilder.ExpectedSalaryDirective);
         Assert.DoesNotContain("WFH day", PromptBuilder.ExpectedSalaryDirective);
+        Assert.DoesNotContain("one WFH day", PromptBuilder.ExpectedSalaryDirective);
         Assert.DoesNotContain("depends on bonus and benefits", PromptBuilder.ExpectedSalaryDirective);
         Assert.DoesNotContain("WHOLE package", PromptBuilder.ExpectedSalaryDirective);
+        Assert.DoesNotContain("travel allowance", PromptBuilder.ExpectedSalaryDirective.Split("Do not copy")[0]);
+        Assert.DoesNotContain("補假", PromptBuilder.ExpectedSalaryDirective.Split("Do not copy")[0]);
         Assert.Contains("補假", PromptBuilder.CurrentPayDirective);
         Assert.True(PromptBuilder.LooksLikeNotice("What is your notice period?"));
         Assert.False(PromptBuilder.IsOffTopic("Why did you build InterviewMe?"));
@@ -315,6 +321,32 @@ public class PromptPolicyTests
         Assert.Contains("one month", PromptBuilder.NoticeDirective);
         Assert.Contains("About four projects I developed myself", PromptBuilder.HaecoGenericDirective);
         Assert.DoesNotContain("six", PromptBuilder.HaecoGenericDirective, StringComparison.OrdinalIgnoreCase);
+    }
+
+
+    [Fact]
+    public void LooksLikeGitHub_points_only_at_InterviewMe()
+    {
+        Assert.True(PromptBuilder.LooksLikeGitHub("What's on your GitHub?"));
+        Assert.True(PromptBuilder.LooksLikeGitHub("Do you have a public repo?"));
+        Assert.False(PromptBuilder.LooksLikeGitHub("What did you do at HAECO?"));
+        Assert.Contains("https://github.com/wongsaiwing/interviewme", PromptBuilder.GitHubDirective);
+        Assert.Contains("Do not invent other public experiments", PromptBuilder.GitHubDirective);
+        Assert.Contains("https://github.com/wongsaiwing/interviewme", PromptBuilder.HardBiographyDirective);
+        Assert.DoesNotContain("small experiments", PromptBuilder.GitHubDirective);
+        var prompt = _builder.Build("Silas Wong", "What's on your GitHub?", [], []);
+        Assert.Contains(PromptBuilder.GitHubDirective, prompt.Messages[0].Content);
+    }
+
+    [Fact]
+    public void Hard_biography_does_not_invent_haeco_db_or_stakeholder_delay()
+    {
+        Assert.Contains("MSSQL and MongoDB are skills", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("Do not invent which HAECO system uses which", PromptBuilder.HardBiographyDirective);
+        Assert.DoesNotContain("main database for MRO", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("do not invent a stakeholder who delayed go-live", PromptBuilder.HardBiographyDirective, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("Users are not difficult", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("Later asks are enhancements", PromptBuilder.HardBiographyDirective);
     }
 
     [Fact]

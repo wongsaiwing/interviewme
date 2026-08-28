@@ -63,4 +63,30 @@ public class KnowledgeIngestorTests
         Assert.DoesNotContain("graph engineering", markdown, StringComparison.OrdinalIgnoreCase);
     }
 
+    [Fact]
+    public void Github_facts_are_only_InterviewMe()
+    {
+        var path = TestSupport.FindKnowledgePath();
+        var markdown = File.ReadAllText(Path.Combine(path, "facts", "github.md"));
+        Assert.Contains("https://github.com/wongsaiwing/interviewme", markdown);
+        Assert.Contains("Do not invent other public experiments", markdown);
+        Assert.DoesNotContain("portfolio of small tools", markdown, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public void Expected_salary_facts_are_band_only()
+    {
+        var path = TestSupport.FindKnowledgePath();
+        var compensation = File.ReadAllText(Path.Combine(path, "facts", "compensation.md"));
+        Assert.Contains("30,000 to 35,000", compensation);
+        Assert.Contains("That is enough", compensation);
+        Assert.DoesNotContain("WFH day", compensation);
+        Assert.Contains("Do not mention WFH", compensation);
+        var skills = File.ReadAllText(Path.Combine(path, "facts", "skills.md"));
+        Assert.Contains("MSSQL and MongoDB are skills I have", skills);
+        Assert.Contains("Do not invent that MSSQL is the main database", skills);
+        var haeco = File.ReadAllText(Path.Combine(path, "facts", "haeco.md"));
+        Assert.Contains("Do not invent conflict, sudden requirement bombs, or difficult-stakeholder stories", haeco);
+        Assert.DoesNotContain("stakeholder delayed go-live", haeco, StringComparison.OrdinalIgnoreCase);
+    }
 }
