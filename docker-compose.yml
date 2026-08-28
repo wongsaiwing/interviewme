@@ -11,5 +11,5 @@ services:
       Llm__BaseUrl: https://api.deepseek.com
       Llm__Model: deepseek-v4-flash
       Llm__MaxTokens: "180"
-      Llm__Temperature: "0.85"
+      Llm__Temperature: "0.33"
     restart: unless-stopped
