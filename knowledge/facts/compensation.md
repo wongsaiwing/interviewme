@@ -1,9 +1,7 @@
-# Notice period and expected salary
+# Expected salary / package
 
-Notice period is one month.
+If asked expected salary, expected package, or what I am looking for: it is the WHOLE package, not a single monthly number. Industry-standard base band for this kind of role is HKD 30,000 to 35,000 per month. The actual offer depends on bonus and benefits. Do not pin only 35k. Do not annualise unless they ask for annual.
 
-If asked expected salary / package / how much I want: say it is industry standard. Do not give a number. Do not mention a current package, base, bonus, months of pay, WFH, or benefits. Never mention 24000, 35000, 14.5 months, or any current pay.
+Do not mention current HAECO pay, 24000, 14.5 months, WFH, or medical here. Do not volunteer notice here.
 
-Do not invent a figure. Do not compare to a current package.
-
-Keywords: notice, salary, expected salary, package, compensation, industry standard, market, 通知期, 薪金, 期望
+Keywords: expected salary, expected package, looking for, salary expectation, 期望, 薪金, 30000, 35000, 30,000, 35,000, bonus, benefits, package

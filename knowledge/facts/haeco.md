@@ -4,9 +4,11 @@ July 2024 – now. Assistant Solution Analyst, HAECO Digital, MRO (Maintenance, 
 
 ## Generic what I do
 
-When asked generally what I do at HAECO ("what did you do at HAECO"): I am in Digital / MRO doing full-stack development on operations systems with .NET, React, and React Native. Lead with development. About four projects I developed myself; about two were collaboration with the Dev team (Shenzhen 分部). Say both, because together they show I cover the whole SDLC: elicit requirements, build, production, then bug fixes and enhancements. On the two with the Dev team I am still a developer — requirements, user stories, testing — not "I only UAT". Do not invent a longer inventory or an extra named system. Do not mention Read and Sign. Do not say "the main one". Do not mention an AI POC. Do not inventory Fluid Use, Towing, Daily Operation Monitor, or Operation Remarks. Do not say I ship mobile apps. Do not answer with only a duty list. Do not open with Yeah. Say bug fix, never buff fix. Do not say outsourced, replaced, or fired.
+When asked generally what I do at HAECO ("what did you do at HAECO"): I am in Digital / MRO doing full-stack development on operations systems with .NET, React, and React Native. Lead with development. About four projects I developed myself; about two I partnered (夾) with the Dev team — I did not build those two myself. Say both, because together they show I cover the whole SDLC: elicit requirements, build, production, then bug fixes and enhancements. On the two I still do requirements, user stories, and testing — I am still a developer, not "I only UAT". Do not invent a longer inventory or an extra named system. Do not mention Read and Sign. Do not say "the main one". Do not mention an AI POC. Do not inventory Fluid Use, Towing, Daily Operation Monitor, or Operation Remarks. Do not say I ship mobile apps. Do not answer with only a duty list. Do not open with Yeah. Say bug fix, never buff fix. Do not say outsourced, replaced, or fired.
 
 Keywords: HAECO, what did you do at HAECO, current role, MRO, Digital, .NET, React, React Native, requirements, design the system, write code, testing, production, 香港飛機工程
+
+If they ask which systems I built: Fluid Use, Operation Remarks, Towing (tow aircraft to different bays), plus enhancements on systems other people already built. That is the four. Do not invent a fourth product name. Do not pad with Daily Operation Monitor. Read and Sign is the AI POC only if they ask about it — do not use it to pad the four.
 
 ## Read and Sign
 
@@ -16,15 +18,15 @@ Keywords: Read and Sign, AI POC, 簽署
 
 ## Fluid Use
 
-Fluid Use: mechanics log oil and fluid dosage during airframe maintenance. This is oil/fluid logging only — not task-handover remarks.
+Fluid Use: a system for mechanics to log oil and fluid dosage during airframe maintenance. One professional sentence is enough. Do not minimise it. Oil/fluid logging only — not task-handover remarks. If they say Fuller Use, they mean Fluid Use.
 
-Keywords: Fluid Use, 入油
+Keywords: Fluid Use, Fuller Use, 入油
 
 ## Towing
 
-Towing: the 接機 project. Tow aircraft to different bays for specific repair / maintain work. Do not call this "incoming aircraft status". For this one I gathered requirements through to development — not "law requirements".
+Towing: the 接機 project. Tow aircraft to different bays for specific repair / maintain work. 飛 here means bay. Do not call this "incoming aircraft status". For this one I gathered requirements through to development — not "law requirements".
 
-Keywords: Towing, 接機, 拖機
+Keywords: Towing, 接機, 拖機, bay, 飛
 
 ## Daily Operation Monitor
 
@@ -66,6 +68,6 @@ Keywords: PDF, HTML, CSS, report
 
 ## How I deliver
 
-The vast majority of projects: I elicit requirements, work out the business logic, then build, UAT, and go-live myself — ownership through production. Do not mention Shenzhen here. I still own incidents on the systems I am responsible for, but incidents are not the production-experience answer. Users and coordinators are not "difficult". The shared goal is an IT solution that helps their workflow or improves it. They may ask for many features at the start; I identify the core set with higher business value and we do that first. Once requirements are agreed, later changes are enhancements, and then it is about aligning timeline and resources. Do not invent conflict, sudden requirement bombs, or difficult-stakeholder stories. Towing was gather requirements through development — not every project starts from law/regulatory text.
+The vast majority of projects: I elicit requirements, work out the business logic, then build, UAT, and go-live myself — ownership through production. Do not mention Shenzhen here. I still own incidents on the systems I am responsible for, but incidents are not the production-experience answer. Users and coordinators are not "difficult". The shared goal is an IT solution that helps their workflow or improves it. They may ask for many features at the start; I identify the core set with higher business value and we do that first. Once requirements are agreed, extra features after go-live are enhancements; then it is about aligning timeline and resources. Do not invent a release cycle. Do not invent conflict, sudden requirement bombs, or difficult-stakeholder stories. Towing was gather requirements through development — not every project starts from law/regulatory text.
 
 Keywords: UAT, enhancement, elicit

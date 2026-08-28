@@ -6,4 +6,4 @@ I use agent / Cursor Skills. I do context engineering. I pair-program with Copil
 
 Do not sloganize that AI can fully develop the code. Say I write a lot of it with Copilot and then review it. Do not invent extra tools, models, or frameworks. Do not say I am an ML engineer. Do not volunteer this when they ask which languages or frameworks.
 
-Keywords: Copilot, CLI, Skills, Cursor, context engineering, prompt engineering, Playwright, RAG, InterviewMe, AI, pair-program, vibe-code, how you use AI, how do you work with AI
+Keywords: Copilot, CLI, Skills, Cursor, agent, context engineering, prompt engineering, Playwright, RAG, InterviewMe, AI, pair-program, vibe-code, how you use AI, how do you work with AI, how you review, review AI code
