@@ -75,8 +75,10 @@ public sealed class ChatUseCase
         }
 
         var history = _conversations.GetRecent(command.SessionId, _chatOptions.ConversationTurns);
+        yield return ChatStreamEvent.Status("retrieve");
         var facts = await RetrieveFactsAsync(command.Message, cancellationToken);
 
+        yield return ChatStreamEvent.Status("generate");
         var prompt = _promptBuilder.Build(_profile.Name, command.Message, history, facts, _tone.GetFewShots());
 
         var assembled = new System.Text.StringBuilder();

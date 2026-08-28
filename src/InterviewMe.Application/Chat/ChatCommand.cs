@@ -15,6 +15,8 @@ public sealed record ChatStreamEvent(
 {
     public static ChatStreamEvent Token(string text) => new("token", Text: text);
 
+    public static ChatStreamEvent Status(string stage) => new("status", Text: stage);
+
     public static ChatStreamEvent WithSources(IReadOnlyList<SourceCitation> sources) =>
         new("sources", Sources: sources);
 

@@ -10,11 +10,10 @@ function newSessionId() {
 
 const t = {
   intro: "# Have a seat. Background, work, tech — just ask.",
-  placeholder: "ask about background, HAECO, stack…",
+  placeholder: "Ask me anything here",
   send: "enter",
-  you: "hr",
+  you: ">",
   me: "silas",
-  empty: "# Ask like an interviewer. Pick a command, or type your own.",
   footer: "# Replies are spoken as Silas. This chat is not saved.",
   errorProfile: "error: could not load the page",
   errorChat: "error: chat stream failed",
@@ -26,11 +25,71 @@ const t = {
   ]
 };
 
+const PIPE = [
+  { id: "input", label: "INPUT" },
+  { id: "retrieve", label: "RAG" },
+  { id: "generate", label: "LLM" }
+];
+
+
+function splitSentences(text) {
+  const parts = text.match(/[^.!?。！？]+[.!?。！？]+(?:["')\]]+)?\s*|[^.!?。！？]+$/g);
+  return parts && parts.length ? parts : [text];
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function typeReply(full, setMessages) {
+  const text = full || "";
+  if (!text) {
+    return;
+  }
+  const duration = Math.min(2000, Math.max(700, text.length * 10));
+  const totalChars = Math.max(text.length, 1);
+  const slice = duration / totalChars;
+  let shown = "";
+  for (const sentence of splitSentences(text)) {
+    for (const ch of sentence) {
+      shown += ch;
+      const snapshot = shown;
+      setMessages((prev) => {
+        const copy = [...prev];
+        const last = copy[copy.length - 1];
+        if (last?.role === "assistant") {
+          copy[copy.length - 1] = { ...last, content: snapshot, streaming: true };
+        }
+        return copy;
+      });
+      await sleep(slice);
+    }
+    await sleep(Math.min(120, duration * 0.06));
+  }
+}
+
+function Pipeline({ stage }) {
+  return (
+    <div className="pipeline" aria-label={`flow ${stage}`}>
+      {PIPE.map((node, i) => (
+        <span key={node.id} className="pipe-item">
+          {i > 0 ? <span className="pipe-link" aria-hidden="true" /> : null}
+          <span className={`pipe-node${stage === node.id ? " is-lit" : ""}`}>
+            <span className="pipe-box" />
+            <span className="pipe-label">{node.label}</span>
+          </span>
+        </span>
+      ))}
+    </div>
+  );
+}
+
 export default function App() {
   const [profile, setProfile] = useState(null);
   const [error, setError] = useState("");
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
+  const [stage, setStage] = useState("input");
   const [messages, setMessages] = useState([]);
   const sessionId = useMemo(newSessionId, []);
   const scroller = useRef(null);
@@ -57,39 +116,65 @@ export default function App() {
     const assistant = { role: "assistant", content: "", sources: [], streaming: true };
     setMessages((prev) => [...prev, userMsg, assistant]);
 
+    let pending = "";
+    let failed = "";
+    const RAG_HOLD = 400 * 5;
+    let ragHold = Promise.resolve();
     try {
       await streamChat({
         message,
         sessionId,
         onEvent: (evt) => {
-          setMessages((prev) => {
-            const next = [...prev];
-            const last = { ...next[next.length - 1] };
-            if (evt.type === "token") {
-              last.content = (last.content || "") + (evt.text || "");
-            } else if (evt.type === "error") {
-              last.content = evt.error || t.errorChat;
-              last.streaming = false;
-            } else if (evt.type === "done") {
-              last.streaming = false;
+          if (evt.type === "status") {
+            if (evt.text === "retrieve") {
+              setStage("retrieve");
+              ragHold = sleep(RAG_HOLD).then(() => setStage("generate"));
             }
-            next[next.length - 1] = last;
-            return next;
-          });
+            return;
+          }
+          if (evt.type === "token") {
+            pending += evt.text || "";
+            return;
+          }
+          if (evt.type === "error") {
+            failed = evt.error || t.errorChat;
+          }
         }
       });
+      await ragHold;
+      if (failed) {
+        setMessages((prev) => {
+          const copy = [...prev];
+          const last = copy[copy.length - 1];
+          if (last?.role === "assistant") {
+            copy[copy.length - 1] = { ...last, content: failed, streaming: false };
+          }
+          return copy;
+        });
+      } else {
+        await typeReply(pending, setMessages);
+        setMessages((prev) => {
+          const copy = [...prev];
+          const last = copy[copy.length - 1];
+          if (last?.role === "assistant") {
+            copy[copy.length - 1] = { ...last, content: pending, streaming: false };
+          }
+          return copy;
+        });
+      }
     } catch {
       setError(t.errorChat);
       setMessages((prev) => {
-        const next = [...prev];
-        const last = next[next.length - 1];
+        const copy = [...prev];
+        const last = copy[copy.length - 1];
         if (last?.role === "assistant" && last.streaming) {
-          next[next.length - 1] = { ...last, streaming: false, content: last.content || t.errorChat };
+          copy[copy.length - 1] = { ...last, streaming: false, content: last.content || t.errorChat };
         }
-        return next;
+        return copy;
       });
     } finally {
       setBusy(false);
+      setStage("input");
     }
   }
 
@@ -106,6 +191,8 @@ export default function App() {
           <p className="contact"># silas.wong.saiwing@gmail.com | +852 6509 1653 | Hong Kong</p>
         </header>
 
+        <Pipeline stage={stage} />
+
         <main className="chat">
           <p className="chat-intro">{t.intro}</p>
           <div className="suggestions">
@@ -117,10 +204,9 @@ export default function App() {
           </div>
 
           <div className="transcript" ref={scroller}>
-            {messages.length === 0 && <div className="empty">{t.empty}</div>}
             {messages.map((m, i) => (
               <article key={i} className={`line ${m.role}`}>
-                <span className="prompt">{m.role === "user" ? "hr>" : "silas>"}</span>
+                <span className="prompt">{m.role === "user" ? ">" : "silas>"}</span>
                 <span className="content">
                   {m.content}
                   {m.streaming ? <span className="caret" /> : null}
@@ -138,16 +224,21 @@ export default function App() {
               send();
             }}
           >
-            <span className="prompt">hr&gt;</span>
-            <input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder={t.placeholder}
-              disabled={busy}
-              maxLength={400}
-              autoComplete="off"
-              spellCheck="false"
-            />
+            <span className="prompt">&gt;</span>
+            <label className="input-wrap">
+              {input.length === 0 ? <span className="caret composer-caret" aria-hidden="true" /> : null}
+              <input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder={t.placeholder}
+                disabled={busy}
+                maxLength={400}
+                autoComplete="off"
+                spellCheck="false"
+                autoFocus
+                className={input.length === 0 ? "is-empty" : undefined}
+              />
+            </label>
             <button type="submit" disabled={busy || !input.trim()}>
               [{t.send}]
             </button>

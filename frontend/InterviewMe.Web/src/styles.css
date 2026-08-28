@@ -1,6 +1,6 @@
 :root {
   --bg: #ffffff;
-  --paper: #fbfbfa;
+  --paper: #ffffff;
   --ink: #111111;
   --muted: #6e6e73;
   --hair: #d2d2d7;
@@ -10,7 +10,7 @@
 }
 
 * { box-sizing: border-box; }
-html, body, #root { margin: 0; min-height: 100%; }
+html, body, #root { margin: 0; min-height: 100%; background: var(--bg); }
 html {
   font-family: ui-monospace, "SF Mono", "IBM Plex Mono", Menlo, Consolas, "Liberation Mono", monospace;
   -webkit-font-smoothing: antialiased;
@@ -27,6 +27,7 @@ body {
   position: relative;
   min-height: 100vh;
   overflow: hidden;
+  background: var(--bg);
 }
 
 .scanlines {
@@ -57,7 +58,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--paper);
+  background: transparent;
 }
 
 .term-title {
@@ -65,6 +66,48 @@ body {
   font-size: 12px;
   letter-spacing: 0.04em;
   margin-bottom: 18px;
+}
+
+.pipeline {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 0 0 22px;
+}
+.pipe-item {
+  display: flex;
+  align-items: flex-start;
+}
+.pipe-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 44px;
+}
+.pipe-box {
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--ink);
+  background: transparent;
+}
+.pipe-node.is-lit .pipe-box {
+  background: var(--ink);
+  animation: pipe-blink 0.4s steps(1) infinite;
+}
+@keyframes pipe-blink {
+  50% { background: transparent; }
+}
+.pipe-label {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.pipe-link {
+  width: 36px;
+  height: 1px;
+  background: var(--ink);
+  margin-top: 8px;
 }
 
 .cv-header {
@@ -169,15 +212,30 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
   border-top: 1px solid var(--hair);
   margin-top: 8px;
 }
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.composer-caret {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 1;
+}
 .composer input {
   width: 100%;
   font: inherit;
   font-size: 14px;
-  padding: 6px 0;
+  padding: 6px 0 6px 12px;
   border: 0;
   background: transparent;
   color: var(--ink);
 }
+.composer input.is-empty { caret-color: transparent; }
 .composer input:focus { outline: none; }
 .composer input::placeholder { color: var(--muted); }
 .composer button {

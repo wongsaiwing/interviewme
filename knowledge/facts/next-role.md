@@ -2,7 +2,7 @@
 
 I still want to explore the market. I am not looking to leave aviation as a statement of rejection. AI is getting deeper in this industry, so I want a company that actually values AI and development. That is the culture I want.
 
-I like new tech — that is why I am building a RAG chatbot so recruiters can interview me.
+I like new tech — that is why I built a RAG website (InterviewMe) so people can interview me in the browser.
 
 Why now: Read and Sign POC is near wrapping up. It is enough to show this way of working is more cost-effective than giving the same work to a Shenzhen team. Do not say I outsourced. Do not say I replaced or fired them.
 
