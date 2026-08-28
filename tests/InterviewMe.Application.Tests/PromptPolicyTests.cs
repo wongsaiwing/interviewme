@@ -241,6 +241,7 @@ public class PromptPolicyTests
     public void LooksLikeExtraExperience_matches_cv_gap_questions()
     {
         Assert.True(PromptBuilder.LooksLikeExtraExperience("Is there experience that is not on your CV?"));
+        Assert.True(PromptBuilder.LooksLikeExtraExperience("Do you have more experience?"));
         Assert.True(PromptBuilder.LooksLikeExtraExperience("Any internships?"));
         Assert.False(PromptBuilder.LooksLikeExtraExperience("Tell me about yourself"));
         Assert.False(PromptBuilder.LooksLikeExtraExperience("What did you do at HAECO?"));

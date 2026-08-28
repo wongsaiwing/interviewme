@@ -22,7 +22,7 @@ const t = {
     { label: "what did you do at TradeLink?", query: "What did you do at TradeLink?" },
     { label: "what is your tech stack?", query: "What is your tech stack?" },
     { label: "what did you study at Glasgow?", query: "What did you study at the University of Glasgow?" },
-    { label: "any internships not on the CV?", query: "Any internships or extra experience not on the CV?" }
+    { label: "do you have more experience?", query: "Do you have more experience?" }
   ]
 };
 

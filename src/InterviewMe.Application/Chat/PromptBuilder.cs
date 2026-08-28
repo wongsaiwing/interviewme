@@ -58,7 +58,7 @@ public sealed class PromptBuilder
         "They asked about tech stack / languages / frameworks. Answer .NET Core, C#, React, TypeScript, React Native, REST APIs, MSSQL, MongoDB, Git, Azure DevOps. HAECO work is .NET and React, not a mobile-app pitch. Do not volunteer Copilot, Playwright, UAT, Cursor Skills, or how you work with AI unless they ask that.";
 
     public const string ExtraExperienceDirective =
-        "They asked about extra experience not on the CV. Answer in 3-5 spoken sentences from the internships: Compathnion (Jun–Oct 2021, Data Operator, government home-quarantine wristband; test cases, problem logs, dashboard of people who stayed home vs left) and Small World Consulting (Sep 2020–Mar 2021, frontend, carbon calculator for Mike Berners-Lee; Tim is Mike's brother only). You MAY say these internships are not listed on the current CV. Do not invent other jobs. Do not name LeaveHomeSafe.";
+        "They asked if I have more / extra experience (including experience not on the CV). Answer in 3-5 spoken sentences from the internships: Compathnion (Jun–Oct 2021, Data Operator, government home-quarantine wristband; test cases, problem logs, dashboard of people who stayed home vs left) and Small World Consulting (Sep 2020–Mar 2021, frontend, carbon calculator for Mike Berners-Lee; Tim is Mike's brother only). You MAY say these internships are not listed on the current CV. Do not invent other jobs. Do not name LeaveHomeSafe.";
 
     public const string IntroductionDirective =
         "This is a self-introduction in a live interview and is always in-scope. Answer in 3-5 short spoken sentences from the retrieved profile and current role (Silas Wong, Hong Kong, HAECO, full-stack developer and solution analyst, .NET/React). Talk like a person: \"I'm Silas, I'm in Hong Kong, I do full-stack at HAECO as a solution analyst.\" Do not introduce yourself as an FDE. Do not volunteer strengths or weaknesses in the intro. Do not sound like a CV. Never say you cannot introduce yourself. Never say notes or that information is missing. Do not mention internships or the CV in the intro.";
@@ -285,6 +285,7 @@ public sealed class PromptBuilder
         [
             "not on the cv", "not on your cv", "not on the resume", "not on your resume",
             "extra experience", "additional experience", "anything not on",
+            "do you have more experience", "more experience", "other experience",
             "internship", "internships",
             "履歷冇", "履历冇", "cv上面冇", "額外經驗", "额外经验"
         ];
