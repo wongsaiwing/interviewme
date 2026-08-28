@@ -65,6 +65,18 @@ public class BiographyGuardTests
     }
 
     [Fact]
+    public void Drops_certificate_decline_sentence()
+    {
+        var raw = "Cantonese is my mother tongue, Mandarin is fluent, and English is fluent. I don't have a formal language certificate to share.";
+        var clean = BiographyGuard.Sanitize(raw);
+
+        Assert.DoesNotContain("certificate", clean, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("IELTS", clean, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("fluent", clean, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("mother tongue", clean, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
     public void Does_not_strip_csharp_as_a_cefr_level()
     {
         var raw = "My stack is C# and .NET Core.";
