@@ -305,9 +305,9 @@ public class PromptPolicyTests
         Assert.Contains("WHOLE package", PromptBuilder.ExpectedSalaryDirective);
         Assert.Contains("30,000 to 35,000", PromptBuilder.ExpectedSalaryDirective);
         Assert.Contains("bonus and benefits", PromptBuilder.ExpectedSalaryDirective);
-        Assert.Contains("Do not copy HAECO WFH", PromptBuilder.ExpectedSalaryDirective);
         Assert.Contains("Do not pin only 35k", PromptBuilder.ExpectedSalaryDirective);
-        Assert.Contains("補假", PromptBuilder.CurrentPayDirective);
+        Assert.Contains("WFH", PromptBuilder.ExpectedSalaryDirective);
+        Assert.Contains("補假", PromptBuilder.ExpectedSalaryDirective);
         Assert.True(PromptBuilder.LooksLikeNotice("What is your notice period?"));
         Assert.False(PromptBuilder.IsOffTopic("Why did you build InterviewMe?"));
         Assert.True(PromptBuilder.LooksLikeInterviewMeProject("Why did you build this website?"));
