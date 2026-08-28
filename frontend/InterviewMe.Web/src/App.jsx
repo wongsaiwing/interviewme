@@ -25,13 +25,6 @@ const t = {
   ]
 };
 
-const PIPE = [
-  { id: "input", label: "INPUT" },
-  { id: "retrieve", label: "RAG" },
-  { id: "generate", label: "LLM" }
-];
-
-
 function splitSentences(text) {
   const parts = text.match(/[^.!?。！？]+[.!?。！？]+(?:["')\]]+)?\s*|[^.!?。！？]+$/g);
   return parts && parts.length ? parts : [text];
@@ -71,15 +64,21 @@ async function typeReply(full, setMessages) {
 function Pipeline({ stage }) {
   return (
     <div className="pipeline" aria-label={`flow ${stage}`}>
-      {PIPE.map((node, i) => (
-        <span key={node.id} className="pipe-item">
-          {i > 0 ? <span className="pipe-link" aria-hidden="true" /> : null}
-          <span className={`pipe-node${stage === node.id ? " is-lit" : ""}`}>
-            <span className="pipe-box" />
-            <span className="pipe-label">{node.label}</span>
-          </span>
-        </span>
-      ))}
+      <svg className="pipe-cycle" viewBox="0 0 180 130" aria-hidden="true">
+        <polygon points="90,16 16,114 164,114" fill="none" stroke="currentColor" strokeWidth="1" />
+      </svg>
+      <span className={`pipe-node pipe-input${stage === "input" ? " is-lit" : ""}`}>
+        <span className="pipe-box" />
+        <span className="pipe-label">INPUT</span>
+      </span>
+      <span className={`pipe-node pipe-rag${stage === "retrieve" ? " is-lit" : ""}`}>
+        <span className="pipe-box" />
+        <span className="pipe-label">RAG</span>
+      </span>
+      <span className={`pipe-node pipe-llm${stage === "generate" ? " is-lit" : ""}`}>
+        <span className="pipe-box" />
+        <span className="pipe-label">LLM</span>
+      </span>
     </div>
   );
 }

@@ -69,45 +69,47 @@ body {
 }
 
 .pipeline {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  margin: 0 0 22px;
+  position: relative;
+  width: 180px;
+  height: 150px;
+  margin: 0 auto 22px;
+  color: var(--ink);
 }
-.pipe-item {
-  display: flex;
-  align-items: flex-start;
+.pipe-cycle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 180px;
+  height: 130px;
 }
 .pipe-node {
+  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   width: 44px;
 }
+.pipe-input { top: 0; left: 68px; }
+.pipe-rag { top: 98px; left: 0; }
+.pipe-llm { top: 98px; left: 136px; }
 .pipe-box {
   width: 18px;
   height: 18px;
   border: 1px solid var(--ink);
-  background: transparent;
+  background: var(--bg);
 }
 .pipe-node.is-lit .pipe-box {
   background: var(--ink);
   animation: pipe-blink 0.4s steps(1) infinite;
 }
 @keyframes pipe-blink {
-  50% { background: transparent; }
+  50% { background: var(--bg); }
 }
 .pipe-label {
   font-size: 10px;
   letter-spacing: 0.08em;
   color: var(--muted);
-}
-.pipe-link {
-  width: 36px;
-  height: 1px;
-  background: var(--ink);
-  margin-top: 8px;
 }
 
 .cv-header {
