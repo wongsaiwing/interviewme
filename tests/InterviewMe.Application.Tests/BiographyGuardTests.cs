@@ -37,4 +37,26 @@ public class BiographyGuardTests
         Assert.Contains("did not work with Tim", clean, StringComparison.OrdinalIgnoreCase);
         Assert.Contains("Mike Berners-Lee", clean, StringComparison.OrdinalIgnoreCase);
     }
+
+    [Fact]
+    public void Strips_language_grades_and_exams()
+    {
+        var raw = "Yes, my English is CEFR C2 and I have IELTS 8.0. I am a C1 in Mandarin.";
+        var clean = BiographyGuard.Sanitize(raw);
+
+        Assert.DoesNotContain("CEFR", clean, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("C2", clean, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("C1", clean, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("IELTS", clean, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("8.0", clean, StringComparison.Ordinal);
+        Assert.Contains("fluent", clean, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public void Does_not_strip_csharp_as_a_cefr_level()
+    {
+        var raw = "My stack is C# and .NET Core.";
+        var clean = BiographyGuard.Sanitize(raw);
+        Assert.Contains("C#", clean, StringComparison.Ordinal);
+    }
 }

@@ -256,6 +256,19 @@ public class PromptPolicyTests
     }
 
     [Fact]
+    public void LooksLikeLanguageGrade_does_not_echo_scale()
+    {
+        Assert.True(PromptBuilder.LooksLikeLanguageGrade("Are you C2?"));
+        Assert.True(PromptBuilder.LooksLikeLanguageGrade("What's your IELTS?"));
+        Assert.True(PromptBuilder.LooksLikeSpokenLanguages("What languages do you speak?"));
+        Assert.False(PromptBuilder.LooksLikeTechStack("What languages do you speak?"));
+        Assert.False(PromptBuilder.LooksLikeLanguageGrade("What is your tech stack?"));
+        Assert.Contains("NEVER output CEFR", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("Do not echo the grade", PromptBuilder.LanguageGradeDirective);
+        Assert.Contains("English is fluent", PromptBuilder.LanguageGradeDirective);
+    }
+
+    [Fact]
     public void LooksLikeProductionExperience_not_incidents()
     {
         Assert.True(PromptBuilder.LooksLikeProductionExperience("Do you have production experience?"));

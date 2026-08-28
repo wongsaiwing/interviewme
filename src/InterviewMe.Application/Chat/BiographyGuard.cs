@@ -3,8 +3,9 @@ using System.Text.RegularExpressions;
 namespace InterviewMe.Application.Chat;
 
 /// <summary>
-/// Last-line filter so spoken answers cannot emit banned product names
-/// or claim Silas worked with Tim Berners-Lee on the calculator.
+/// Last-line filter so spoken answers cannot emit banned product names,
+/// language grades (CEFR / C1 / C2 / IELTS), or claim Silas worked with
+/// Tim Berners-Lee on the calculator.
 /// </summary>
 public static class BiographyGuard
 {
@@ -36,6 +37,32 @@ public static class BiographyGuard
         @"Tim(?: Berners-Lee)? was my boss",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+    private static readonly Regex Ielts = new(
+        @"\bIELTS\b(?:\s*(?:band\s*)?\d+(?:\.\d+)?)?",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    private static readonly Regex Toefl = new(
+        @"\bTOEFL\b(?:\s*iBT)?(?:\s*\d+)?",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    private static readonly Regex Pte = new(
+        @"\bPTE\b(?:\s*Academic)?(?:\s*\d+)?",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    private static readonly Regex Cefr = new(
+        @"\bCEFR\b",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    private static readonly Regex LanguageBand = new(
+        @"\bband\s+\d+(?:\.\d+)?\b",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    private static readonly Regex CefrLevel = new(
+        @"\b(?:an?\s+)?(?:A1|A2|B1|B2|C1|C2)\b",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    private static readonly Regex ExtraSpaces = new(@"[ \t]{2,}", RegexOptions.Compiled);
+
     public static string Sanitize(string text)
     {
         if (string.IsNullOrWhiteSpace(text))
@@ -53,6 +80,14 @@ public static class BiographyGuard
         result = HelpedTim.Replace(result, "helped Mike Berners-Lee");
         result = WorkedWithTim.Replace(result, "worked with Mike Berners-Lee");
         result = TimWasBoss.Replace(result, "Mike Berners-Lee was my boss");
+
+        result = Ielts.Replace(result, "");
+        result = Toefl.Replace(result, "");
+        result = Pte.Replace(result, "");
+        result = Cefr.Replace(result, "");
+        result = LanguageBand.Replace(result, "");
+        result = CefrLevel.Replace(result, "fluent");
+        result = ExtraSpaces.Replace(result, " ").Trim();
 
         return result;
     }
