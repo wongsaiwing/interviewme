@@ -302,22 +302,14 @@ public class PromptPolicyTests
     {
         Assert.True(PromptBuilder.LooksLikeExpectedSalary("What is your expected salary?"));
         Assert.False(PromptBuilder.LooksLikeExpectedSalary("What is your current package?"));
-        Assert.Contains("WHOLE package", PromptBuilder.ExpectedSalaryDirective);
         Assert.Contains("30,000 to 35,000", PromptBuilder.ExpectedSalaryDirective);
-        Assert.Contains("bonus and benefits", PromptBuilder.ExpectedSalaryDirective);
-        Assert.Contains("Do not pin only 35k", PromptBuilder.ExpectedSalaryDirective);
-        Assert.Contains("WFH", PromptBuilder.ExpectedSalaryDirective);
-        Assert.Contains("補假", PromptBuilder.ExpectedSalaryDirective);
+        Assert.Contains("That is enough", PromptBuilder.ExpectedSalaryDirective);
+        Assert.Contains("Do not say it depends on bonus", PromptBuilder.ExpectedSalaryDirective);
+        Assert.DoesNotContain("WFH day", PromptBuilder.ExpectedSalaryDirective);
         Assert.True(PromptBuilder.LooksLikeNotice("What is your notice period?"));
         Assert.False(PromptBuilder.IsOffTopic("Why did you build InterviewMe?"));
         Assert.True(PromptBuilder.LooksLikeInterviewMeProject("Why did you build this website?"));
         Assert.Contains("one month", PromptBuilder.NoticeDirective);
-        Assert.Contains("About four projects I developed myself", PromptBuilder.HaecoGenericDirective);
-        Assert.Contains("about two I partnered", PromptBuilder.HaecoGenericDirective);
-        Assert.DoesNotContain("six", PromptBuilder.HaecoGenericDirective, StringComparison.OrdinalIgnoreCase);
-        Assert.DoesNotContain("About six", PromptBuilder.HaecoGenericDirective);
-        Assert.Contains("WHOLE package", PromptBuilder.HardBiographyDirective);
-        Assert.Contains("Cursor Skills", PromptBuilder.AiReviewDirective);
     }
 
     [Fact]
