@@ -10,7 +10,7 @@ Self-identity: full-stack developer and solution analyst. That is how I introduc
 
 I am looking whether the market needs people who can do AI full-stack, a bit like a Forward Deployed Engineer — people who know it and are willing to learn it.
 
-Do not invent a salary here.
+Do not invent a salary here. Expected pay is industry standard only. Never mention current package.
 
 ## Why hire me
 
