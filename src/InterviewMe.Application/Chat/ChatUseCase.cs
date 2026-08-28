@@ -119,6 +119,7 @@ public sealed class ChatUseCase
         facts = await ExpandExtraExperienceAsync(message, facts, cancellationToken);
         facts = await ExpandProductionExperienceAsync(message, facts, cancellationToken);
         facts = await ExpandSpokenLanguagesAsync(message, facts, cancellationToken);
+        facts = await ExpandShenzhenCollaborationAsync(message, facts, cancellationToken);
 
         var expandIntro = PromptBuilder.IsIntroduction(message)
                           || (facts.Count == 0 && PromptBuilder.LooksLikeAboutMe(message));
@@ -204,7 +205,6 @@ public sealed class ChatUseCase
             "swc.md",
             "extra-experience.md",
             "production.md",
-            "haeco.md",
             "haeco-projects.md"
         };
 
@@ -451,6 +451,58 @@ public sealed class ChatUseCase
         var best = facts.Select(f => f.Score).DefaultIfEmpty(0.9f).Max();
 
         foreach (var source in SpokenLanguageSources)
+        {
+            IReadOnlyList<RetrievedFact> chunks;
+            try
+            {
+                chunks = await _store.GetBySourcePrefixAsync(source, cancellationToken);
+            }
+            catch (NotImplementedException)
+            {
+                continue;
+            }
+
+            foreach (var chunk in chunks)
+            {
+                if (byId.ContainsKey(chunk.Id))
+                {
+                    continue;
+                }
+
+                byId[chunk.Id] = new RetrievedFact(
+                    chunk.Id,
+                    chunk.Source,
+                    chunk.Title,
+                    chunk.Text,
+                    Math.Min(Math.Max(best, 0.9f) * 0.99f, 0.99f));
+            }
+        }
+
+        return byId.Values
+            .OrderByDescending(f => f.Score)
+            .Take(Math.Max(_chatOptions.TopK, 8))
+            .ToList();
+    }
+
+    private static readonly string[] ShenzhenSources =
+    [
+        "haeco-shenzhen.md"
+    ];
+
+    private async Task<List<RetrievedFact>> ExpandShenzhenCollaborationAsync(
+        string message,
+        List<RetrievedFact> facts,
+        CancellationToken cancellationToken)
+    {
+        if (!PromptBuilder.LooksLikeShenzhenCollaboration(message))
+        {
+            return facts;
+        }
+
+        var byId = facts.ToDictionary(f => f.Id, StringComparer.Ordinal);
+        var best = facts.Select(f => f.Score).DefaultIfEmpty(0.9f).Max();
+
+        foreach (var source in ShenzhenSources)
         {
             IReadOnlyList<RetrievedFact> chunks;
             try

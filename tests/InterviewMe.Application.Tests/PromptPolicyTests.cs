@@ -38,7 +38,7 @@ public class PromptPolicyTests
         Assert.Contains("first person", system, StringComparison.OrdinalIgnoreCase);
         Assert.Contains("Silas Wong", system);
         Assert.Contains("3-5 short spoken sentences", system);
-        Assert.Contains("simple wording", system);
+        Assert.Contains("Professional interview register", system);
         Assert.Contains("No essays", system);
         Assert.Contains("no markdown dumps", system);
         Assert.Contains("no extra questions", system);
@@ -277,8 +277,23 @@ public class PromptPolicyTests
         Assert.True(PromptBuilder.LooksLikeProductionExperience("Have you taken projects to production?"));
         Assert.False(PromptBuilder.LooksLikeProductionExperience("How do you handle production incidents?"));
         Assert.False(PromptBuilder.LooksLikeProductionExperience("Tell me about a hotfix"));
-        Assert.Contains("most HAECO projects I own myself", PromptBuilder.ProductionExperienceDirective);
+        Assert.Contains("About four HAECO projects I built myself", PromptBuilder.ProductionExperienceDirective);
+        Assert.Contains("whole SDLC", PromptBuilder.ProductionExperienceDirective);
         Assert.Contains("Do not answer as incidents", PromptBuilder.ProductionExperienceDirective);
+    }
+
+    [Fact]
+    public void LooksLikeShenzhenCollaboration_not_generic_haeco()
+    {
+        Assert.False(PromptBuilder.LooksLikeShenzhenCollaboration("What did you do at HAECO?"));
+        Assert.True(PromptBuilder.LooksLikeShenzhenCollaboration("Do you work with the Shenzhen team?"));
+        Assert.True(PromptBuilder.LooksLikeShenzhenCollaboration("Do you work with the development team?"));
+        Assert.Contains("About four projects I developed myself", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("whole SDLC", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("not only UAT", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("Do not open with Yeah", PromptBuilder.DefaultTone);
+        Assert.Contains("Vibe-coded", PromptBuilder.DefaultTone);
+        Assert.Contains("bug fix, never buff fix", PromptBuilder.DefaultTone);
     }
 
     [Fact]
