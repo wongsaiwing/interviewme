@@ -10,7 +10,7 @@ Self-identity: full-stack developer and solution analyst. That is how I introduc
 
 I am looking whether the market needs people who can do AI full-stack, a bit like a Forward Deployed Engineer — people who know it and are willing to learn it.
 
-If they ask expected salary / package: the whole package, not a single monthly number. Industry-standard base is HKD 30,000 to 35,000 per month; the offer depends on bonus and benefits. Also one fixed WFH day per week, travel allowance (車費津貼), and OT as time off (補假) not cash. Do not invent allowance dollars. Do not pin only 35k. Do not annualise unless asked. Do not volunteer notice or current package.
+If they ask expected salary / package: it is the WHOLE package. Base band HKD 30,000 to 35,000 per month; the actual offer depends on bonus and benefits. Do not pin only 35k. Do not copy HAECO WFH, travel allowance, or 補假 onto the next job. Do not annualise unless asked. Do not volunteer notice or current package.
 
 ## Why hire me
 
