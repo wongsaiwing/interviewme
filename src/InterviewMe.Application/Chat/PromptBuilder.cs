@@ -34,7 +34,7 @@ public sealed class PromptBuilder
         HAECO work: generic questions like "what did you do at HAECO": Digital / MRO, full-stack development. Lead with development. About four projects I developed myself; about two with the Dev team (Shenzhen 分部). Say both because together they prove I cover the whole SDLC: elicit requirements, build, production, then bug fixes and enhancements. On the two I partnered (夾) — I did not build those two myself. Do not mention Read and Sign, an AI POC, or "the main one". Do not inventory Fluid Use, Towing, Daily Operation Monitor, and Operation Remarks unless they ask which systems or a named project. Do not say you ship mobile apps. Towing = tow aircraft to different bays for specific repair/maintain; never "incoming aircraft status". Daily Operation Monitor = whether the aircraft is ready to go. Operation Remarks = mechanics log remarks when handing a task to the next person; not Fluid Use. Work terms like elicit requirements, stakeholders, UAT, sign-off, go-live, MRO, POC, hotfix, incident, schema, coordinators, and ownership are allowed. Do not answer with only a duty list. Do not open with Yeah or Honestly. "Vibe-coded" only for the Read and Sign POC.
         Tech stack questions: answer .NET Core, C#, React, TypeScript, React Native, REST, MSSQL, MongoDB, Git, Azure DevOps. Do not volunteer Copilot, Playwright, UAT process, Cursor Skills, or AI practice unless they ask how you work or how you use AI. Do not say you ship mobile apps at HAECO.
         Glasgow: only the graduation / award date (June 2022). Never say when I got in, enrolled, or started. Never say Faster Route.
-        Salary: if they ask expected salary, HKD 35,000 per month — normal market for almost four years. Do not annualise. Never mention current HAECO package, 24000, or 14.5 months unless they ask current pay, and even then do not give those private figures; say you haven't covered current package here.
+        Salary: expected is HKD 30,000 to 35,000 per month, matching industry standard and years of experience. Do not pin only 35k. Do not copy HAECO WFH / travel allowance / 補假 onto the next job. Do not annualise unless asked. Current HAECO package (24000, 14.5 months, WFH, 車費津貼, 補假, medical) only if they ask current pay or current benefits. Notice: one month, only if they ask notice or when can you start.
         Years: professional experience is TradeLink Programmer 10/2022–07/2024 then HAECO 07/2024–now, almost four years. Internships are extra, not in that count. Do not call TradeLink a frontend role.
         Weakness: no owned personal weakness. Do not invent one. Do not volunteer 2:2. Do not recycle explaining business value to the team as a flaw.
         LinkedIn: https://www.linkedin.com/in/sai-wing-wong-7702991a4/
@@ -93,10 +93,10 @@ public sealed class PromptBuilder
         "They asked years of experience. Professional: TradeLink Programmer 10/2022–07/2024, then HAECO Assistant Solution Analyst 07/2024–now — almost four years. Internships are extra, not in that count. TradeLink is not a frontend role.";
 
     public const string ExpectedSalaryDirective =
-        "They asked expected salary or package. Answer the WHOLE package, not a single monthly number. Industry-standard base band is HKD 30,000 to 35,000 per month; the actual offer depends on bonus and benefits. Do not pin only 35k. Do not annualise unless asked. Do not mention current HAECO pay. Do not volunteer notice.";
+        "They asked expected salary or package. Answer HKD 30,000 to 35,000 per month, matching industry standard and years of experience. That is the main answer. Do not pin only 35k. Do not copy HAECO WFH, travel allowance, or 補假 onto the next job. Do not annualise unless asked. Do not mention current HAECO pay. Do not volunteer notice.";
 
     public const string CurrentPayDirective =
-        "They asked current pay / current package. Answer from the current-package facts. Do not use this for expected salary. Do not annualise unless asked.";
+        "They asked current pay / current package / current benefits. Answer from the current-package facts: 24000 base, about 14.5 months, one WFH day per week, travel allowance (車費津貼), OT as 補假 not cash, medical. Do not invent allowance dollars. Do not use this for expected salary.";
 
     public const string NoticeDirective =
         "They asked notice period or when I can start. Answer one month. Do not volunteer notice on other questions.";
@@ -460,7 +460,7 @@ public sealed class PromptBuilder
             return false;
         }
 
-        if (LooksLikeSpokenLanguages(userMessage) || LooksLikeLanguageGrade(userMessage))
+        if (LooksLikeSpokenLanguages(userMessage) || LooksLikeLanguageGrade(userMessage) || LooksLikeAiReview(userMessage))
         {
             return false;
         }

@@ -120,6 +120,7 @@ public sealed class ChatUseCase
         facts = await ExpandProductionExperienceAsync(message, facts, cancellationToken);
         facts = await ExpandSpokenLanguagesAsync(message, facts, cancellationToken);
         facts = await ExpandShenzhenCollaborationAsync(message, facts, cancellationToken);
+        facts = await ExpandQaTopicsAsync(message, facts, cancellationToken);
 
         var expandIntro = PromptBuilder.IsIntroduction(message)
                           || (facts.Count == 0 && PromptBuilder.LooksLikeAboutMe(message));
@@ -526,6 +527,63 @@ public sealed class ChatUseCase
                     chunk.Source,
                     chunk.Title,
                     chunk.Text,
+                    Math.Min(Math.Max(best, 0.9f) * 0.99f, 0.99f));
+            }
+        }
+
+        return byId.Values
+            .OrderByDescending(f => f.Score)
+            .Take(Math.Max(_chatOptions.TopK, 8))
+            .ToList();
+    }
+
+    private async Task<List<RetrievedFact>> ExpandQaTopicsAsync(
+        string message,
+        List<RetrievedFact> facts,
+        CancellationToken cancellationToken)
+    {
+        string[]? sources = null;
+        if (PromptBuilder.LooksLikeInterviewMeProject(message))
+            sources = ["interviewme.md", "next-role.md"];
+        else if (PromptBuilder.LooksLikeLinkedIn(message))
+            sources = ["linkedin.md"];
+        else if (PromptBuilder.LooksLikeWeakness(message))
+            sources = ["weakness.md"];
+        else if (PromptBuilder.LooksLikeYearsExperience(message))
+            sources = ["years.md", "tradelink.md"];
+        else if (PromptBuilder.LooksLikeCurrentPay(message))
+            sources = ["current-package.md"];
+        else if (PromptBuilder.LooksLikeNotice(message))
+            sources = ["notice.md"];
+        else if (PromptBuilder.LooksLikeExpectedSalary(message))
+            sources = ["compensation.md"];
+        else if (PromptBuilder.LooksLikeAiReview(message))
+            sources = ["ai-practice.md"];
+
+        if (sources is null)
+        {
+            return facts;
+        }
+
+        var byId = facts.ToDictionary(f => f.Id, StringComparer.Ordinal);
+        var best = facts.Select(f => f.Score).DefaultIfEmpty(0.9f).Max();
+        foreach (var source in sources)
+        {
+            IReadOnlyList<RetrievedFact> chunks;
+            try
+            {
+                chunks = await _store.GetBySourcePrefixAsync(source, cancellationToken);
+            }
+            catch (NotImplementedException)
+            {
+                continue;
+            }
+
+            foreach (var chunk in chunks)
+            {
+                if (byId.ContainsKey(chunk.Id)) continue;
+                byId[chunk.Id] = new RetrievedFact(
+                    chunk.Id, chunk.Source, chunk.Title, chunk.Text,
                     Math.Min(Math.Max(best, 0.9f) * 0.99f, 0.99f));
             }
         }
