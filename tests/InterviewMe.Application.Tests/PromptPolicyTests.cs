@@ -256,6 +256,17 @@ public class PromptPolicyTests
     }
 
     [Fact]
+    public void LooksLikeProductionExperience_not_incidents()
+    {
+        Assert.True(PromptBuilder.LooksLikeProductionExperience("Do you have production experience?"));
+        Assert.True(PromptBuilder.LooksLikeProductionExperience("Have you taken projects to production?"));
+        Assert.False(PromptBuilder.LooksLikeProductionExperience("How do you handle production incidents?"));
+        Assert.False(PromptBuilder.LooksLikeProductionExperience("Tell me about a hotfix"));
+        Assert.Contains("most HAECO projects I own myself", PromptBuilder.ProductionExperienceDirective);
+        Assert.Contains("Do not answer as incidents", PromptBuilder.ProductionExperienceDirective);
+    }
+
+    [Fact]
     public void LooksLikeHaecoNamedSystems_not_generic()
     {
         Assert.False(PromptBuilder.LooksLikeHaecoNamedSystems("What did you do at HAECO?"));

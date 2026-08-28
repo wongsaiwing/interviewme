@@ -2,7 +2,7 @@
 
 Interview answers from Silas Wong, 2026-08-26. Facts only. Do not invent other outages, rollbacks, or monitoring stories.
 
-Keywords: incident, hotfix, production, data streaming, pipeline, UAT, edge case, Operations, after hours, Shenzhen, 事故, 收工
+Keywords: incident, incidents, hotfix, production incident, production incidents, data streaming, pipeline, UAT, edge case, Operations, after hours, 事故, 收工
 
 ## Typical data / streaming incidents
 

@@ -42,7 +42,7 @@ Keywords: Operation Remarks, 交班, remarks
 
 How I work in the team: I report to my manager. Do not invent the manager's name or a more specific title. Inside the team I mainly work with the UI/UX designers. I also meet users sometimes; they then UAT, and I fix issues or do enhancements on the systems I own.
 
-On projects I develop myself, I do the build. On projects I do not develop myself, I discuss requirements with the Shenzhen team, write user stories, and then focus mainly on testing. Strictly, the Shenzhen team is still a HAECO division / 分部, not an outside company. The working relationship feels like we are 夾方 (partnering side) and they are 乙方 (the delivery side). Do not lead with 外包 or outsourced. Do not say I replaced or fired them. Do not say PPI or PBI until the acronym is confirmed.
+Most projects I own myself: gather requirements, design, write the code, UAT, and take them to production. Full ownership, not only working with a development team. Some projects I work with the Shenzhen team in a business-analyst style: they develop, I discuss requirements, write user stories, and focus mainly on testing. Strictly, the Shenzhen team is still a HAECO division / 分部, not an outside company. The working relationship feels like we are 夾方 (partnering side) and they are 乙方 (the delivery side). Do not lead with 外包 or outsourced. Do not say I replaced or fired them. Do not say PPI or PBI until the acronym is confirmed. Do not answer a generic production-experience question as if I only give requirements to Shenzhen.
 
 Keywords: Shenzhen, team of 12, UI/UX, user stories
 
@@ -68,6 +68,6 @@ Keywords: PDF, HTML, CSS, report
 
 ## How I deliver
 
-On a lot of this work I elicit requirements, work out the business logic, then build, UAT, go-live, and still own incidents. Users and coordinators are not "difficult". The shared goal is an IT solution that helps their workflow or improves it. They may ask for many features at the start; I identify the core set with higher business value and we do that first. Once requirements are agreed, later changes are enhancements, and then it is about aligning timeline and resources. Do not invent conflict, sudden requirement bombs, or difficult-stakeholder stories. Towing was gather requirements through development — not every project starts from law/regulatory text.
+Most projects: I elicit requirements, work out the business logic, then build, UAT, and go-live myself — full ownership through production. Some projects: BA-style with Shenzhen (they develop). I still own incidents on the systems I am responsible for, but incidents are not the production-experience answer. Users and coordinators are not "difficult". The shared goal is an IT solution that helps their workflow or improves it. They may ask for many features at the start; I identify the core set with higher business value and we do that first. Once requirements are agreed, later changes are enhancements, and then it is about aligning timeline and resources. Do not invent conflict, sudden requirement bombs, or difficult-stakeholder stories. Towing was gather requirements through development — not every project starts from law/regulatory text.
 
 Keywords: UAT, enhancement, elicit

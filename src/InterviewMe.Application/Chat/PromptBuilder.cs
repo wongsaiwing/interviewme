@@ -30,6 +30,7 @@ public sealed class PromptBuilder
         Compathnion internship (2021): government home-quarantine WRISTBAND project. Intern work was test cases, problem logs, and a dashboard of people who stayed home vs left. Never name a product or app for it. Never output LeaveHomeSafe, 安心出行, StayHomeSafe, or 居安抗疫.
         Small World Consulting: my boss was Mike Berners-Lee. I helped Mike build the carbon emission calculator. Tim Berners-Lee is Mike's brother (background only). I did not work with Tim, did not report to Tim, and did not help Tim build the calculator. Never list Tim as a coworker or co-builder.
         HAECO team: twelve people including the manager; two are UI/UX; the rest are full-stack / Solution Analysts.
+        Production experience: most HAECO projects I own myself end to end (requirements, design, build, UAT, production). Some projects I work as BA with the Shenzhen HAECO division: they develop, I write user stories / requirements and test. Do not answer production experience as incidents, hotfixes, or after-hours support. Do not say I only work with a development team.
         HAECO work: generic questions like "what did you do at HAECO": Digital / MRO, full-stack on operations systems with .NET, React, and React Native. Say what you are responsible for: gather requirements, design the system, write code, testing, then production. Do not mention Read and Sign, an AI POC, or "the main one". Do not inventory Fluid Use, Towing, Daily Operation Monitor, and Operation Remarks unless they ask which systems or a named project. Do not say you ship mobile apps. Towing = tow aircraft to different bays for specific repair/maintain; never "incoming aircraft status". Daily Operation Monitor = whether the aircraft is ready to go. Operation Remarks = mechanics log remarks when handing a task to the next person; not Fluid Use. Work terms like elicit requirements, stakeholders, and UAT are allowed. Do not answer with only a duty list.
         Tech stack questions: answer .NET Core, C#, React, TypeScript, React Native, REST, MSSQL, MongoDB, Git, Azure DevOps. Do not volunteer Copilot, Playwright, UAT process, Cursor Skills, or AI practice unless they ask how you work or how you use AI. Do not say you ship mobile apps at HAECO.
         Glasgow: only the graduation / award date (June 2022). Never say when I got in, enrolled, or started. Never say Faster Route.
@@ -59,6 +60,9 @@ public sealed class PromptBuilder
 
     public const string ExtraExperienceDirective =
         "They asked if I have more / extra experience (including experience not on the CV). Answer in 3-5 spoken sentences from the internships: Compathnion (Jun–Oct 2021, Data Operator, government home-quarantine wristband; test cases, problem logs, dashboard of people who stayed home vs left) and Small World Consulting (Sep 2020–Mar 2021, frontend, carbon calculator for Mike Berners-Lee; Tim is Mike's brother only). You MAY say these internships are not listed on the current CV. Do not invent other jobs. Do not name LeaveHomeSafe.";
+
+    public const string ProductionExperienceDirective =
+        "They asked about production experience / go-live / taking projects to production. Lead with this: most HAECO projects I own myself end to end — requirements, design, write the code, UAT, production. Full ownership, not only working with a development team. A smaller set is BA-style with the Shenzhen HAECO division: they develop, I write user stories / requirements and test. Do not answer as incidents, hotfixes, after-hours support, or 'I give requirements and they implement'. Do not inventory named systems. Do not mention an AI POC.";
 
     public const string IntroductionDirective =
         "This is a self-introduction in a live interview and is always in-scope. Answer in 3-5 short spoken sentences from the retrieved profile and current role (Silas Wong, Hong Kong, HAECO, full-stack developer and solution analyst, .NET/React). Talk like a person: \"I'm Silas, I'm in Hong Kong, I do full-stack at HAECO as a solution analyst.\" Do not introduce yourself as an FDE. Do not volunteer strengths or weaknesses in the intro. Do not sound like a CV. Never say you cannot introduce yourself. Never say notes or that information is missing. Do not mention internships or the CV in the intro.";
@@ -149,6 +153,11 @@ public sealed class PromptBuilder
         else if (LooksLikeTechStack(message))
         {
             sb.AppendLine(TechStackDirective);
+            sb.AppendLine(facts.Count == 0 ? EmptyRetrievalDirective : GroundingDirective);
+        }
+        else if (LooksLikeProductionExperience(message))
+        {
+            sb.AppendLine(ProductionExperienceDirective);
             sb.AppendLine(facts.Count == 0 ? EmptyRetrievalDirective : GroundingDirective);
         }
         else if (LooksLikeExtraExperience(message))
@@ -264,6 +273,48 @@ public sealed class PromptBuilder
             "tech stack", "technology stack", "your stack", "what stack",
             "languages do you", "what languages", "frameworks",
             "技術棧", "技術堆疊", "用咩tech", "用什么tech"
+        ];
+        return needles.Any(n => collapsed.Contains(n, StringComparison.Ordinal));
+    }
+
+    public static bool LooksLikeProductionIncident(string userMessage)
+    {
+        if (string.IsNullOrWhiteSpace(userMessage))
+        {
+            return false;
+        }
+
+        var collapsed = CollapseWhitespace(userMessage.Trim().ToLowerInvariant());
+        string[] needles =
+        [
+            "incident", "incidents", "hotfix", "after hours", "after-hours",
+            "on-call", "on call", "outage", "production problem", "when something breaks",
+            "事故", "收工"
+        ];
+        return needles.Any(n => collapsed.Contains(n, StringComparison.Ordinal));
+    }
+
+    public static bool LooksLikeProductionExperience(string userMessage)
+    {
+        if (string.IsNullOrWhiteSpace(userMessage))
+        {
+            return false;
+        }
+
+        if (LooksLikeProductionIncident(userMessage))
+        {
+            return false;
+        }
+
+        var collapsed = CollapseWhitespace(userMessage.Trim().ToLowerInvariant());
+        string[] needles =
+        [
+            "production experience", "prod experience", "go-live", "go live",
+            "take to production", "taken to production", "ship to production",
+            "shipped to production", "projects to production", "project to production",
+            "taking projects to production", "taken projects to production",
+            "full ownership", "own the project",
+            "上production", "上線經驗", "有冇production", "有没有production"
         ];
         return needles.Any(n => collapsed.Contains(n, StringComparison.Ordinal));
     }
