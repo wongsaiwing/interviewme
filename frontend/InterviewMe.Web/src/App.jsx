@@ -65,21 +65,17 @@ async function typeReply(full, setMessages) {
 function Pipeline({ stage }) {
   return (
     <div className="pipeline" aria-label={`flow ${stage}`}>
-      <svg className="pipe-cycle" viewBox="0 0 180 130" aria-hidden="true">
-        <polygon points="90,16 16,114 164,114" fill="none" stroke="currentColor" strokeWidth="1" />
+      <svg className="pipe-cycle" viewBox="0 0 200 150" aria-hidden="true">
+        <line x1="100" y1="36" x2="17" y2="110" />
+        <line x1="100" y1="36" x2="183" y2="110" />
+        <line x1="26" y1="119" x2="174" y2="119" />
       </svg>
-      <span className={`pipe-node pipe-input${stage === "input" ? " is-lit" : ""}`}>
-        <span className="pipe-label">INPUT</span>
-        <span className="pipe-box" />
-      </span>
-      <span className={`pipe-node pipe-rag${stage === "retrieve" ? " is-lit" : ""}`}>
-        <span className="pipe-box" />
-        <span className="pipe-label">RAG</span>
-      </span>
-      <span className={`pipe-node pipe-llm${stage === "generate" ? " is-lit" : ""}`}>
-        <span className="pipe-box" />
-        <span className="pipe-label">LLM</span>
-      </span>
+      <span className={`pipe-label pipe-input-label`}>INPUT</span>
+      <span className={`pipe-box pipe-input-box${stage === "input" ? " is-lit" : ""}`} />
+      <span className={`pipe-box pipe-rag-box${stage === "retrieve" ? " is-lit" : ""}`} />
+      <span className={`pipe-label pipe-rag-label`}>RAG</span>
+      <span className={`pipe-box pipe-llm-box${stage === "generate" ? " is-lit" : ""}`} />
+      <span className={`pipe-label pipe-llm-label`}>LLM</span>
     </div>
   );
 }
