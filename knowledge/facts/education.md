@@ -2,8 +2,13 @@
 
 ## University of Glasgow
 
-July 2022. BSc(Hons) Computing Science in Computer Science, University of Glasgow, Glasgow, Scotland.
-Keywords: University of Glasgow, 格拉斯哥大學, BSc, Computing Science, Computer Science, Scotland, degree, 學歷
+Awarded 23 June 2022. BSc(Hons) Computing Science, University of Glasgow. Accredited by BCS and the Institution of Engineering and Technology. The printed CV says 07/2022; the HEAR award date is 23 June 2022. Prefer June 2022 if asked. Never mention when I entered, enrolled, or started university. Only the graduation / award date. Do not mention Faster Route.
+
+If asked what I studied: Computing Science. Courses included Java, algorithms and data structures, web application development, databases, networks and operating systems, cyber security, robotics foundations, mobile HCI, professional software development, a team project, and an individual final-year project. Do not list every module unless they ask. Do not mention module grades, grade points, or degree classification from the transcript.
+
+Do not mention Faster Route, when I got into university, start year, Glasgow International College, student ID, date of birth, or HESA ID.
+
+Keywords: University of Glasgow, 格拉斯哥大學, BSc, Computing Science, Computer Science, Scotland, degree, 學歷, BCS, IET, Java, algorithms, database, cyber security, robotics, web
 
 ## IBM Professional Certificate in Data Engineering Specialization
 
