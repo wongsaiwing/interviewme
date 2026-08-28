@@ -40,6 +40,9 @@ public sealed class PromptBuilder
         LinkedIn: https://www.linkedin.com/in/sai-wing-wong-7702991a4/
         InterviewMe: in-scope. I like new tech; I built a public RAG site so people can interview me in the browser. Do not refuse it as off-topic. Do not say I am an AI.
         UAT: on the about four projects I developed myself, I own UAT and the fixes. The about two with the Dev team are the smaller share.
+        GitHub: the public repo is InterviewMe at https://github.com/wongsaiwing/interviewme . Do not invent other public experiments or small tools.
+        Databases: MSSQL and MongoDB are skills. Do not invent which HAECO system uses which, or performance tuning.
+        Stories: do not invent a stakeholder who delayed go-live or a requirement-bomb anecdote. Users are not difficult. Later asks are enhancements.
         Languages: Cantonese native / mother tongue, Mandarin fluent, English fluent. Stop there. NEVER output CEFR, C1, C2, IELTS, TOEFL, scores, bands, exams, or grading — even if they ask about them. Never mention an exam even to say you have not taken one. Do not invent international stakeholders. Do not search for proof. Do not say native English.
         The current printed CV is short and does not list internships. If they ask about extra experience not on the CV, internships, or anything the CV leaves out: yes — Compathnion (2021, Data Operator, government home-quarantine wristband; test cases, problem logs, dashboard) and Small World Consulting (2020–21, frontend, carbon calculator for Mike Berners-Lee). You MAY say these internships are not listed on the current CV. Do not volunteer internships in the self-introduction. Do not invent other jobs.
         """;
@@ -100,6 +103,9 @@ public sealed class PromptBuilder
 
     public const string NoticeDirective =
         "They asked notice period or when I can start. Answer one month. Do not volunteer notice on other questions.";
+
+    public const string GitHubDirective =
+        "They asked about GitHub or a public code portfolio. Point at InterviewMe: https://github.com/wongsaiwing/interviewme . Do not invent other public experiments or small tools. If there is no other public repo, say so.";
 
     public const string AiReviewDirective =
         "They asked how I review or work with AI code. Include agent / Cursor Skills, Copilot on the CLI, context engineering, then I review the output. UAT still includes people plus Playwright. Do not sloganize that AI fully writes production code.";
@@ -226,6 +232,11 @@ public sealed class PromptBuilder
         else if (LooksLikeExpectedSalary(message))
         {
             sb.AppendLine(ExpectedSalaryDirective);
+            sb.AppendLine(facts.Count == 0 ? EmptyRetrievalDirective : GroundingDirective);
+        }
+        else if (LooksLikeGitHub(message))
+        {
+            sb.AppendLine(GitHubDirective);
             sb.AppendLine(facts.Count == 0 ? EmptyRetrievalDirective : GroundingDirective);
         }
         else if (LooksLikeAiReview(message))
@@ -441,7 +452,15 @@ public sealed class PromptBuilder
         if (string.IsNullOrWhiteSpace(userMessage)) return false;
         if (LooksLikeCurrentPay(userMessage) || LooksLikeNotice(userMessage)) return false;
         var collapsed = CollapseWhitespace(userMessage.Trim().ToLowerInvariant());
-        string[] needles = ["expected salary", "salary expectation", "how much do you want", "expected package", "what package", "salary range", "期望薪", "期望薪酬"];
+        string[] needles = ["expected salary", "salary expectation", "how much do you want", "expected package", "what package", "salary range", "expecting", "what salary", "including the package", "期望薪", "期望薪酬"];
+        return needles.Any(n => collapsed.Contains(n, StringComparison.Ordinal));
+    }
+
+    public static bool LooksLikeGitHub(string userMessage)
+    {
+        if (string.IsNullOrWhiteSpace(userMessage)) return false;
+        var collapsed = CollapseWhitespace(userMessage.Trim().ToLowerInvariant());
+        string[] needles = ["github", "git hub", "public repo", "public repos", "open source", "code portfolio"];
         return needles.Any(n => collapsed.Contains(n, StringComparison.Ordinal));
     }
 
@@ -698,7 +717,7 @@ public sealed class PromptBuilder
             return false;
         }
 
-        if (IsIntroduction(userMessage) || IsIcebreaker(userMessage) || LooksLikeInterviewMeProject(userMessage) || LooksLikeLinkedIn(userMessage))
+        if (IsIntroduction(userMessage) || IsIcebreaker(userMessage) || LooksLikeInterviewMeProject(userMessage) || LooksLikeLinkedIn(userMessage) || LooksLikeLanguageGrade(userMessage))
         {
             return false;
         }

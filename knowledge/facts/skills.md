@@ -6,6 +6,6 @@ If they ask "what is your tech stack" / languages / frameworks: answer those. Do
 
 Requirements, specs, UAT, and integration are skills, but do not dump them into a stack answer. Words like elicit requirements and stakeholders are fine when they describe real work.
 
-Do not invent extra tools, models, or frameworks. Do not say I am an ML engineer.
+MSSQL and MongoDB are skills I have. Do not invent that MSSQL is the main database for MRO systems, that MongoDB is on a couple of projects, or that I do performance tuning. Do not invent extra tools, models, or frameworks. Do not say I am an ML engineer.
 
 Keywords: React, React Native, TypeScript, .NET Core, C#, REST, MSSQL, MongoDB, Git, Azure DevOps, CI/CD, stack, tech stack, languages, frameworks, 技術, 技術棧
