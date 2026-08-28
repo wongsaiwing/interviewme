@@ -116,6 +116,7 @@ public sealed class ChatUseCase
 
         facts = await ExpandSameSourceAsync(facts, cancellationToken);
         facts = await ExpandHaecoProjectsAsync(message, facts, cancellationToken);
+        facts = await ExpandExtraExperienceAsync(message, facts, cancellationToken);
 
         var expandIntro = PromptBuilder.IsIntroduction(message)
                           || (facts.Count == 0 && PromptBuilder.LooksLikeAboutMe(message));
@@ -199,6 +200,7 @@ public sealed class ChatUseCase
         {
             "internship-compathnion.md",
             "swc.md",
+            "extra-experience.md",
             "haeco.md",
             "haeco-projects.md"
         };
@@ -266,15 +268,15 @@ public sealed class ChatUseCase
     ];
 
     /// <summary>
-    /// Questions like "what did you do in haeco" force-merge haeco-projects.md + haeco.md
-    /// so named systems (Read and Sign, Fluid Use, Towing, Daily Operation Monitor, Operation Remarks) are in context.
+    /// Named-system questions (Read and Sign, Fluid Use, which systems) force-merge haeco-projects.md + haeco.md.
+    /// Generic "what did you do at HAECO" does not, so the model is not fed a product inventory.
     /// </summary>
     private async Task<List<RetrievedFact>> ExpandHaecoProjectsAsync(
         string message,
         List<RetrievedFact> facts,
         CancellationToken cancellationToken)
     {
-        if (!PromptBuilder.LooksLikeHaecoWork(message))
+        if (!PromptBuilder.LooksLikeHaecoNamedSystems(message))
         {
             return facts;
         }
@@ -313,6 +315,61 @@ public sealed class ChatUseCase
         return byId.Values
             .OrderByDescending(f => f.Score)
             .Take(Math.Max(_chatOptions.TopK, 16))
+            .ToList();
+    }
+
+
+    private static readonly string[] ExtraExperienceSources =
+    [
+        "extra-experience.md",
+        "internship-compathnion.md",
+        "swc.md"
+    ];
+
+    private async Task<List<RetrievedFact>> ExpandExtraExperienceAsync(
+        string message,
+        List<RetrievedFact> facts,
+        CancellationToken cancellationToken)
+    {
+        if (!PromptBuilder.LooksLikeExtraExperience(message))
+        {
+            return facts;
+        }
+
+        var byId = facts.ToDictionary(f => f.Id, StringComparer.Ordinal);
+        var best = facts.Select(f => f.Score).DefaultIfEmpty(0.9f).Max();
+
+        foreach (var source in ExtraExperienceSources)
+        {
+            IReadOnlyList<RetrievedFact> chunks;
+            try
+            {
+                chunks = await _store.GetBySourcePrefixAsync(source, cancellationToken);
+            }
+            catch (NotImplementedException)
+            {
+                continue;
+            }
+
+            foreach (var chunk in chunks)
+            {
+                if (byId.ContainsKey(chunk.Id))
+                {
+                    continue;
+                }
+
+                byId[chunk.Id] = new RetrievedFact(
+                    chunk.Id,
+                    chunk.Source,
+                    chunk.Title,
+                    chunk.Text,
+                    Math.Min(Math.Max(best, 0.9f) * 0.99f, 0.99f));
+            }
+        }
+
+        return byId.Values
+            .OrderByDescending(f => f.Score)
+            .Take(Math.Max(_chatOptions.TopK, 12))
             .ToList();
     }
 

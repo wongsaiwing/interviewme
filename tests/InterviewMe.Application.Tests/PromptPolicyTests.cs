@@ -237,4 +237,30 @@ public class PromptPolicyTests
         Assert.Contains("stakeholders", PromptBuilder.DefaultTone);
     }
 
+    [Fact]
+    public void LooksLikeExtraExperience_matches_cv_gap_questions()
+    {
+        Assert.True(PromptBuilder.LooksLikeExtraExperience("Is there experience that is not on your CV?"));
+        Assert.True(PromptBuilder.LooksLikeExtraExperience("Any internships?"));
+        Assert.False(PromptBuilder.LooksLikeExtraExperience("Tell me about yourself"));
+        Assert.False(PromptBuilder.LooksLikeExtraExperience("What did you do at HAECO?"));
+    }
+
+    [Fact]
+    public void LooksLikeTechStack_matches_stack_questions()
+    {
+        Assert.True(PromptBuilder.LooksLikeTechStack("What is your tech stack?"));
+        Assert.False(PromptBuilder.LooksLikeTechStack("What did you do at HAECO?"));
+        Assert.Contains("Do not volunteer Copilot", PromptBuilder.TechStackDirective);
+    }
+
+    [Fact]
+    public void LooksLikeHaecoNamedSystems_not_generic()
+    {
+        Assert.False(PromptBuilder.LooksLikeHaecoNamedSystems("What did you do at HAECO?"));
+        Assert.True(PromptBuilder.LooksLikeHaecoNamedSystems("Tell me about Read and Sign"));
+        Assert.Contains("Do not mention Read and Sign", PromptBuilder.HaecoGenericDirective);
+        Assert.DoesNotContain("the main one", PromptBuilder.HaecoGenericDirective);
+    }
 }
+

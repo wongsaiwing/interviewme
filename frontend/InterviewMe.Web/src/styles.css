@@ -5,12 +5,12 @@
   --muted: #6e6e73;
   --hair: #d2d2d7;
   --scan: rgba(17, 17, 17, 0.035);
-  --page: 760px;
+  --page: 980px;
   font-family: ui-monospace, "SF Mono", "IBM Plex Mono", Menlo, Consolas, "Liberation Mono", monospace;
 }
 
 * { box-sizing: border-box; }
-html, body, #root { margin: 0; min-height: 100%; background: var(--bg); }
+html, body, #root { margin: 0; height: 100%; background: var(--bg); overflow: hidden; }
 html {
   font-family: ui-monospace, "SF Mono", "IBM Plex Mono", Menlo, Consolas, "Liberation Mono", monospace;
   -webkit-font-smoothing: antialiased;
@@ -25,7 +25,7 @@ body {
 
 .page {
   position: relative;
-  min-height: 100vh;
+  height: 100%;
   overflow: hidden;
   background: var(--bg);
 }
@@ -54,8 +54,9 @@ body {
   z-index: 1;
   max-width: var(--page);
   margin: 0 auto;
-  padding: 28px 28px 20px;
-  min-height: 100vh;
+  padding: 14px 36px 10px;
+  height: 100%;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   background: transparent;
@@ -65,22 +66,24 @@ body {
   color: var(--muted);
   font-size: 12px;
   letter-spacing: 0.04em;
-  margin-bottom: 18px;
+  margin-bottom: 8px;
 }
 
 .pipeline {
   position: relative;
   width: 180px;
-  height: 150px;
-  margin: 0 auto 22px;
+  height: 148px;
+  margin: 4px auto 10px;
   color: var(--ink);
+  padding-top: 22px;
 }
 .pipe-cycle {
   position: absolute;
-  top: 0;
+  top: 22px;
   left: 0;
   width: 180px;
-  height: 130px;
+  height: 114px;
+  z-index: 0;
 }
 .pipe-node {
   position: absolute;
@@ -89,10 +92,11 @@ body {
   align-items: center;
   gap: 4px;
   width: 44px;
+  z-index: 1;
 }
 .pipe-input { top: 0; left: 68px; }
-.pipe-rag { top: 98px; left: 0; }
-.pipe-llm { top: 98px; left: 136px; }
+.pipe-rag { top: 104px; left: 0; }
+.pipe-llm { top: 104px; left: 136px; }
 .pipe-box {
   width: 18px;
   height: 18px;
@@ -115,8 +119,8 @@ body {
 .cv-header {
   border-top: 1px solid var(--hair);
   border-bottom: 1px solid var(--hair);
-  padding: 16px 0;
-  margin-bottom: 22px;
+  padding: 8px 0;
+  margin-bottom: 10px;
 }
 .cv-header h1 {
   margin: 0;
@@ -136,19 +140,20 @@ body {
   display: flex;
   flex-direction: column;
   flex: 1;
-  min-height: 560px;
+  min-height: 0;
 }
 .chat-intro {
   color: var(--muted);
-  margin: 0 0 12px;
+  margin: 0 0 6px;
   font-size: 13px;
 }
 .suggestions {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-  margin-bottom: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 32px;
+  row-gap: 4px;
+  margin-bottom: 8px;
+  width: 100%;
 }
 .suggestions button {
   font: inherit;
@@ -158,8 +163,10 @@ body {
   background: transparent;
   color: var(--ink);
   padding: 2px 0;
-  text-align: left;
+  max-width: 100%;
 }
+.suggestions button:nth-child(odd) { justify-self: start; text-align: left; }
+.suggestions button:nth-child(even) { justify-self: end; text-align: right; }
 .suggestions button:hover:not(:disabled) { text-decoration: underline; }
 button:disabled { opacity: 0.45; cursor: not-allowed; }
 
@@ -169,8 +176,7 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
   display: flex;
   flex-direction: column;
   gap: 12px;
-  min-height: 280px;
-  max-height: 52vh;
+  min-height: 0;
   padding: 4px 0 8px;
 }
 .empty {
@@ -255,7 +261,7 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
 .error { color: #b42318; padding: 0 0 8px; font-size: 13px; }
 
 .foot {
-  margin-top: 22px;
+  margin-top: 8px;
   color: var(--muted);
   font-size: 12px;
 }
@@ -263,7 +269,7 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
 @media (max-width: 860px) {
   .term { padding: 16px 16px 12px; }
   .cv-header h1 { font-size: 16px; letter-spacing: 0.08em; }
-  .chat { min-height: 70vh; }
+  .suggestions { grid-template-columns: 1fr; }
   .line, .composer { grid-template-columns: 6ch 1fr; }
   .composer { grid-template-columns: 6ch 1fr auto; }
 }

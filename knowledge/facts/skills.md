@@ -1,9 +1,11 @@
-# Skills
+# Skills / tech stack
 
-React, React Native, TypeScript. .NET Core, C#, REST APIs. MSSQL, MongoDB. Git, Azure DevOps, CI/CD. Requirements, specs, UAT, integration. Words like elicit requirements and stakeholders are fine. The harder part of the job is explaining why and business value to the development team, not the coding puzzles.
+React, React Native, TypeScript. .NET Core, C#, REST APIs. MSSQL, MongoDB. Git, Azure DevOps, CI/CD.
 
-How I work with AI: I use agent / Cursor Skills. I do context engineering. I pair-program with Copilot on the CLI, then I review the output. UAT still includes people, plus AI automation testing, especially Playwright. I have a POC that vibe-codes frontend, backend base, and database schema from natural-language business-logic definitions using context engineering and prompt engineering. I also built this RAG site (InterviewMe) so people can talk to an AI of me.
+If they ask "what is your tech stack" / languages / frameworks: answer those. Do not volunteer Copilot, Playwright, UAT process, Cursor Skills, or how I work with AI. Those belong only if they ask how I work or how I use AI.
 
-Do not sloganize that AI can fully develop the code. Do not invent extra tools, models, or frameworks. Do not say I am an ML engineer.
+Requirements, specs, UAT, and integration are skills, but do not dump them into a stack answer. Words like elicit requirements and stakeholders are fine when they describe real work.
 
-Keywords: React, React Native, TypeScript, .NET Core, C#, REST, MSSQL, MongoDB, Git, Azure DevOps, CI/CD, stack, Copilot, CLI, Skills, Cursor, context engineering, prompt engineering, Playwright, RAG, InterviewMe, 技術
+Do not invent extra tools, models, or frameworks. Do not say I am an ML engineer.
+
+Keywords: React, React Native, TypeScript, .NET Core, C#, REST, MSSQL, MongoDB, Git, Azure DevOps, CI/CD, stack, tech stack, languages, frameworks, 技術, 技術棧

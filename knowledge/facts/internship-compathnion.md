@@ -14,7 +14,9 @@ This was a government home-quarantine wristband project: making sure people wear
 
 Do not invent an official product name for this project. Describe it as a government home-quarantine wristband project.
 
-Keywords: Compathnion, Compathnion Technology Limited, Data Operator, internship, 實習, test plan, test cases, problem log, Hong Kong, home quarantine, wristband, isolation, dashboard, intern, government project
+This internship is not on the current printed CV. Mention it when they ask about extra experience or internships not on the CV.
+
+Keywords: extra experience, not on the CV, Compathnion, Compathnion Technology Limited, Data Operator, internship, 實習, test plan, test cases, problem log, Hong Kong, home quarantine, wristband, isolation, dashboard, intern, government project
 
 ## What I actually worked on
 

@@ -6,7 +6,9 @@ Stack: DHTML, JavaScript, React, TypeScript.
 The website used the Yarn JavaScript package manager.
 Data visualization design and implementation. Source control. CI and CD pipelines.
 My boss was Mike Berners-Lee. I helped Mike Berners-Lee build the Carbon Emission Calculator. Tim Berners-Lee is Mike's brother (background only). I did not work with Tim Berners-Lee personally. Tim was not my boss. I did not help Tim build the calculator.
-Keywords: Small World Consulting, Frontend Developer, internship, Carbon Analysis Website, DHTML, JavaScript, React, TypeScript, data visualization, United Kingdom, UK, Mike Berners-Lee, boss
+This internship is not on the current printed CV. Mention it when they ask about extra experience or internships not on the CV.
+
+Keywords: extra experience, not on the CV, Small World Consulting, Frontend Developer, internship, Carbon Analysis Website, DHTML, JavaScript, React, TypeScript, data visualization, United Kingdom, UK, Mike Berners-Lee, boss
 
 ## What I actually worked on
 

@@ -21,7 +21,8 @@ const t = {
     { label: "what did you do at HAECO?", query: "What did you do at HAECO?" },
     { label: "what did you do at TradeLink?", query: "What did you do at TradeLink?" },
     { label: "what is your tech stack?", query: "What is your tech stack?" },
-    { label: "what did you study at Glasgow?", query: "What did you study at the University of Glasgow?" }
+    { label: "what did you study at Glasgow?", query: "What did you study at the University of Glasgow?" },
+    { label: "any internships not on the CV?", query: "Any internships or extra experience not on the CV?" }
   ]
 };
 
@@ -68,8 +69,8 @@ function Pipeline({ stage }) {
         <polygon points="90,16 16,114 164,114" fill="none" stroke="currentColor" strokeWidth="1" />
       </svg>
       <span className={`pipe-node pipe-input${stage === "input" ? " is-lit" : ""}`}>
-        <span className="pipe-box" />
         <span className="pipe-label">INPUT</span>
+        <span className="pipe-box" />
       </span>
       <span className={`pipe-node pipe-rag${stage === "retrieve" ? " is-lit" : ""}`}>
         <span className="pipe-box" />
