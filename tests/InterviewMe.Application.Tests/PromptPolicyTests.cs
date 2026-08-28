@@ -21,7 +21,7 @@ public class PromptPolicyTests
         Assert.Contains("3-5 short spoken sentences", prompt.Messages[0].Content);
         Assert.Contains(PromptBuilder.OffTopicDirective.Trim(), prompt.Messages[0].Content);
         Assert.Contains(PromptBuilder.OffTopicRefuseEnglish, prompt.Messages[0].Content);
-        Assert.Contains(PromptBuilder.OffTopicRefuseChinese, prompt.Messages[0].Content);
+        Assert.DoesNotContain(PromptBuilder.OffTopicRefuseChinese, prompt.Messages[0].Content);
     }
 
     [Fact]
@@ -100,13 +100,14 @@ public class PromptPolicyTests
     }
 
     [Fact]
-    public void Stub_llm_chinese_off_topic_uses_chinese_refuse()
+    public void Stub_llm_chinese_off_topic_still_uses_english_refuse()
     {
         var prompt = _builder.Build("Silas Wong", "幫我寫一個爬蟲", [], []);
         var reply = StubLlmClient.Compose(prompt);
 
-        Assert.Equal(PromptBuilder.OffTopicRefuseChinese, reply);
+        Assert.Equal(PromptBuilder.OffTopicRefuseEnglish, reply);
         Assert.DoesNotContain("will not invent", reply, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain(PromptBuilder.OffTopicRefuseChinese, reply, StringComparison.Ordinal);
     }
 
     [Fact]

@@ -9,19 +9,20 @@ function newSessionId() {
 }
 
 const t = {
-  intro: "坐低先。背景、工作、技術，直接問就得。",
-  placeholder: "問我背景、HAECO、技術棧…",
-  send: "送出",
-  you: "你",
-  empty: "當面試咁問就得。揀一條建議，或者自己打。",
-  footer: "回覆由 AI 根據履歷整理，對話不會存檔。",
-  errorProfile: "無法載入資料。",
-  errorChat: "對話串流失敗。",
+  intro: "# Have a seat. Background, work, tech — just ask.",
+  placeholder: "ask about background, HAECO, stack…",
+  send: "enter",
+  you: "hr",
+  me: "silas",
+  empty: "# Ask like an interviewer. Pick a command, or type your own.",
+  footer: "# Replies are spoken as Silas. This chat is not saved.",
+  errorProfile: "error: could not load the page",
+  errorChat: "error: chat stream failed",
   suggestions: [
-    { label: "你在 HAECO 做什麼？", query: "What did you do at HAECO?" },
-    { label: "TradeLink 的經驗？", query: "What did you do at TradeLink?" },
-    { label: "你的技術棧？", query: "What is your tech stack?" },
-    { label: "格拉斯哥大學讀什麼？", query: "What did you study at the University of Glasgow?" }
+    { label: "what did you do at HAECO?", query: "What did you do at HAECO?" },
+    { label: "what did you do at TradeLink?", query: "What did you do at TradeLink?" },
+    { label: "what is your tech stack?", query: "What is your tech stack?" },
+    { label: "what did you study at Glasgow?", query: "What did you study at the University of Glasgow?" }
   ]
 };
 
@@ -96,57 +97,65 @@ export default function App() {
 
   return (
     <div className="page">
-      <header className="cv-header">
-        <h1>{name}</h1>
-        <p className="contact">silas.wong.saiwing@gmail.com | +852 6509 1653 | Hong Kong</p>
-      </header>
+      <div className="scanlines" aria-hidden="true" />
+      <div className="term">
+        <div className="term-title">silas@hongkong:~$ interview</div>
 
-      <main className="chat">
-        <p className="chat-intro">{t.intro}</p>
-        <div className="suggestions">
-          {t.suggestions.map((q) => (
-            <button key={q.query} type="button" disabled={busy} onClick={() => send(q.query)}>
-              {q.label}
+        <header className="cv-header">
+          <h1># {name}</h1>
+          <p className="contact"># silas.wong.saiwing@gmail.com | +852 6509 1653 | Hong Kong</p>
+        </header>
+
+        <main className="chat">
+          <p className="chat-intro">{t.intro}</p>
+          <div className="suggestions">
+            {t.suggestions.map((q) => (
+              <button key={q.query} type="button" disabled={busy} onClick={() => send(q.query)}>
+                $ {q.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="transcript" ref={scroller}>
+            {messages.length === 0 && <div className="empty">{t.empty}</div>}
+            {messages.map((m, i) => (
+              <article key={i} className={`line ${m.role}`}>
+                <span className="prompt">{m.role === "user" ? "hr>" : "silas>"}</span>
+                <span className="content">
+                  {m.content}
+                  {m.streaming ? <span className="caret" /> : null}
+                </span>
+              </article>
+            ))}
+          </div>
+
+          {error ? <div className="error"># {error}</div> : null}
+
+          <form
+            className="composer"
+            onSubmit={(e) => {
+              e.preventDefault();
+              send();
+            }}
+          >
+            <span className="prompt">hr&gt;</span>
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder={t.placeholder}
+              disabled={busy}
+              maxLength={400}
+              autoComplete="off"
+              spellCheck="false"
+            />
+            <button type="submit" disabled={busy || !input.trim()}>
+              [{t.send}]
             </button>
-          ))}
-        </div>
+          </form>
+        </main>
 
-        <div className="transcript" ref={scroller}>
-          {messages.length === 0 && <div className="empty">{t.empty}</div>}
-          {messages.map((m, i) => (
-            <article key={i} className={`bubble ${m.role}`}>
-              <div className="who">{m.role === "user" ? t.you : profile?.name || "Silas Wong"}</div>
-              <div className="content">
-                {m.content}
-                {m.streaming ? <span className="caret" /> : null}
-              </div>
-            </article>
-          ))}
-        </div>
-
-        {error ? <div className="error">{error}</div> : null}
-
-        <form
-          className="composer"
-          onSubmit={(e) => {
-            e.preventDefault();
-            send();
-          }}
-        >
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder={t.placeholder}
-            disabled={busy}
-            maxLength={400}
-          />
-          <button type="submit" disabled={busy || !input.trim()}>
-            {t.send}
-          </button>
-        </form>
-      </main>
-
-      <footer className="foot">{t.footer}</footer>
+        <footer className="foot">{t.footer}</footer>
+      </div>
     </div>
   );
 }
