@@ -71,7 +71,7 @@ body {
 
 .pipeline {
   position: relative;
-  width: 200px;
+  width: 224px;
   height: 150px;
   margin: 4px auto 10px;
   color: var(--ink);
@@ -79,7 +79,7 @@ body {
 .pipe-cycle {
   position: absolute;
   inset: 0;
-  width: 200px;
+  width: 224px;
   height: 150px;
   z-index: 0;
 }
@@ -97,9 +97,9 @@ body {
   z-index: 1;
   box-sizing: border-box;
 }
-.pipe-input-box { left: 91px; top: 18px; }
+.pipe-input-box { left: 103px; top: 18px; }
 .pipe-rag-box { left: 8px; top: 110px; }
-.pipe-llm-box { left: 174px; top: 110px; }
+.pipe-llm-box { left: 198px; top: 110px; }
 .pipe-box.is-lit {
   background: var(--ink);
   animation: pipe-blink 0.4s steps(1) infinite;
@@ -116,9 +116,9 @@ body {
   text-align: center;
   z-index: 1;
 }
-.pipe-input-label { left: 78px; top: 2px; }
+.pipe-input-label { left: 90px; top: 2px; }
 .pipe-rag-label { left: 0; top: 130px; }
-.pipe-llm-label { left: 161px; top: 130px; }
+.pipe-llm-label { left: 185px; top: 130px; }
 
 .cv-header {
   border-top: 1px solid var(--hair);

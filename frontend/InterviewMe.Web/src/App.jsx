@@ -65,10 +65,10 @@ async function typeReply(full, setMessages) {
 function Pipeline({ stage }) {
   return (
     <div className="pipeline" aria-label={`flow ${stage}`}>
-      <svg className="pipe-cycle" viewBox="0 0 200 150" aria-hidden="true">
-        <line x1="100" y1="36" x2="17" y2="110" />
-        <line x1="100" y1="36" x2="183" y2="110" />
-        <line x1="26" y1="119" x2="174" y2="119" />
+      <svg className="pipe-cycle" viewBox="0 0 224 150" aria-hidden="true">
+        <line x1="105" y1="34" x2="24" y2="112" />
+        <line x1="119" y1="34" x2="200" y2="112" />
+        <line x1="27" y1="119" x2="197" y2="119" />
       </svg>
       <span className={`pipe-label pipe-input-label`}>INPUT</span>
       <span className={`pipe-box pipe-input-box${stage === "input" ? " is-lit" : ""}`} />
