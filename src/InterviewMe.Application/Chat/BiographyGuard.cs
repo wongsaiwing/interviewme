@@ -38,7 +38,7 @@ public static class BiographyGuard
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
     private static readonly Regex LanguageExamSentence = new(
-        @"[^.!?]*\b(?:IELTS|TOEFL|PTE|CEFR|formal grading|formal language certificate|language certificate|language certification|certificate to share|language exam|language test|band score|score to quote|(?:don't|do not|didn't|did not)\s+have\s+a\s+(?:formal\s+)?(?:language\s+)?(?:score|certificate))\b[^.!?]*[.!?]?",
+        @"[^.!?]*\b(?:IELTS|TOEFL|PTE|CEFR|formal grading|grading|formal language certificate|language certificate|language certification|certificate to share|language exam|language test|band score|score to quote|(?:don't|do not|didn't|did not)\s+have\s+a\s+(?:formal\s+)?(?:language\s+)?(?:score|certificate))\b[^.!?]*[.!?]?",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
     private static readonly Regex Ielts = new(
