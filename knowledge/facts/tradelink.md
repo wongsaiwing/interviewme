@@ -1,6 +1,6 @@
 # Programmer, TradeLink Technologies
 
-October 2022 – July 2024. Programmer at TradeLink Technologies, Hong Kong.
+October 2022 – July 2024. Programmer at TradeLink Technologies, Hong Kong. Official title is Programmer. Describe the work as web / portal backend. Do not change the job title to full-stack developer.
 
 Developed and maintained web-based applications only (.NET Framework, React) to support user requirements and improve system functionality. Do not say console apps or console applications. TradeLink work was web, portal backend, database, ETL/SSIS, and SSRS.
 
@@ -25,7 +25,7 @@ Keywords: first job, explore the market, HAECO, 轉工
 ## What I actually worked on
 
 Interview answers from Silas Wong, 2026-08-26. Facts only. Do not invent product names.
-When asked generally what I did at TradeLink, give a short summary (portal backend, database, RFID/barcode tracking). Do not dump ETL, SSIS, SSRS unless they ask. Do not invent product names.
+When asked generally what I did at TradeLink, say I was a Programmer and give a short summary (web / portal backend, database, RFID/barcode tracking). Do not call myself a full-stack developer at TradeLink. Do not dump ETL, SSIS, SSRS unless they ask. Do not invent product names.
 
 
 At TradeLink, most of the work was the portal's main technologies and development, from the backend. I did do the database work as well: designing the database and creating the tables.
