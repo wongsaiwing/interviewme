@@ -37,6 +37,7 @@ public sealed class PromptBuilder
         Salary: expected is HKD 30,000 to 35,000 per month, matching industry standard and years of experience. That is enough. Do not say it depends on bonus or benefits. Do not copy HAECO WFH / travel / 補假 onto expected. Do not pin only 35k. Do not annualise unless asked. Current HAECO package only if they ask current pay. Notice: one month, only if asked notice or start date.
         Years: professional experience is TradeLink Programmer 10/2022–07/2024 then HAECO 07/2024–now, almost four years. Internships are extra, not in that count. Do not call TradeLink a frontend role.
         Weakness: no owned personal weakness. Do not invent one. Do not volunteer 2:2. Do not recycle explaining business value to the team as a flaw.
+        Degree class: if asked academic class, GPA, or grades (not English/C2): UK 2:2 (Lower Second) AND the reason in the same answer — harder, interest-based courses, not careless studying. Never volunteer. Never only 2:2. Do not invent a dissertation title or supervisor. Do not say you have not covered grades.
         LinkedIn: https://www.linkedin.com/in/sai-wing-wong-7702991a4/
         InterviewMe: in-scope. I like new tech; I built a public RAG site so people can interview me in the browser. Do not refuse it as off-topic. Do not say I am an AI.
         UAT: on the about four projects I developed myself, I own UAT and the fixes. The about two with the Dev team are the smaller share.
@@ -103,6 +104,9 @@ public sealed class PromptBuilder
 
     public const string NoticeDirective =
         "They asked notice period or when I can start. Answer one month. Do not volunteer notice on other questions.";
+
+    public const string DegreeClassDirective =
+        "They asked degree class / GPA / academic grades (not English level). Answer UK 2:2 (Lower Second) AND the reason in the same answer: I chose harder, interest-based courses rather than easier ones; it was not careless studying. Never volunteer. Never answer with only 2:2. Do not list module scores. Do not invent a dissertation title or supervisor. Do not treat this as a weakness. Do not say you have not covered grades.";
 
     public const string GitHubDirective =
         "They asked about GitHub or a public code portfolio. Point at InterviewMe: https://github.com/wongsaiwing/interviewme . Do not invent other public experiments or small tools. If there is no other public repo, say so.";
@@ -232,6 +236,11 @@ public sealed class PromptBuilder
         else if (LooksLikeExpectedSalary(message))
         {
             sb.AppendLine(ExpectedSalaryDirective);
+            sb.AppendLine(facts.Count == 0 ? EmptyRetrievalDirective : GroundingDirective);
+        }
+        else if (LooksLikeDegreeClass(message))
+        {
+            sb.AppendLine(DegreeClassDirective);
             sb.AppendLine(facts.Count == 0 ? EmptyRetrievalDirective : GroundingDirective);
         }
         else if (LooksLikeGitHub(message))
@@ -453,6 +462,15 @@ public sealed class PromptBuilder
         if (LooksLikeCurrentPay(userMessage) || LooksLikeNotice(userMessage)) return false;
         var collapsed = CollapseWhitespace(userMessage.Trim().ToLowerInvariant());
         string[] needles = ["expected salary", "salary expectation", "how much do you want", "expected package", "what package", "salary range", "expecting", "what salary", "including the package", "期望薪", "期望薪酬"];
+        return needles.Any(n => collapsed.Contains(n, StringComparison.Ordinal));
+    }
+
+    public static bool LooksLikeDegreeClass(string userMessage)
+    {
+        if (string.IsNullOrWhiteSpace(userMessage)) return false;
+        if (LooksLikeLanguageGrade(userMessage) || LooksLikeWeakness(userMessage)) return false;
+        var collapsed = CollapseWhitespace(userMessage.Trim().ToLowerInvariant());
+        string[] needles = ["2:2", "2.2", "lower second", "degree classification", "degree class", "honours class", "your gpa", "your grades", "academic grades", "what class did you get", "classification of your degree", "成績", "學位"];
         return needles.Any(n => collapsed.Contains(n, StringComparison.Ordinal));
     }
 
@@ -717,7 +735,7 @@ public sealed class PromptBuilder
             return false;
         }
 
-        if (IsIntroduction(userMessage) || IsIcebreaker(userMessage) || LooksLikeInterviewMeProject(userMessage) || LooksLikeLinkedIn(userMessage) || LooksLikeLanguageGrade(userMessage))
+        if (IsIntroduction(userMessage) || IsIcebreaker(userMessage) || LooksLikeInterviewMeProject(userMessage) || LooksLikeLinkedIn(userMessage) || LooksLikeLanguageGrade(userMessage) || LooksLikeDegreeClass(userMessage))
         {
             return false;
         }

@@ -330,6 +330,25 @@ public class PromptPolicyTests
 
 
     [Fact]
+    public void LooksLikeDegreeClass_answers_22_with_reason()
+    {
+        Assert.True(PromptBuilder.LooksLikeDegreeClass("What class did you get?"));
+        Assert.True(PromptBuilder.LooksLikeDegreeClass("What's your GPA?"));
+        Assert.True(PromptBuilder.LooksLikeDegreeClass("Did you get a 2:2?"));
+        Assert.False(PromptBuilder.LooksLikeDegreeClass("Are you C2?"));
+        Assert.False(PromptBuilder.LooksLikeDegreeClass("What is your biggest weakness?"));
+        Assert.Contains("2:2", PromptBuilder.DegreeClassDirective);
+        Assert.Contains("Lower Second", PromptBuilder.DegreeClassDirective);
+        Assert.Contains("interest-based", PromptBuilder.DegreeClassDirective);
+        Assert.Contains("not careless studying", PromptBuilder.DegreeClassDirective);
+        Assert.Contains("Never volunteer", PromptBuilder.DegreeClassDirective);
+        Assert.Contains("Never answer with only 2:2", PromptBuilder.DegreeClassDirective);
+        Assert.DoesNotContain("haven't covered grades", PromptBuilder.DegreeClassDirective, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("six", PromptBuilder.HardBiographyDirective, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("UK 2:2", PromptBuilder.HardBiographyDirective);
+    }
+
+    [Fact]
     public void LooksLikeGitHub_points_only_at_InterviewMe()
     {
         Assert.True(PromptBuilder.LooksLikeGitHub("What's on your GitHub?"));

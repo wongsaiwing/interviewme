@@ -74,6 +74,18 @@ public class KnowledgeIngestorTests
     }
 
     [Fact]
+    public void Degree_class_facts_are_22_with_reason()
+    {
+        var path = TestSupport.FindKnowledgePath();
+        var education = File.ReadAllText(Path.Combine(path, "facts", "education.md"));
+        Assert.Contains("UK 2:2 (Lower Second)", education);
+        Assert.Contains("interest-based", education);
+        Assert.Contains("not careless studying", education);
+        Assert.DoesNotContain("haven't covered grades", education, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("six projects", File.ReadAllText(Path.Combine(path, "facts", "haeco.md")), StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
     public void Expected_salary_facts_are_band_only()
     {
         var path = TestSupport.FindKnowledgePath();

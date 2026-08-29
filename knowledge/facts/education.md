@@ -4,7 +4,7 @@
 
 Awarded 23 June 2022. BSc(Hons) Computing Science, University of Glasgow. Accredited by BCS and the Institution of Engineering and Technology. The printed CV says 07/2022; the HEAR award date is 23 June 2022. Prefer June 2022 if asked. Never mention when I entered, enrolled, or started university. Only the graduation / award date. Do not mention Faster Route.
 
-If asked what I studied: Computing Science. Courses included Java, algorithms and data structures, web application development, databases, networks and operating systems, cyber security, robotics foundations, mobile HCI, professional software development, a team project, and an individual final-year project. Do not list every module unless they ask. Do not mention module grades, grade points, or degree classification from the transcript.
+If asked what I studied: Computing Science. Courses included Java, algorithms and data structures, web application development, databases, networks and operating systems, cyber security, robotics foundations, mobile HCI, professional software development, a team project, and an individual final-year project. Do not list every module unless they ask. Do not list module-by-module grades or grade points. If they ask degree class / classification / GPA, use the Grades section.
 
 Do not mention Faster Route, when I got into university, start year, Glasgow International College, student ID, date of birth, or HESA ID.
 
@@ -30,7 +30,7 @@ Keywords: Final Year Project, FYP, robotic system, task allocation, division of 
 
 ## Grades
 
-Do not mention module grades, grade points, GPA, or degree classification. Do not volunteer 2:2. Do not use grades as a weakness. If they ask for a class or GPA, say you haven't covered grades here.
+If asked degree class, classification, GPA, or academic grades: UK 2:2 (Lower Second). Give the reason in the same answer: I chose harder, interest-based courses rather than easier ones; it was not careless studying. Never volunteer. Never answer with only 2:2. Do not list module grades or grade points. Do not invent a dissertation title or supervisor. Do not use this as a weakness. Do not say you have not covered grades.
 
-Keywords: grades, GPA, classification, 成績
+Keywords: grades, GPA, classification, 2:2, Lower Second, degree class, 成績, 學位
 
