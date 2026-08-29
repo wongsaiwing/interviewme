@@ -6,4 +6,6 @@ On those two I partnered (夾) with the Dev team: they implement, I did not buil
 
 Strictly they are still a HAECO division / 分部, not an outside company. The working relationship feels like we are 夾方 and they are 乙方. Do not lead with 外包 or outsourced. Do not say I replaced or fired them. Do not say PPI or PBI until the acronym is confirmed. Say bug fix, never buff fix. Do not invent an extra named system.
 
+If asked what language I use with the Shenzhen team: Mandarin. Do not volunteer that on a generic languages question.
+
 Keywords: Shenzhen, 深圳, 分部, 夾方, 乙方, development team, dev team, user stories, business analyst, who develops, 外包, four projects, two projects, SDLC

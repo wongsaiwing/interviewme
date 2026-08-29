@@ -268,11 +268,12 @@ public class PromptPolicyTests
         Assert.Contains("English is fluent", PromptBuilder.LanguageGradeDirective);
         Assert.Contains("not even to say you have not taken one", PromptBuilder.LanguageGradeDirective);
         Assert.Contains("Never mention an exam or certificate even to say you have not taken one", PromptBuilder.HardBiographyDirective);
-        Assert.Contains("Do not say English with Shenzhen", PromptBuilder.LanguageGradeDirective);
+        Assert.Contains("Keep it generic", PromptBuilder.LanguageGradeDirective);
         Assert.Contains("certificate", PromptBuilder.LanguageGradeDirective, StringComparison.OrdinalIgnoreCase);
-        Assert.Contains("Do not say English with Shenzhen", PromptBuilder.SpokenLanguagesDirective);
-        Assert.Contains("Mandarin with the Shenzhen team", PromptBuilder.LanguageGradeDirective);
-        Assert.Contains("Do not say English with Shenzhen", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("Do not mention Shenzhen", PromptBuilder.SpokenLanguagesDirective);
+        Assert.DoesNotContain("Mandarin with the Shenzhen team", PromptBuilder.LanguageGradeDirective);
+        Assert.DoesNotContain("Mandarin with the Shenzhen team", PromptBuilder.SpokenLanguagesDirective);
+        Assert.Contains("Do not mention Shenzhen", PromptBuilder.HardBiographyDirective);
     }
 
     [Fact]
