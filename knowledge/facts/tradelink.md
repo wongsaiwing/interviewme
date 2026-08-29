@@ -2,7 +2,7 @@
 
 October 2022 – July 2024. Programmer at TradeLink Technologies, Hong Kong.
 
-Developed and maintained web-based applications and console apps (.NET Framework, React) to support user requirements and improve system functionality.
+Developed and maintained web-based applications only (.NET Framework, React) to support user requirements and improve system functionality. Do not say console apps or console applications. TradeLink work was web, portal backend, database, ETL/SSIS, and SSRS.
 
 Applications and database architecture design.
 

@@ -1,3 +1,4 @@
+using InterviewMe.Application.Chat;
 using InterviewMe.Infrastructure.Embeddings;
 using InterviewMe.Infrastructure.Knowledge;
 using InterviewMe.Infrastructure.VectorStore;
@@ -71,6 +72,18 @@ public class KnowledgeIngestorTests
         Assert.Contains("https://github.com/wongsaiwing/interviewme", markdown);
         Assert.Contains("Do not invent other public experiments", markdown);
         Assert.DoesNotContain("portfolio of small tools", markdown, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public void TradeLink_facts_are_web_only()
+    {
+        var path = TestSupport.FindKnowledgePath();
+        var markdown = File.ReadAllText(Path.Combine(path, "facts", "tradelink.md"));
+        Assert.Contains("web-based applications only", markdown);
+        Assert.Contains("Do not say console apps", markdown);
+        Assert.DoesNotContain("and console apps", markdown, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("Do not say console apps", PromptBuilder.HardBiographyDirective);
+        Assert.DoesNotContain("console apps", PromptBuilder.HardBiographyDirective.Replace("Do not say console apps", ""));
     }
 
     [Fact]
