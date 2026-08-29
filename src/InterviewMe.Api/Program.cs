@@ -89,6 +89,9 @@ app.MapPost("/api/chat/stream", async (
     }
 });
 
+app.MapFallback("/api/{**path}", () => Results.NotFound());
+app.MapFallback("/knowledge/{**path}", () => Results.NotFound());
+app.MapFallback("/swagger/{**path}", () => Results.NotFound());
 app.MapFallbackToFile("index.html");
 app.Run();
 

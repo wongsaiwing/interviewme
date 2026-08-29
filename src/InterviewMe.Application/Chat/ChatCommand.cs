@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace InterviewMe.Application.Chat;
 
 public sealed record ChatCommand(
@@ -10,7 +12,7 @@ public sealed record SourceCitation(string Id, string Source, string Title, floa
 public sealed record ChatStreamEvent(
     string Type,
     string? Text = null,
-    IReadOnlyList<SourceCitation>? Sources = null,
+    [property: JsonIgnore] IReadOnlyList<SourceCitation>? Sources = null,
     string? Error = null)
 {
     public static ChatStreamEvent Token(string text) => new("token", Text: text);

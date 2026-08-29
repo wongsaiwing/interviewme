@@ -44,6 +44,32 @@ public class ChatApiTests : IClassFixture<InterviewMeApiFactory>
         Assert.Contains("HAECO", text, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("Avery", text, StringComparison.OrdinalIgnoreCase);
         Assert.Contains("data:", body);
+        Assert.DoesNotContain("sources", body, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain(".md", body, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("HardBiography", body, StringComparison.Ordinal);
+        Assert.DoesNotContain("current-package", body, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task Unknown_api_paths_are_not_found()
+    {
+        var client = _factory.CreateClient();
+        var response = await client.GetAsync("/api/facts");
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        var json = await response.Content.ReadAsStringAsync();
+        Assert.DoesNotContain("Silas Wong", json);
+        Assert.DoesNotContain("compensation.md", json);
+    }
+
+    [Fact]
+    public async Task Knowledge_files_are_not_public()
+    {
+        var client = _factory.CreateClient();
+        var response = await client.GetAsync("/knowledge/facts/current-package.md");
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        var body = await response.Content.ReadAsStringAsync();
+        Assert.DoesNotContain("24000", body);
+        Assert.DoesNotContain("14.5", body);
     }
 
     private static string ReadTokens(string sse)
