@@ -1,0 +1,337 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "InterviewMe Architecture",
+    "locale": "en",
+    "output": "/workspace/archify-out/interviewme.architecture.html",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "primary-chat",
+        "label": "Primary chat path",
+        "focus": [
+          "chrome",
+          "spa",
+          "nginx",
+          "bff",
+          "rag",
+          "deepseek",
+          "guard"
+        ],
+        "note": "HR fetch POST /api/chat/stream through nginx into ChatUseCase, RAG, DeepSeek, then BiographyGuard SSE."
+      },
+      {
+        "id": "trust-boundary",
+        "label": "BFF trust boundary",
+        "focus": [
+          "nginx",
+          "bff",
+          "facts",
+          "tone",
+          "rag",
+          "memory",
+          "guard"
+        ],
+        "note": "The browser sees only /api. Markdown, embeddings, and the DeepSeek key stay server-side."
+      },
+      {
+        "id": "offtopic-skip",
+        "label": "Off-topic skip",
+        "focus": [
+          "spa",
+          "nginx",
+          "bff",
+          "memory"
+        ],
+        "note": "Injection or off-topic chat is canned-refused in the BFF. DeepSeek is never called."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "chrome",
+      "type": "frontend",
+      "label": "Chrome",
+      "sublabel": "HR recruiter browser",
+      "pos": [
+        36,
+        360
+      ],
+      "size": [
+        128,
+        62
+      ]
+    },
+    {
+      "id": "spa",
+      "type": "frontend",
+      "label": "React + Vite SPA",
+      "sublabel": "wwwroot, same origin",
+      "pos": [
+        200,
+        360
+      ],
+      "size": [
+        148,
+        62
+      ]
+    },
+    {
+      "id": "nginx",
+      "type": "cloud",
+      "label": "nginx",
+      "sublabel": "TLS \u00b7 HSTS terminator",
+      "tag": "www.swwdomain.hk",
+      "pos": [
+        430,
+        360
+      ],
+      "size": [
+        148,
+        62
+      ]
+    },
+    {
+      "id": "bff",
+      "type": "backend",
+      "label": "InterviewMe.Api",
+      "sublabel": "ASP.NET Core 8 BFF",
+      "tag": "Docker \u00b7 ChatUseCase",
+      "pos": [
+        700,
+        360
+      ],
+      "size": [
+        168,
+        66
+      ]
+    },
+    {
+      "id": "deepseek",
+      "type": "external",
+      "label": "DeepSeek",
+      "sublabel": "OpenAI-compatible LLM",
+      "tag": "API key on server",
+      "pos": [
+        1040,
+        360
+      ],
+      "size": [
+        168,
+        66
+      ]
+    },
+    {
+      "id": "tone",
+      "type": "backend",
+      "label": "knowledge/tone",
+      "sublabel": "prompt only, not vectored",
+      "pos": [
+        700,
+        80
+      ],
+      "size": [
+        168,
+        62
+      ]
+    },
+    {
+      "id": "facts",
+      "type": "database",
+      "label": "knowledge/facts",
+      "sublabel": "markdown ingest",
+      "pos": [
+        940,
+        80
+      ],
+      "size": [
+        160,
+        62
+      ]
+    },
+    {
+      "id": "rag",
+      "type": "database",
+      "label": "Vector store",
+      "sublabel": "LangChain 256-d RAM",
+      "tag": "HashingEmbeddingClient",
+      "pos": [
+        940,
+        210
+      ],
+      "size": [
+        160,
+        66
+      ]
+    },
+    {
+      "id": "memory",
+      "type": "database",
+      "label": "In-memory session",
+      "sublabel": "session + rate limit",
+      "tag": "RAM only",
+      "pos": [
+        700,
+        530
+      ],
+      "size": [
+        168,
+        66
+      ]
+    },
+    {
+      "id": "guard",
+      "type": "security",
+      "label": "BiographyGuard",
+      "sublabel": "output filter",
+      "pos": [
+        940,
+        530
+      ],
+      "size": [
+        160,
+        66
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "www.swwdomain.hk",
+      "wraps": [
+        "nginx",
+        "bff",
+        "rag",
+        "facts",
+        "tone",
+        "memory",
+        "guard"
+      ]
+    },
+    {
+      "kind": "security-group",
+      "label": "BFF trust boundary \u00b7 browser sees /api only",
+      "wraps": [
+        "bff",
+        "rag",
+        "facts",
+        "tone",
+        "memory",
+        "guard"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "hr-opens-cli",
+      "from": "chrome",
+      "to": "spa",
+      "label": "opens CLI",
+      "labelDy": -28
+    },
+    {
+      "id": "spa-post-chat",
+      "from": "spa",
+      "to": "nginx",
+      "label": "HTTPS POST /api/chat/stream",
+      "variant": "emphasis",
+      "labelDy": -28
+    },
+    {
+      "id": "nginx-proxy-bff",
+      "from": "nginx",
+      "to": "bff",
+      "label": "proxy /api + wwwroot",
+      "variant": "emphasis",
+      "labelDy": -28
+    },
+    {
+      "id": "bff-deepseek-chat",
+      "from": "bff",
+      "to": "deepseek",
+      "label": "PromptBuilder chat",
+      "variant": "emphasis",
+      "fromSide": "right",
+      "toSide": "left",
+      "labelDy": -28,
+      "labelDx": 20
+    },
+    {
+      "id": "bff-rag-retrieve",
+      "from": "bff",
+      "to": "rag",
+      "label": "RAG retrieve",
+      "variant": "emphasis",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "bff-guard-filter",
+      "from": "bff",
+      "to": "guard",
+      "label": "buffer then filter",
+      "fromSide": "bottom",
+      "toSide": "left"
+    },
+    {
+      "id": "facts-ingest",
+      "from": "facts",
+      "to": "rag",
+      "label": "embed at startup",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDy": 24
+    },
+    {
+      "id": "tone-prompt",
+      "from": "tone",
+      "to": "bff",
+      "label": "system prompt",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDy": 24
+    },
+    {
+      "id": "bff-memory",
+      "from": "bff",
+      "to": "memory",
+      "label": "volatile session",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDy": 24,
+      "labelDx": -80
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Primary path",
+      "items": [
+        "HR Chrome fetch POST /api/chat/stream hits nginx, then InterviewMe.Api ChatUseCase",
+        "RAG retrieve feeds PromptBuilder; DeepSeek streams tokens; BiographyGuard filters; SSE returns to the CLI",
+        "MapGet /api/profile and MapPost /api/chat/stream are the only browser APIs"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Trust boundary",
+      "items": [
+        "The browser sees only /api on www.swwdomain.hk; SPA files live in wwwroot on the same origin",
+        "DeepSeek is called from server HttpClient. The API key and knowledge markdown never leave the BFF",
+        "nginx terminates TLS with Let's Encrypt and HSTS; it does not hold the model key"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Short-circuit and memory",
+      "items": [
+        "Injection or off-topic questions get a canned refuse inside ChatUseCase; DeepSeek is skipped",
+        "knowledge/facts is hashed into the in-memory 256-d store at startup; knowledge/tone is prompt-only",
+        "InMemoryConversationStore and InMemoryRateLimiter stay in RAM. Visitor chat is not persisted"
+      ]
+    }
+  ]
+}

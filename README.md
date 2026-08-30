@@ -25,3 +25,13 @@ See knowledge/README.md. Facts under knowledge/facts are embedded. Tone under kn
 Frontend never talks to an LLM. Tone stays in the system prompt. Visitor transcripts are not persisted.
 
 Sample questions: HAECO, TradeLink, tech stack, University of Glasgow.
+
+## Architecture maps
+
+Open these Archify HTML files in a browser (self-contained):
+
+- [Runtime architecture](docs/archify/interviewme.architecture.html)
+- [Chat sequence](docs/archify/interviewme.sequence.html)
+- [RAG data-flow](docs/archify/interviewme.dataflow.html)
+
+JSON IR lives next to the HTML. GitHub Action `.github/workflows/archify.yml` re-renders HTML on every push to `main`.

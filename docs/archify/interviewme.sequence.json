@@ -1,0 +1,291 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "InterviewMe Chat Sequence",
+    "locale": "en",
+    "output": "/workspace/archify-out/interviewme.sequence.html",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "viewBox": [
+      1020,
+      900
+    ],
+    "views": [
+      {
+        "id": "offtopic-skip",
+        "label": "Off-topic skip",
+        "focus": [
+          "chrome",
+          "nginx",
+          "bff"
+        ],
+        "note": "Injection or off-topic chat is canned-refused in the BFF. DeepSeek is not called."
+      },
+      {
+        "id": "rag-and-llm",
+        "label": "RAG and DeepSeek",
+        "focus": [
+          "bff",
+          "rag",
+          "deepseek",
+          "guard"
+        ],
+        "note": "On-topic chat retrieves 256-d chunks, prompts DeepSeek, then BiographyGuard filters SSE tokens."
+      },
+      {
+        "id": "sse-return",
+        "label": "SSE return to CLI",
+        "focus": [
+          "guard",
+          "bff",
+          "nginx",
+          "chrome"
+        ],
+        "note": "Filtered tokens stream back through nginx to the Chrome SPA. Chat is not persisted."
+      }
+    ]
+  },
+  "participants": [
+    {
+      "id": "chrome",
+      "type": "frontend",
+      "label": "Chrome",
+      "sublabel": "SPA CLI"
+    },
+    {
+      "id": "nginx",
+      "type": "cloud",
+      "label": "nginx",
+      "sublabel": "TLS edge"
+    },
+    {
+      "id": "bff",
+      "type": "backend",
+      "label": "InterviewMe.Api",
+      "sublabel": "ChatUseCase"
+    },
+    {
+      "id": "rag",
+      "type": "database",
+      "label": "Vector store",
+      "sublabel": "256-d RAM"
+    },
+    {
+      "id": "deepseek",
+      "type": "external",
+      "label": "DeepSeek",
+      "sublabel": "server LLM"
+    },
+    {
+      "id": "guard",
+      "type": "security",
+      "label": "BiographyGuard",
+      "sublabel": "output filter"
+    }
+  ],
+  "segments": [
+    {
+      "from": 150,
+      "to": 338,
+      "label": "Off-topic skip"
+    },
+    {
+      "from": 356,
+      "to": 650,
+      "label": "On-topic RAG + DeepSeek"
+    },
+    {
+      "from": 668,
+      "to": 830,
+      "label": "Guard + SSE"
+    }
+  ],
+  "messages": [
+    {
+      "id": "offtopic-post",
+      "from": "chrome",
+      "to": "nginx",
+      "y": 180,
+      "label": "POST /api/chat/stream (off-topic)",
+      "variant": "default"
+    },
+    {
+      "id": "offtopic-proxy",
+      "from": "nginx",
+      "to": "bff",
+      "y": 222,
+      "label": "proxy /api/chat/stream",
+      "variant": "default"
+    },
+    {
+      "id": "offtopic-refuse",
+      "from": "bff",
+      "to": "nginx",
+      "y": 272,
+      "label": "canned refuse \u00b7 skip DeepSeek",
+      "variant": "security"
+    },
+    {
+      "id": "offtopic-sse",
+      "from": "nginx",
+      "to": "chrome",
+      "y": 314,
+      "label": "SSE refuse",
+      "variant": "return"
+    },
+    {
+      "id": "ontopic-post",
+      "from": "chrome",
+      "to": "nginx",
+      "y": 392,
+      "label": "POST /api/chat/stream (on-topic)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "ontopic-proxy",
+      "from": "nginx",
+      "to": "bff",
+      "y": 434,
+      "label": "proxy /api/chat/stream",
+      "variant": "emphasis"
+    },
+    {
+      "id": "rag-retrieve",
+      "from": "bff",
+      "to": "rag",
+      "y": 484,
+      "label": "retrieve 256-d chunks",
+      "variant": "emphasis"
+    },
+    {
+      "id": "rag-chunks",
+      "from": "rag",
+      "to": "bff",
+      "y": 526,
+      "label": "grounding chunks",
+      "variant": "return"
+    },
+    {
+      "id": "prompt-llm",
+      "from": "bff",
+      "to": "deepseek",
+      "y": 576,
+      "label": "PromptBuilder chat",
+      "variant": "emphasis"
+    },
+    {
+      "id": "llm-tokens",
+      "from": "deepseek",
+      "to": "bff",
+      "y": 626,
+      "label": "token stream",
+      "variant": "return"
+    },
+    {
+      "id": "buffer-guard",
+      "from": "bff",
+      "to": "guard",
+      "y": 676,
+      "label": "buffer tokens",
+      "variant": "security"
+    },
+    {
+      "id": "guard-ok",
+      "from": "guard",
+      "to": "bff",
+      "y": 718,
+      "label": "filtered text",
+      "variant": "return"
+    },
+    {
+      "id": "sse-proxy",
+      "from": "bff",
+      "to": "nginx",
+      "y": 760,
+      "label": "SSE tokens",
+      "variant": "emphasis"
+    },
+    {
+      "id": "sse-cli",
+      "from": "nginx",
+      "to": "chrome",
+      "y": 802,
+      "label": "SSE to CLI",
+      "variant": "return"
+    }
+  ],
+  "activations": [
+    {
+      "participant": "nginx",
+      "from": 174,
+      "to": 320,
+      "type": "cloud"
+    },
+    {
+      "participant": "bff",
+      "from": 216,
+      "to": 320,
+      "type": "backend"
+    },
+    {
+      "participant": "nginx",
+      "from": 386,
+      "to": 808,
+      "type": "cloud"
+    },
+    {
+      "participant": "bff",
+      "from": 428,
+      "to": 768,
+      "type": "backend"
+    },
+    {
+      "participant": "rag",
+      "from": 478,
+      "to": 532,
+      "type": "database"
+    },
+    {
+      "participant": "deepseek",
+      "from": 570,
+      "to": 632,
+      "type": "external"
+    },
+    {
+      "participant": "guard",
+      "from": 670,
+      "to": 724,
+      "type": "security"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Off-topic skip",
+      "items": [
+        "ChatUseCase classifies injection and off-topic turns before any model call",
+        "A canned refuse is streamed as SSE. DeepSeek and RAG are not touched",
+        "InMemoryRateLimiter still applies; the visitor transcript is not persisted"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "On-topic path",
+      "items": [
+        "The BFF retrieves hashed 256-d chunks from the in-memory LangChain store",
+        "PromptBuilder sends a grounded prompt through server HttpClient to DeepSeek",
+        "Tokens are buffered, passed through BiographyGuard, then SSE to Chrome"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Trust on the wire",
+      "items": [
+        "The SPA only calls /api; the DeepSeek key never enters the browser",
+        "nginx terminates TLS and reverse-proxies both wwwroot and /api on the same origin",
+        "Empty retrieval must not invent biography; BiographyGuard enforces that on output"
+      ]
+    }
+  ]
+}
