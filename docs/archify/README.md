@@ -23,3 +23,10 @@ Pull requests render and validate but do not commit.
 Edit the matching `.json` (nodes, edges, stories) to match the code, then push. The workflow rebuilds HTML. Do not hand-edit HTML.
 
 Do not add invented infrastructure (Redis, Postgres, auth). InterviewMe is a same-origin ASP.NET BFF + in-memory hashing RAG + DeepSeek.
+
+
+## One-time: enable the GitHub Action
+
+GitHub blocks this token from writing `.github/workflows/`. Copy
+[`github-workflow-archify.yml`](./github-workflow-archify.yml) to
+`.github/workflows/archify.yml` on GitHub (web editor or a token with the `workflow` scope), then merge. After that, every push to `main` regenerates the HTML.
