@@ -1,0 +1,57 @@
+name: Archify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: archify-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  render:
+    if: ${{ github.event_name != 'push' || !contains(github.event.head_commit.message, '[archify skip]') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      ARCHIFY_UPDATE_CHECK_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Fetch Archify CLI
+        run: |
+          set -euo pipefail
+          curl -fsSL -o /tmp/archify.zip "https://github.com/tt-a1i/archify/raw/main/archify.zip"
+          mkdir -p /tmp/archify-skill
+          unzip -q /tmp/archify.zip -d /tmp/archify-skill
+          ARCHIFY="$(find /tmp/archify-skill -path '*/bin/archify.mjs' | head -n 1)"
+          test -n "$ARCHIFY"
+          echo "ARCHIFY=$ARCHIFY" >> "$GITHUB_ENV"
+
+      - name: Render HTML from JSON IR
+        run: |
+          set -euo pipefail
+          node "$ARCHIFY" deliver architecture docs/archify/interviewme.architecture.json docs/archify/interviewme.architecture.html --quality showcase --json
+          node "$ARCHIFY" deliver sequence docs/archify/interviewme.sequence.json docs/archify/interviewme.sequence.html --quality showcase --json
+          node "$ARCHIFY" deliver dataflow docs/archify/interviewme.dataflow.json docs/archify/interviewme.dataflow.html --quality showcase --json
+
+      - name: Commit regenerated HTML
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/archify/*.html
+          if git diff --cached --quiet; then
+            echo "HTML already in sync with JSON IR"
+            exit 0
+          fi
+          git commit -m "chore(archify): regenerate HTML [archify skip]"
+          git push

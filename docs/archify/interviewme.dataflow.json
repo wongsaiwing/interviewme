@@ -1,0 +1,288 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "InterviewMe Data Flow",
+    "locale": "en",
+    "output": "/workspace/archify-out/interviewme.dataflow.html",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1080,
+      720
+    ],
+    "views": [
+      {
+        "id": "facts-embed",
+        "label": "Facts to RAM vectors",
+        "focus": [
+          "facts",
+          "embed",
+          "vectors"
+        ],
+        "note": "knowledge/facts markdown is split, hashed, and stored as 256-d vectors in RAM at startup."
+      },
+      {
+        "id": "query-prompt",
+        "label": "Query to prompt",
+        "focus": [
+          "chrome",
+          "vectors",
+          "tone",
+          "prompt"
+        ],
+        "note": "A visitor query searches RAM vectors. Tone is injected as prompt text and is never vectored."
+      },
+      {
+        "id": "key-and-ephemeral",
+        "label": "Key and chat policy",
+        "focus": [
+          "prompt",
+          "deepseek",
+          "guard",
+          "spa",
+          "memory"
+        ],
+        "note": "The DeepSeek key stays on the server. Visitor chat is volatile RAM only and is not persisted."
+      }
+    ]
+  },
+  "stages": [
+    {
+      "label": "Sources"
+    },
+    {
+      "label": "Embed"
+    },
+    {
+      "label": "RAM store"
+    },
+    {
+      "label": "Retrieve / prompt"
+    },
+    {
+      "label": "Generate / deliver"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "facts",
+      "type": "database",
+      "label": "knowledge/facts",
+      "sublabel": "markdown",
+      "stage": 0,
+      "row": 0,
+      "tag": "ingest at startup",
+      "width": 150
+    },
+    {
+      "id": "chrome",
+      "type": "frontend",
+      "label": "Visitor chat",
+      "sublabel": "Chrome CLI query",
+      "stage": 0,
+      "row": 4,
+      "tag": "not persisted",
+      "width": 150
+    },
+    {
+      "id": "embed",
+      "type": "backend",
+      "label": "HashingEmbeddingClient",
+      "sublabel": "local 256-d hashes",
+      "stage": 1,
+      "row": 0,
+      "tag": "no OpenAI embed",
+      "width": 176
+    },
+    {
+      "id": "tone",
+      "type": "backend",
+      "label": "knowledge/tone",
+      "sublabel": "prompt only",
+      "stage": 0,
+      "row": 2,
+      "tag": "not vectored",
+      "width": 150
+    },
+    {
+      "id": "vectors",
+      "type": "database",
+      "label": "LangChainVectorStore",
+      "sublabel": "in-memory 256-d",
+      "stage": 2,
+      "row": 0,
+      "tag": "RAM",
+      "width": 170
+    },
+    {
+      "id": "memory",
+      "type": "database",
+      "label": "InMemoryConversationStore",
+      "sublabel": "volatile session",
+      "stage": 2,
+      "row": 4,
+      "tag": "not persisted",
+      "width": 186
+    },
+    {
+      "id": "prompt",
+      "type": "backend",
+      "label": "PromptBuilder",
+      "sublabel": "ChatUseCase",
+      "stage": 3,
+      "row": 2,
+      "tag": "key stays here",
+      "width": 150
+    },
+    {
+      "id": "deepseek",
+      "type": "external",
+      "label": "DeepSeek",
+      "sublabel": "server HttpClient",
+      "stage": 4,
+      "row": 0,
+      "tag": "API key server-only",
+      "width": 150
+    },
+    {
+      "id": "guard",
+      "type": "security",
+      "label": "BiographyGuard",
+      "sublabel": "output filter",
+      "stage": 4,
+      "row": 2,
+      "tag": "SSE tokens",
+      "width": 150
+    },
+    {
+      "id": "spa",
+      "type": "frontend",
+      "label": "Chrome CLI",
+      "sublabel": "same-origin /api",
+      "stage": 4,
+      "row": 4,
+      "tag": "no key",
+      "width": 150
+    }
+  ],
+  "flows": [
+    {
+      "id": "facts-to-embed",
+      "from": "facts",
+      "to": "embed",
+      "label": "markdown chunks",
+      "classification": "facts only",
+      "variant": "emphasis",
+      "route": "straight",
+      "labelDy": 56
+    },
+    {
+      "id": "embed-to-vectors",
+      "from": "embed",
+      "to": "vectors",
+      "label": "256-d hashes",
+      "classification": "RAM vectors",
+      "variant": "emphasis",
+      "route": "straight",
+      "labelDy": 56
+    },
+    {
+      "id": "vectors-to-prompt",
+      "from": "vectors",
+      "to": "prompt",
+      "label": "similarity search",
+      "classification": "top chunks",
+      "variant": "emphasis",
+      "route": "vertical-channel"
+    },
+    {
+      "id": "chrome-to-prompt",
+      "from": "chrome",
+      "to": "prompt",
+      "label": "chat query",
+      "classification": "request only",
+      "variant": "emphasis",
+      "route": "bottom-channel"
+    },
+    {
+      "id": "tone-to-prompt",
+      "from": "tone",
+      "to": "prompt",
+      "label": "system prompt",
+      "classification": "not vectored",
+      "variant": "dashed",
+      "route": "straight"
+    },
+    {
+      "id": "chrome-to-memory",
+      "from": "chrome",
+      "to": "memory",
+      "label": "volatile session",
+      "classification": "not persisted",
+      "variant": "dashed",
+      "route": "straight"
+    },
+    {
+      "id": "prompt-to-deepseek",
+      "from": "prompt",
+      "to": "deepseek",
+      "label": "grounded prompt",
+      "classification": "API key server-only",
+      "variant": "emphasis",
+      "route": "vertical-channel"
+    },
+    {
+      "id": "deepseek-to-guard",
+      "from": "deepseek",
+      "to": "guard",
+      "label": "buffered tokens",
+      "classification": "model output",
+      "variant": "default",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "route": "straight",
+      "labelDy": 24
+    },
+    {
+      "id": "guard-to-spa",
+      "from": "guard",
+      "to": "spa",
+      "label": "SSE tokens",
+      "classification": "filtered text",
+      "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "route": "straight",
+      "labelDy": 24
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Facts to vectors",
+      "items": [
+        "knowledge/facts markdown is split and hashed by HashingEmbeddingClient at process start",
+        "Vectors live in LangChainVectorStore in RAM at 256 dimensions. There is no Postgres or Redis",
+        "knowledge/tone never enters the vector store; it is concatenated into the system prompt only"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Query to prompt",
+      "items": [
+        "A visitor query is embedded with the same local hasher and searched against RAM vectors",
+        "Retrieved chunks plus tone go to PromptBuilder inside InterviewMe.Api",
+        "The SPA never talks to DeepSeek. Only /api is visible in the browser"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Key and chat policy",
+      "items": [
+        "The DeepSeek API key is held on the server HttpClient and is never sent to Chrome",
+        "Visitor transcripts sit in InMemoryConversationStore for the request only and are not persisted",
+        "BiographyGuard filters output before SSE tokens reach the CLI"
+      ]
+    }
+  ]
+}
