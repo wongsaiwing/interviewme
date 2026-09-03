@@ -8,7 +8,20 @@ node_modules/
 .DS_Store
 dist/
 src/InterviewMe.Api/wwwroot/assets/
+
+# Secrets & private overlays (never commit)
 .env
 .env.*
+!.env.example
 *.pem
 *.key
+*.pfx
+appsettings.*.local.json
+*.log
+coverage/
+TestResults/
+
+# Private compensation — keep off public GitHub; mount at deploy if needed
+knowledge/facts/current-package.md
+knowledge/private/
+deploy/private/current-package.md

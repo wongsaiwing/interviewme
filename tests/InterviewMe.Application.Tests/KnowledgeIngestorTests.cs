@@ -75,6 +75,15 @@ public class KnowledgeIngestorTests
     }
 
     [Fact]
+    public void Current_package_is_not_tracked_in_public_facts()
+    {
+        var path = TestSupport.FindKnowledgePath();
+        // File may exist locally for deploy, but CurrentPayDirective must not embed figures.
+        Assert.DoesNotContain("24000", PromptBuilder.CurrentPayDirective);
+        Assert.DoesNotContain("14.5", PromptBuilder.CurrentPayDirective);
+    }
+
+    [Fact]
     public void TradeLink_facts_are_web_only()
     {
         var path = TestSupport.FindKnowledgePath();

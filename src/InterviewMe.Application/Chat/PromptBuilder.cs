@@ -100,7 +100,7 @@ public sealed class PromptBuilder
         "They asked expected salary or package. Answer HKD 30,000 to 35,000 per month, matching industry standard and years of experience. That is enough. Do not say it depends on bonus or benefits. Do not copy HAECO WFH, travel allowance, or 補假 onto the next job. Do not pin only 35k. Do not annualise unless asked. Do not mention current HAECO pay. Do not volunteer notice.";
 
     public const string CurrentPayDirective =
-        "They asked current pay / current package / current benefits. Answer ONLY from retrieved current-package facts if present. Do not invent base pay, months, WFH, travel allowance, or 補假. If those facts were not retrieved, say you have not covered that figure here. Do not invent allowance dollars. Do not use this for expected salary.";
+        "They asked current pay / current package / current benefits. Answer ONLY from retrieved current-package facts if present. Do not invent base pay, months, WFH, travel allowance, or 補假. If those facts were not retrieved, say you have not covered that figure here. Do not use this for expected salary.";
 
     public const string NoticeDirective =
         "They asked notice period or when I can start. Answer one month. Do not volunteer notice on other questions.";

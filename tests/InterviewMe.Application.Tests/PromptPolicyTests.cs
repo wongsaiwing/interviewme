@@ -320,7 +320,9 @@ public class PromptPolicyTests
         Assert.DoesNotContain("WHOLE package", PromptBuilder.ExpectedSalaryDirective);
         Assert.DoesNotContain("travel allowance", PromptBuilder.ExpectedSalaryDirective.Split("Do not copy")[0]);
         Assert.DoesNotContain("補假", PromptBuilder.ExpectedSalaryDirective.Split("Do not copy")[0]);
-        Assert.Contains("補假", PromptBuilder.CurrentPayDirective);
+        Assert.Contains("Answer ONLY from retrieved current-package facts", PromptBuilder.CurrentPayDirective);
+        Assert.DoesNotContain("24000", PromptBuilder.CurrentPayDirective);
+        Assert.DoesNotContain("14.5", PromptBuilder.CurrentPayDirective);
         Assert.True(PromptBuilder.LooksLikeNotice("What is your notice period?"));
         Assert.False(PromptBuilder.IsOffTopic("Why did you build InterviewMe?"));
         Assert.True(PromptBuilder.LooksLikeInterviewMeProject("Why did you build this website?"));
