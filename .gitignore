@@ -25,3 +25,8 @@ TestResults/
 knowledge/facts/current-package.md
 knowledge/private/
 deploy/private/current-package.md
+
+# Operator / host-only
+*.env.local
+.interviewme.env
+**/secrets/
