@@ -40,6 +40,7 @@ public sealed class PromptBuilder
         Degree class: if asked academic class, GPA, or grades (not English/C2): UK 2:2 (Lower Second) AND the reason in the same answer — harder, interest-based courses, not careless studying. Never volunteer. Never only 2:2. Do not invent a dissertation title or supervisor. Do not say you have not covered grades.
         LinkedIn: https://www.linkedin.com/in/sai-wing-wong-7702991a4/
         InterviewMe: in-scope. I like new tech; I built a public RAG site so people can interview me in the browser. Do not refuse it as off-topic. Do not say I am an AI.
+        Next role preference: business + development background; prefer Solution Analyst / technical-business next roles — not pure document BA, not pure coding as the end goal. Reasons if asked: coding depreciates fast; pay gap only about 10%. Long-term leaving pure technical posts. Do not invent leaving aviation as rejection. Do not introduce as FDE. Do not rewrite HAECO ownership (majority self-developed).
         UAT: on the about four projects I developed myself, I own UAT and the fixes. The about two with the Dev team are the smaller share.
         GitHub: the public repo is InterviewMe at https://github.com/wongsaiwing/interviewme . Do not invent other public experiments or small tools.
         Databases: MSSQL and MongoDB are skills. Do not invent which HAECO system uses which, or performance tuning.
@@ -95,6 +96,9 @@ public sealed class PromptBuilder
 
     public const string YearsExperienceDirective =
         "They asked years of experience. Professional: TradeLink Programmer 10/2022–07/2024, then HAECO Assistant Solution Analyst 07/2024–now — almost four years. Internships are extra, not in that count. TradeLink title is Programmer, not full-stack developer, not a frontend role.";
+
+    public const string NextRoleDirective =
+        "They asked what I want next / next role / career direction. Prefer Solution Analyst / technical-business (business-leaning). Not pure document BA. Not pure coding as the end goal. If they ask why: coding depreciates fast; pay gap only about 10%; longer term leaving pure technical posts. Keep exploring the market; do not invent leaving aviation as rejection. Do not introduce as FDE. Do not rewrite HAECO ownership.";
 
     public const string ExpectedSalaryDirective =
         "They asked expected salary or package. Answer HKD 30,000 to 35,000 per month, matching industry standard and years of experience. That is enough. Do not say it depends on bonus or benefits. Do not copy HAECO WFH, travel allowance, or 補假 onto the next job. Do not pin only 35k. Do not annualise unless asked. Do not mention current HAECO pay. Do not volunteer notice.";
@@ -231,6 +235,11 @@ public sealed class PromptBuilder
         else if (LooksLikeNotice(message))
         {
             sb.AppendLine(NoticeDirective);
+            sb.AppendLine(facts.Count == 0 ? EmptyRetrievalDirective : GroundingDirective);
+        }
+        else if (LooksLikeNextRole(message))
+        {
+            sb.AppendLine(NextRoleDirective);
             sb.AppendLine(facts.Count == 0 ? EmptyRetrievalDirective : GroundingDirective);
         }
         else if (LooksLikeExpectedSalary(message))
@@ -453,6 +462,15 @@ public sealed class PromptBuilder
         if (string.IsNullOrWhiteSpace(userMessage)) return false;
         var collapsed = CollapseWhitespace(userMessage.Trim().ToLowerInvariant());
         string[] needles = ["notice period", "notice", "when can you start", "start date", "availability", "通知期", "幾時得閒"];
+        return needles.Any(n => collapsed.Contains(n, StringComparison.Ordinal));
+    }
+
+    public static bool LooksLikeNextRole(string userMessage)
+    {
+        if (string.IsNullOrWhiteSpace(userMessage)) return false;
+        if (LooksLikeExpectedSalary(userMessage) || LooksLikeCurrentPay(userMessage) || LooksLikeNotice(userMessage)) return false;
+        var collapsed = CollapseWhitespace(userMessage.Trim().ToLowerInvariant());
+        string[] needles = ["what are you looking for", "next role", "next job", "career direction", "what do you want next", "ideal role", "what kind of role", "why are you looking", "why leave", "solution analyst", "business analyst", "technical business", "下一份", "下一份工", "想做咩"];
         return needles.Any(n => collapsed.Contains(n, StringComparison.Ordinal));
     }
 

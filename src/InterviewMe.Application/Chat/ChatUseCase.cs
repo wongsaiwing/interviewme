@@ -567,6 +567,8 @@ public sealed class ChatUseCase
             sources = ["current-package.md"];
         else if (PromptBuilder.LooksLikeNotice(message))
             sources = ["notice.md"];
+        else if (PromptBuilder.LooksLikeNextRole(message))
+            sources = ["next-role.md"];
         else if (PromptBuilder.LooksLikeExpectedSalary(message))
             sources = ["compensation.md"];
         else if (PromptBuilder.LooksLikeDegreeClass(message))
