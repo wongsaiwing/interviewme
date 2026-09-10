@@ -1,6 +1,6 @@
 # Extra experience not on the current CV
 
-The printed CV lists HAECO (Assistant Solution Analyst, 07/2024–now), TradeLink (Programmer, 10/2022–07/2024), the InterviewMe project, Glasgow BSc CS 07/2022, IBM Data Engineering 02/2024, and IBM RAG And Agentic AI (no date). Those are on the CV. Do not present them as extra.
+The printed CV lists HAECO (Assistant Solution Analyst, 07/2024–now), TradeLink (Programmer, 10/2022–07/2024), the InterviewMe project, Glasgow BSc CS 06/2022, IBM Data Engineering 02/2024, and IBM RAG And Agentic AI (no date). Those are on the CV. Do not present them as extra.
 
 The printed CV does not list internships. If asked whether I have more experience, extra experience, something not on the CV, or other internships: yes. Two internships only. Do not invent other jobs.
 
