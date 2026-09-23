@@ -285,6 +285,7 @@ public class PromptPolicyTests
         Assert.False(PromptBuilder.LooksLikeProductionExperience("Tell me about a hotfix"));
         Assert.Contains("Fluid Use, Operation Remarks, and Towing", PromptBuilder.ProductionExperienceDirective);
         Assert.Contains("still in DEV", PromptBuilder.ProductionExperienceDirective);
+        Assert.Contains("UAT-ready", PromptBuilder.ProductionExperienceDirective);
         Assert.Contains("Do not answer as incidents", PromptBuilder.ProductionExperienceDirective);
     }
 
@@ -382,8 +383,13 @@ public class PromptPolicyTests
         Assert.True(PromptBuilder.LooksLikeHaecoNamedSystems("Tell me about Read and Sign"));
         Assert.True(PromptBuilder.LooksLikeHaecoNamedSystems("What is Capacity Checker?"));
         Assert.True(PromptBuilder.LooksLikeHaecoNamedSystems("Tell me about Shift Briefing"));
-        Assert.Contains("Do not claim Read and Sign is in production", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("Do not claim Read and Sign or Shift Briefing is in production", PromptBuilder.HaecoGenericDirective);
         Assert.DoesNotContain("the main one", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("≈5 days UAT-ready", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("≈20 person-days", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("US$100", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("metrics SB-only", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("NOT full Figma lock-in", PromptBuilder.HardBiographyDirective);
     }
 }
 

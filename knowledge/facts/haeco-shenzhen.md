@@ -3,7 +3,7 @@
 
 Shenzhen-collab projects where I do requirements / clear blockers (and PBIs / UAT / onboarding as fits) and am not the main coder: Daily Operation Monitor and Capacity Checker.
 
-Other HAECO projects I built myself through FE/BE (Fluid Use, Operation Remarks, Towing to production; Read and Sign and Shift Briefing AI-native fullstack still in DEV). Do not reuse the old "about four myself / about two with Dev team" inventory.
+Other HAECO projects I built myself through FE/BE (Fluid Use, Operation Remarks, Towing to production; Read and Sign AI-native still in DEV; Shift Briefing AI-native UAT-ready web not prod). Do not reuse the old "about four myself / about two with Dev team" inventory.
 
 Strictly they are still a HAECO division / 分部, not an outside company. The working relationship feels like we are 夾方 and they are 乙方. Do not lead with 外包 or outsourced. Do not say I replaced or fired them. PBI is OK to say for DOM. Say bug fix, never buff fix. Do not invent metrics.
 
