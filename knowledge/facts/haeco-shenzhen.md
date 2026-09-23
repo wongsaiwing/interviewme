@@ -1,4 +1,5 @@
-# HAECO Shenzhen collaboration
+# HAECO Shenzhen collaboration (aviation MRO)
+
 
 Shenzhen-collab projects where I do requirements / clear blockers (and PBIs / UAT / onboarding as fits) and am not the main coder: Daily Operation Monitor and Capacity Checker.
 

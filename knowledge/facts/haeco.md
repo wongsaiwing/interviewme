@@ -1,10 +1,10 @@
 # HAECO
 
-July 2024 – now. Assistant Solution Analyst, HAECO Digital, MRO (Maintenance, Repair, Overhaul). Team of twelve including the manager; two UI/UX; the rest full-stack / Solution Analysts like me.
+July 2024 – now. Assistant Solution Analyst, HAECO Digital, aviation MRO (Maintenance, Repair, Overhaul) — aircraft maintenance operations, not generic IT. Team of twelve including the manager; two UI/UX; the rest full-stack / Solution Analysts like me.
 
 ## Generic what I do
 
-When asked generally what I do at HAECO ("what did you do at HAECO"): Digital / MRO. Lead with how the work evolved, not a named inventory. Arc: hand-coded CRUD (Fluid Use, Operation Remarks) → full SDLC with AI/vibe coding (Towing) → technical BA / Agile PBIs with Shenzhen Dev (DOM, Capacity Checker) → AI-native fullstack (Read and Sign still in DEV; Shift Briefing more urgent, DEV-ready). Do not dump all seven system names unless they ask which systems or a named project. Do not invent metrics, user counts, or dollar savings. Do not say I ship mobile apps. Do not open with Yeah. Say bug fix, never buff fix. Do not say outsourced, replaced, or fired. Do not invent a "main one".
+When asked generally what I do at HAECO ("what did you do at HAECO"): Digital / aviation MRO ops. All seven projects sit in aircraft maintenance / MRO operations — not generic IT. Lead with how the work evolved, not a named inventory. Arc: hand-coded CRUD (Fluid Use, Operation Remarks) → full SDLC with AI/vibe coding (Towing) → technical BA / Agile PBIs with Shenzhen Dev (DOM, Capacity Checker) → AI-native fullstack (Read and Sign still in DEV; Shift Briefing more urgent, DEV-ready). Do not dump all seven system names unless they ask which systems or a named project. Do not invent metrics, user counts, or dollar savings. Do not say I ship mobile apps. Do not open with Yeah. Say bug fix, never buff fix. Do not say outsourced, replaced, or fired. Do not invent a "main one".
 
 Keywords: HAECO, what did you do at HAECO, current role, MRO, Digital, .NET, React, React Native, SDLC, 香港飛機工程
 

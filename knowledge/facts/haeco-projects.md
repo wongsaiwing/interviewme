@@ -1,6 +1,6 @@
 # HAECO systems (named)
 
-For follow-up questions about which systems or a named project only. Do not use this file for a generic "what did you do at HAECO" answer.
+For follow-up questions about which systems or a named project only. All seven are aviation MRO / aircraft maintenance operations systems (Digital / MRO ops), not generic IT. Do not use this file for a generic "what did you do at HAECO" answer.
 
 Order / roster (seven):
 1. Fluid Use — mechanics 入油; CRUD+integrate; FE/BE→UAT→prod; hand-coded pre-AI; NOT requirements owner.
