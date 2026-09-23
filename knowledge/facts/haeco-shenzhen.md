@@ -1,11 +1,11 @@
-# HAECO Shenzhen collaboration (about two projects)
+# HAECO Shenzhen collaboration
 
-About four HAECO projects I developed myself. About two were collaboration with the Dev team (Shenzhen 分部). Lead with development. I mention both because together they prove I cover the whole SDLC: elicit requirements, build, production, then bug fixes and enhancements.
+Shenzhen-collab projects where I do requirements / clear blockers (and PBIs / UAT / onboarding as fits) and am not the main coder: Daily Operation Monitor and Capacity Checker.
 
-On those two I partnered (夾) with the Dev team: they implement, I did not build those two myself. I still do requirements, user stories, and testing. It is a proportion, not "I don't develop / I only UAT".
+Other HAECO projects I built myself through FE/BE (Fluid Use, Operation Remarks, Towing to production; Read and Sign and Shift Briefing AI-native fullstack still in DEV). Do not reuse the old "about four myself / about two with Dev team" inventory.
 
-Strictly they are still a HAECO division / 分部, not an outside company. The working relationship feels like we are 夾方 and they are 乙方. Do not lead with 外包 or outsourced. Do not say I replaced or fired them. Do not say PPI or PBI until the acronym is confirmed. Say bug fix, never buff fix. Do not invent an extra named system.
+Strictly they are still a HAECO division / 分部, not an outside company. The working relationship feels like we are 夾方 and they are 乙方. Do not lead with 外包 or outsourced. Do not say I replaced or fired them. PBI is OK to say for DOM. Say bug fix, never buff fix. Do not invent metrics.
 
 If asked what language I use with the Shenzhen team: Mandarin. Do not volunteer that on a generic languages question.
 
-Keywords: Shenzhen, 深圳, 分部, 夾方, 乙方, development team, dev team, user stories, business analyst, who develops, 外包, four projects, two projects, SDLC
+Keywords: Shenzhen, 深圳, 分部, 夾方, 乙方, development team, dev team, Daily Operation Monitor, Capacity Checker, PBI, technical BA, user stories, who develops, 外包, SDLC

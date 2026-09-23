@@ -283,8 +283,8 @@ public class PromptPolicyTests
         Assert.True(PromptBuilder.LooksLikeProductionExperience("Have you taken projects to production?"));
         Assert.False(PromptBuilder.LooksLikeProductionExperience("How do you handle production incidents?"));
         Assert.False(PromptBuilder.LooksLikeProductionExperience("Tell me about a hotfix"));
-        Assert.Contains("About four HAECO projects I built myself", PromptBuilder.ProductionExperienceDirective);
-        Assert.Contains("whole SDLC", PromptBuilder.ProductionExperienceDirective);
+        Assert.Contains("Fluid Use, Operation Remarks, and Towing", PromptBuilder.ProductionExperienceDirective);
+        Assert.Contains("still in DEV", PromptBuilder.ProductionExperienceDirective);
         Assert.Contains("Do not answer as incidents", PromptBuilder.ProductionExperienceDirective);
     }
 
@@ -294,10 +294,9 @@ public class PromptPolicyTests
         Assert.False(PromptBuilder.LooksLikeShenzhenCollaboration("What did you do at HAECO?"));
         Assert.True(PromptBuilder.LooksLikeShenzhenCollaboration("Do you work with the Shenzhen team?"));
         Assert.True(PromptBuilder.LooksLikeShenzhenCollaboration("Do you work with the development team?"));
-        Assert.DoesNotContain("Shenzhen", PromptBuilder.HaecoGenericDirective, StringComparison.OrdinalIgnoreCase);
-        Assert.Contains("About four projects I developed myself", PromptBuilder.HaecoGenericDirective);
-        Assert.Contains("whole SDLC", PromptBuilder.HaecoGenericDirective);
-        Assert.Contains("not only UAT", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("Shenzhen", PromptBuilder.HaecoGenericDirective); // arc mentions tech BA/PBIs with Shenzhen
+        Assert.Contains("Do not dump all seven system names", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("still in DEV", PromptBuilder.HaecoGenericDirective);
         Assert.Contains("Do not open with Yeah", PromptBuilder.DefaultTone);
         Assert.Contains("Vibe-coded", PromptBuilder.DefaultTone);
         Assert.Contains("bug fix, never buff fix", PromptBuilder.DefaultTone);
@@ -327,7 +326,7 @@ public class PromptPolicyTests
         Assert.False(PromptBuilder.IsOffTopic("Why did you build InterviewMe?"));
         Assert.True(PromptBuilder.LooksLikeInterviewMeProject("Why did you build this website?"));
         Assert.Contains("one month", PromptBuilder.NoticeDirective);
-        Assert.Contains("About four projects I developed myself", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("Do not dump all seven system names", PromptBuilder.HaecoGenericDirective);
         Assert.DoesNotContain("six", PromptBuilder.HaecoGenericDirective, StringComparison.OrdinalIgnoreCase);
     }
 
@@ -381,7 +380,9 @@ public class PromptPolicyTests
     {
         Assert.False(PromptBuilder.LooksLikeHaecoNamedSystems("What did you do at HAECO?"));
         Assert.True(PromptBuilder.LooksLikeHaecoNamedSystems("Tell me about Read and Sign"));
-        Assert.Contains("Do not mention Read and Sign", PromptBuilder.HaecoGenericDirective);
+        Assert.True(PromptBuilder.LooksLikeHaecoNamedSystems("What is Capacity Checker?"));
+        Assert.True(PromptBuilder.LooksLikeHaecoNamedSystems("Tell me about Shift Briefing"));
+        Assert.Contains("Do not claim Read and Sign is in production", PromptBuilder.HaecoGenericDirective);
         Assert.DoesNotContain("the main one", PromptBuilder.HaecoGenericDirective);
     }
 }
