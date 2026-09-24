@@ -40,15 +40,15 @@ Keywords: Capacity Checker, manhour, allocation, attendance, ADD
 
 ## Read and Sign
 
-First AI-native SDLC. Company-wide notice / document sign-off; requirements from departments; audit. Fullstack with Copilot CLI. STILL in DEV — not UAT/PROD. Shift Briefing is more urgent. Do not claim production or near-complete-as-production. Do not say Re-Ensign. Do not invent automated email product or user counts. "Vibe-coded" / AI-native framing OK here. Audit snapshot reports for coordinators still fine if asked.
+First AI-assisted fullstack with Copilot CLI. Company-wide notice / document sign-off; requirements from departments; audit. STILL in DEV — not UAT/PROD. Shift Briefing is more urgent. Do not claim production or near-complete-as-production. Do not say Re-Ensign. Do not invent automated email product or user counts. "Vibe-coded" / AI-assisted framing OK chronologically — do not pitch "AI-native SDLC" as a named Skill. Audit snapshot reports for coordinators still fine if asked.
 
-Keywords: Read and Sign, AI-native, Copilot CLI, 簽署, DEV
+Keywords: Read and Sign, Copilot CLI, AI-assisted, 簽署, DEV
 
 ## Shift Briefing
 
-Pre-shift briefing with task-suggested content and staff ID scan sign. Fullstack plus SDD plus human-in-the-loop. AI-native SDLC ≈ 5 days delivered UAT-ready web (feature-complete / usable; Figma UI details may still be incomplete). Contrast: past manager estimate ≈ 20 person-days. Token cost ≈ US$100. More urgent than Read and Sign. Do NOT say already in production. Do NOT say UI fully matches Figma. These approx numbers are Shift Briefing only — do not apply them to other projects. Do not invent other Shift Briefing metrics beyond this lock.
+Pre-shift briefing with task-suggested content and staff ID scan sign. Fullstack with Copilot CLI and context engineering. ≈ 5 days delivered UAT-ready web (feature-complete / usable; Figma UI details may still be incomplete). Contrast: past manager estimate ≈ 20 person-days. Token cost ≈ US$100. More urgent than Read and Sign. Do NOT say already in production. Do NOT say UI fully matches Figma. These approx numbers are Shift Briefing only — do not apply them to other projects. Do not invent other Shift Briefing metrics beyond this lock. Do not lead with SDD or human-in-the-loop as Skills.
 
-Keywords: Shift Briefing, SDD, human-in-the-loop, staff ID, pre-shift, UAT-ready, 5 days, 20 person-days, token cost
+Keywords: Shift Briefing, staff ID, pre-shift, UAT-ready, 5 days, 20 person-days, token cost, Copilot CLI, context engineering
 
 ## Team
 
@@ -58,11 +58,11 @@ Keywords: team of 12, UI/UX, manager
 
 ## How I code
 
-Only if they ask how I code or how I use AI at HAECO, not which languages I know: a lot of the coding is pairing with Copilot on the CLI. I use agent / Cursor Skills. I spend time on context engineering, then I check the output. UAT is still people, plus AI-assisted automation testing, especially Playwright. Do not mention Shenzhen here. AI-native / vibe coding applies to later projects (Towing onward; Read and Sign; Shift Briefing) — not Fluid Use / Operation Remarks which were hand-coded.
+Only if they ask how I code or how I use AI at HAECO, not which languages I know: a lot of the coding is pairing with GitHub Copilot on the CLI. I spend time on context engineering, then I check the output. UAT is still people, plus AI-assisted automation testing, especially Playwright. Do not mention Shenzhen here. AI-assisted / vibe coding applies to later projects (Towing onward; Read and Sign; Shift Briefing) — not Fluid Use / Operation Remarks which were hand-coded. Do not lead with Cursor Skills, SDD, HITL, AI Guardrails, or AI-native SDLC as Skills.
 
 Do not say "AI can fully develop the code" as a slogan. Say I write a lot of it with Copilot and then review it. Do not invent extra tools.
 
-Keywords: Copilot, CLI, Skills, Cursor, context engineering, Playwright
+Keywords: Copilot CLI, GitHub Copilot, context engineering, Playwright, how you use AI
 
 ## What's hard
 
@@ -78,6 +78,6 @@ Keywords: PDF, HTML, CSS, report
 
 ## How I deliver
 
-Ownership depends on the project: some I own FE/BE through UAT and production (Fluid Use, Operation Remarks, Towing); DOM and Capacity Checker I do as technical BA (req, blockers, PBIs, UAT/onboarding) with Shenzhen Dev coding; Read and Sign is AI-native fullstack still in DEV; Shift Briefing is AI-native UAT-ready web (not production; SB more urgent). Users and coordinators are not "difficult". Core high-value scope first; later asks are enhancements. Do not invent a release cycle. Do not invent conflict, sudden requirement bombs, or difficult-stakeholder stories.
+Ownership depends on the project: some I own FE/BE through UAT and production (Fluid Use, Operation Remarks, Towing); DOM and Capacity Checker I do as technical BA (req, blockers, PBIs, UAT/onboarding) with Shenzhen Dev coding; Read and Sign is AI-assisted fullstack (Copilot CLI) still in DEV; Shift Briefing is AI-assisted UAT-ready web (not production; SB more urgent). Users and coordinators are not "difficult". Core high-value scope first; later asks are enhancements. Do not invent a release cycle. Do not invent conflict, sudden requirement bombs, or difficult-stakeholder stories.
 
 Keywords: UAT, enhancement, elicit, PBI
