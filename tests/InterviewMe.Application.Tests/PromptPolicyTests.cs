@@ -710,6 +710,23 @@ public class PromptPolicyTests
     }
 
     [Fact]
+    public async Task Q26_making_things_up_does_not_pull_the_security_facts()
+    {
+        const string q = "How do you stop an LLM from making things up about you?";
+        Assert.False(PromptBuilder.LooksLikeSecurityQuestion(q));
+        var (store, embeddings) = await TestSupport.IngestDemoAsync();
+        var useCase = TestSupport.CreateChatUseCase(store, embeddings, new StubLlmClient());
+
+        var text = "";
+        await foreach (var evt in useCase.StreamAsync(new ChatCommand(q, "q26", "test")))
+        {
+            if (evt.Type == "token" && evt.Text is not null) text += evt.Text;
+        }
+        Assert.DoesNotContain("prompt injection", text, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("screen every question", text, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
     public void Follow_up_routes_with_previous_question()
     {
         Assert.True(PromptBuilder.LooksLikeFollowUp("Can you go into more detail?"));

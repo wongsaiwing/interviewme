@@ -175,6 +175,15 @@ public sealed class ChatUseCase
         facts = await ExpandShenzhenCollaborationAsync(message, facts, cancellationToken);
         facts = await ExpandQaTopicsAsync(message, facts, cancellationToken);
 
+        // Security protections are only for security questions (and their follow-ups, whose retrieval
+        // query includes the previous question). Keeps e.g. "stop an LLM making things up" on its own shape.
+        if (!PromptBuilder.LooksLikeSecurityQuestion(message))
+        {
+            facts = facts
+                .Where(f => !f.Source.StartsWith("interviewme-security.md", StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+
         var expandIntro = PromptBuilder.IsIntroduction(message)
                           || (facts.Count == 0 && PromptBuilder.LooksLikeAboutMe(message));
         if (!expandIntro)
