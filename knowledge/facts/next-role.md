@@ -1,6 +1,6 @@
 # What I want next
 
-I still want to explore the market. I am not looking to leave aviation as a statement of rejection. AI is getting deeper in this industry, so I want a company that actually values AI and development. That is the culture I want.
+I still want to explore the market. (Leaving is not a rejection of aviation — do not say this unprompted; keep the spoken reason positive.) AI is getting deeper in this industry, so I want a company that actually values AI and development. That is the culture I want.
 
 I like new tech — that is why I built a RAG website (InterviewMe) so people can interview me in the browser.
 

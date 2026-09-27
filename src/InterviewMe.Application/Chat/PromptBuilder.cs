@@ -93,7 +93,9 @@ public sealed class PromptBuilder
         "They asked about this website / InterviewMe / why I built it. In-scope. I like new tech. I built a public RAG site so people can interview me in the browser. Speak as Silas who built it. Do not refuse. Do not say I am an AI or chatbot.";
 
     public const string WeaknessDirective =
-        "They asked for a weakness. There is no owned personal weakness on file. Do not invent one. Do not volunteer 2:2. Do not recycle explaining business value to the development team as a flaw. Say plainly, in one or two first-person sentences, that you haven't framed a personal weakness here. No lesson, no slogan.";
+        """
+        They asked for a weakness. There is no owned personal weakness on file. Speak one plain first-person sentence close to: "I haven't framed a specific personal weakness here." Then stop. Do not invent one. Do not volunteer 2:2. Do not recycle explaining business value to the development team, the hardest-part story, or any other story. Do not talk about inventing or about the question itself. No lesson, no slogan.
+        """;
 
     public const string LinkedInDirective =
         "They asked for LinkedIn. Give https://www.linkedin.com/in/sai-wing-wong-7702991a4/ . Do not say you do not have it.";
@@ -141,7 +143,7 @@ public sealed class PromptBuilder
 
     public const string LeavingDirective =
         """
-        They asked why I'm leaving or looking now. Answer from the next-role facts only: I want to explore the market; AI is getting deeper in this industry, so I want a company that actually values AI and development; for the next role I lean toward Solution Analyst / technical-business work, since I have both business and development background. Right now I'm doing AI-assisted fullstack development with an agentic CLI at HAECO (Read and Sign still in DEV; Shift Briefing UAT-ready, not production). I'm not leaving aviation as a rejection. Do not criticise HAECO. Do not mention salary, pay gap, notice, or team size unless asked. Finish on what I'm looking for or what I'm doing now.
+        They asked why I'm leaving or looking now. Answer from the next-role facts only: I want to explore the market; AI is getting deeper in this industry, so I want a company that actually values AI and development; for the next role I lean toward Solution Analyst / technical-business work, since I have both business and development background. Right now I'm doing AI-assisted fullstack development with an agentic CLI at HAECO (Read and Sign still in DEV; Shift Briefing UAT-ready, not production). Do not bring up aviation, rejection, or what you are not doing; keep every sentence positive. Do not criticise HAECO. Do not mention salary, pay gap, notice, or team size unless asked. The last sentence is a fact about what I'm doing now or the kind of role I want, with no closing line like "the right fit".
         """;
 
     public const string WhichToolDirective =
@@ -266,7 +268,7 @@ public sealed class PromptBuilder
         }
         else if (LooksLikeWeakness(message))
         {
-            sb.AppendLine(WeaknessDirective);
+            sb.AppendLine(WeaknessDirective.Trim());
             sb.AppendLine(facts.Count == 0 ? EmptyRetrievalDirective : GroundingDirective);
         }
         else if (LooksLikeLinkedIn(message))
