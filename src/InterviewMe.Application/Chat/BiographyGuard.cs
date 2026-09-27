@@ -71,6 +71,8 @@ public static class BiographyGuard
 
     private static readonly Regex ParenthesizedCjk = new(@"\s*[\(\uFF08][\u4e00-\u9fff\s]+[\)\uFF09]", RegexOptions.Compiled);
 
+    private static readonly Regex FillerActually = new(@"(?:,\s*actually,|\s+actually)(?=[\s,.!?])", RegexOptions.Compiled);
+
     private static readonly Regex ExtraSpaces = new(@"[ \t]{2,}", RegexOptions.Compiled);
 
     public const string LanguageFallback =
@@ -104,6 +106,7 @@ public static class BiographyGuard
         // Spoken-style safeguards (prompt rules come first; this only catches slips).
         result = EmDash.Replace(result, ", ");
         result = FullStack.Replace(result, m => m.Groups[1].Value + "ullstack");
+        result = FillerActually.Replace(result, "");
         if (!PromptBuilder.LooksMostlyChinese(result))
         {
             result = ParenthesizedCjk.Replace(result, "");

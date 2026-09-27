@@ -76,10 +76,23 @@ public sealed class ChatUseCase
 
         var history = _conversations.GetRecent(command.SessionId, _chatOptions.ConversationTurns);
         yield return ChatStreamEvent.Status("retrieve");
-        var facts = await RetrieveFactsAsync(command.Message, cancellationToken);
+        // Short follow-ups ("Can you go into more detail?") retrieve and route with the previous question.
+        var retrievalQuery = command.Message;
+        string? routingMessage = null;
+        if (PromptBuilder.LooksLikeFollowUp(command.Message))
+        {
+            var lastUser = history.LastOrDefault(m => m.Role == "user")?.Content;
+            if (!string.IsNullOrWhiteSpace(lastUser))
+            {
+                retrievalQuery = lastUser + " " + command.Message;
+                routingMessage = lastUser;
+            }
+        }
+
+        var facts = await RetrieveFactsAsync(retrievalQuery, cancellationToken);
 
         yield return ChatStreamEvent.Status("generate");
-        var prompt = _promptBuilder.Build(_profile.Name, command.Message, history, facts, _tone.GetFewShots());
+        var prompt = _promptBuilder.Build(_profile.Name, command.Message, history, facts, _tone.GetFewShots(), routingMessage);
 
         var assembled = new System.Text.StringBuilder();
         string? failureLine = null;
@@ -583,7 +596,9 @@ public sealed class ChatUseCase
         CancellationToken cancellationToken)
     {
         string[]? sources = null;
-        if (PromptBuilder.LooksLikeInterviewMeProject(message))
+        if (PromptBuilder.LooksLikeSecurityQuestion(message))
+            sources = ["interviewme-security.md", "interviewme.md"];
+        else if (PromptBuilder.LooksLikeInterviewMeProject(message))
             sources = ["interviewme.md", "next-role.md"];
         else if (PromptBuilder.LooksLikeLinkedIn(message))
             sources = ["linkedin.md"];
