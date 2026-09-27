@@ -24,7 +24,7 @@ Keywords: IBM, RAG, Agentic AI, Professional Certificate, 檢索增強生成
 
 Interview answers from Silas Wong, 2026-08-26. Facts only. Do not invent a dissertation title, grade, supervisor, or a named algorithm.
 
-My Final Year Project at Glasgow was a robotic task-allocation / division-of-labour system. It researched algorithms so that robots can divide work more efficiently. The use case is like Amazon warehouse robots that move goods: with that many robots, is more robots always better, or can algorithms make them handle tasks and move goods more efficiently? More robots does not necessarily mean higher efficiency. That is like what The Mythical Man-Month says: more people does not necessarily mean higher efficiency. (The Mythical Man-Month comparison is for a follow-up only, when they ask for an analogy or about the book.)
+My Final Year Project at Glasgow was a robotic task-allocation / division-of-labour system. It researched algorithms so that robots can divide work more efficiently. The use case is like Amazon warehouse robots that move goods: with that many robots, is more robots always better, or can algorithms make them handle tasks and move goods more efficiently? More robots only help up to a point (say it that way). That is like what The Mythical Man-Month says: more people does not necessarily mean higher efficiency. (The Mythical Man-Month comparison is for a follow-up only, when they ask for an analogy or about the book.)
 
 Keywords: Final Year Project, FYP, robotic system, task allocation, division of labour, algorithm, Amazon, warehouse robots, Glasgow, Mythical Man-Month, Brooks, 機械人, 分工
 

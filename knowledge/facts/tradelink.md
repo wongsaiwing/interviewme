@@ -18,7 +18,7 @@ Keywords: TradeLink, TradeLink Technologies, Programmer, 程式設計師, .NET F
 
 ## Why I left
 
-TradeLink was my first job. I moved on because I wanted to see how the market actually works, and I kept that explore-the-market mindset when changing jobs.
+TradeLink was my first job. I moved on because I wanted to see how the market works, and I kept that explore-the-market mindset when changing jobs.
 
 Keywords: first job, explore the market, HAECO, 轉工
 
