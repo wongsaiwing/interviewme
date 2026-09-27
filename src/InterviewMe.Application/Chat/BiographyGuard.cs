@@ -73,6 +73,13 @@ public static class BiographyGuard
 
     private static readonly Regex FillerActually = new(@"(?:,\s*actually,|\s+actually)(?=[\s,.!?])", RegexOptions.Compiled);
 
+    private static readonly Regex FillerGenuinely = new(@"\s+(?:genuinely|truly)(?=\s)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    // Not in the facts (model-invented detail); drop the whole sentence.
+    private static readonly Regex PaperSpreadsheetSentence = new(
+        @"(?<=^|[.!?]\s)[^.!?]*\b(?:paper or spreadsheets?|paper and spreadsheets?|spreadsheet steps|paper-based)\b[^.!?]*[.!?]\s*",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
     private static readonly Regex ExtraSpaces = new(@"[ \t]{2,}", RegexOptions.Compiled);
 
     public const string LanguageFallback =
@@ -107,6 +114,8 @@ public static class BiographyGuard
         result = EmDash.Replace(result, ", ");
         result = FullStack.Replace(result, m => m.Groups[1].Value + "ullstack");
         result = FillerActually.Replace(result, "");
+        result = FillerGenuinely.Replace(result, "");
+        result = PaperSpreadsheetSentence.Replace(result, "");
         if (!PromptBuilder.LooksMostlyChinese(result))
         {
             result = ParenthesizedCjk.Replace(result, "");

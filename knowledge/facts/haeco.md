@@ -1,6 +1,6 @@
 # HAECO
 
-July 2024 – now. Assistant Solution Analyst, HAECO Digital, working on operation systems for aviation MRO (Maintenance, Repair, Overhaul), the systems that support aircraft maintenance. Main stack .NET and React.
+July 2024 – now. Assistant Solution Analyst, HAECO Digital, working on operation systems for aviation MRO (Maintenance, Repair, Overhaul), covering aircraft maintenance. Main stack .NET and React.
 
 ## Generic what I do
 

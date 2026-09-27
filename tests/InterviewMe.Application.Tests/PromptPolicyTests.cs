@@ -533,8 +533,58 @@ public class PromptPolicyTests
     [Fact]
     public void Leaving_closes_on_role_without_new_direction()
     {
-        Assert.Contains("where that kind of work is the main part of the job", PromptBuilder.LeavingDirective);
+        Assert.Contains("I want to explore the market and see which role fits the direction I want to grow in.", PromptBuilder.LeavingDirective);
         Assert.DoesNotContain("keep building in that direction", PromptBuilder.LeavingDirective);
+    }
+
+    [Fact]
+    public void Round4_career_answers_route_to_their_own_shapes()
+    {
+        var pb = new PromptBuilder();
+        (string q, string expected)[] cases =
+        [
+            ("Why are you leaving HAECO?", "I want to explore the market and see which role fits the direction I want to grow in."),
+            ("Why do you want a Solution Analyst or digital transformation role instead of pure development?", "A Solution Analyst role mixes requirements, stakeholders, and delivery, which fits how I already work on a couple of systems."),
+            ("Where do you see yourself in three years?", "In three years I'd like to be owning the solution side of systems, from requirements through to delivery, in a role that combines business and development."),
+            ("What kind of company culture are you looking for?", "I'm looking for a company that values AI and development as part of how the team works day to day. I like new tech, so I want to keep building with it and learning."),
+            ("Why should we hire you over someone with more years of experience?", "I get work unstuck. I find the core that has business value first, then use an agentic CLI so technical blockers don't hold the team up."),
+            ("How do you keep up with new technology?", "I keep up mainly by building things with new tech."),
+            ("What does digital transformation mean to you?", "To me it's about changing how the work gets done: understand the manual steps, then use software and data to take them out of the process."),
+        ];
+        foreach (var (q, expected) in cases)
+        {
+            Assert.Contains(expected, pb.BuildSystem("Silas Wong", [], null, q));
+        }
+
+        // Pay-gap / coding-depreciates reasons are paused in first-level directives but kept in knowledge.
+        foreach (var d in new[] { PromptBuilder.NextRoleDirective, PromptBuilder.LeavingDirective, PromptBuilder.ThreeYearsDirective, PromptBuilder.HardBiographyDirective })
+        {
+            Assert.DoesNotContain("10%", d);
+            Assert.DoesNotContain("depreciates fast;", d);
+        }
+        var nextRole = File.ReadAllText(Path.Combine(TestSupport.FindKnowledgePath(), "facts", "next-role.md"));
+        Assert.Contains("do not use unless Scyko re-enables them", nextRole);
+        Assert.Contains("pay gap versus business-leaning roles is only about 10%", nextRole);
+
+        // One home per sentence.
+        Assert.DoesNotContain("review the diff", PromptBuilder.WhyHireDirective.Replace("Do not mention diff review", ""));
+        Assert.DoesNotContain("review the diff", nextRole);
+        Assert.Contains("so the systems that support aircraft maintenance", PromptBuilder.HaecoGenericDirective);
+        foreach (var f in new[] { "production.md", "haeco-projects.md" })
+            Assert.DoesNotContain("the systems that support aircraft maintenance", File.ReadAllText(Path.Combine(TestSupport.FindKnowledgePath(), "facts", f)));
+        Assert.Contains("\"so the systems that support aircraft maintenance\" only in the answer to \"What did you do at HAECO?\"", PromptBuilder.SpokenStyleDirective);
+        Assert.Contains("step-by-step", PromptBuilder.SpokenStyleDirective);
+
+        // Salary and notice untouched.
+        Assert.Contains("HKD 30,000 to 35,000 per month, matching industry standard and years of experience. That is enough.", PromptBuilder.ExpectedSalaryDirective);
+        Assert.Equal("They asked notice period or when I can start. Answer one month. Do not volunteer notice on other questions.", PromptBuilder.NoticeDirective);
+    }
+
+    [Fact]
+    public void Guard_strips_intensifiers_and_invented_paper_spreadsheet_sentence()
+    {
+        var clean = BiographyGuard.Sanitize("I'm looking for a company that genuinely values AI. A lot of that is turning paper or spreadsheet steps into something the frontline can use directly. At HAECO I work on operation systems for aviation MRO.");
+        Assert.Equal("I'm looking for a company that values AI. At HAECO I work on operation systems for aviation MRO.", clean);
     }
 
     [Fact]
@@ -549,7 +599,7 @@ public class PromptPolicyTests
     [Fact]
     public void No_negative_emphasis_patterns_in_prompt_tone_or_knowledge_phrasing()
     {
-        string[] banned = ["instead of", "rather than", "open memory", "inventing one", "UAT still includes people", "UAT is still people", "taught me a lot", "than a client", "client-vendor", "same side", "not listed", "wasn't", "aren't", "isn't", "not the main coder", "not main coder"];
+        string[] banned = ["instead of", "rather than", "rather than just", "less appealing", "moving away from", "genuinely", "paper or spreadsheet", "open memory", "inventing one", "UAT still includes people", "UAT is still people", "taught me a lot", "than a client", "client-vendor", "same side", "not listed", "wasn't", "aren't", "isn't", "not the main coder", "not main coder"];
         foreach (var text in SpokenPromptTexts())
         {
             var body = string.Join("\n", text.Split('\n').Where(l => !l.Contains("Banned phrasing:", StringComparison.Ordinal) && !l.Contains("No filler words", StringComparison.Ordinal)))

@@ -609,6 +609,10 @@ public sealed class ChatUseCase
             sources = ["interviewme-security.md", "interviewme.md"];
         else if (PromptBuilder.LooksLikeInterviewMeProject(message))
             sources = ["interviewme.md", "next-role.md"];
+        else if (PromptBuilder.LooksLikeThreeYears(message) || PromptBuilder.LooksLikeCulture(message) || PromptBuilder.LooksLikeWhyHire(message))
+            sources = ["next-role.md"];
+        else if (PromptBuilder.LooksLikeKeepUp(message))
+            sources = ["next-role.md", "interviewme.md", "ai-practice.md"];
         else if (PromptBuilder.LooksLikeLinkedIn(message))
             sources = ["linkedin.md"];
         else if (PromptBuilder.LooksLikeWeakness(message))
