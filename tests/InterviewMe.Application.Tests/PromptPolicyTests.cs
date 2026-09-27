@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using InterviewMe.Application.Chat;
 using InterviewMe.Domain;
 using InterviewMe.Infrastructure.Llm;
@@ -588,6 +589,106 @@ public class PromptPolicyTests
     }
 
     [Fact]
+    public void Round5_behavioural_answers_route_to_their_own_shapes()
+    {
+        var pb = new PromptBuilder();
+        (string q, string expected)[] cases =
+        [
+            ("Tell me about a time a stakeholder changed requirements late.", "When users ask for changes later, I treat them as enhancements. I check what they need, then take it through requirement, UAT, and sign-off."),
+            ("Describe a conflict with a teammate or vendor and how you handled it.", "With our Shenzhen team, I give them the requirements and PBIs and we clear blockers together. If something needs resolving, I handle it directly with the people involved."),
+            ("Tell me about a time you pushed back on a user request.", "When a request comes in, I look at what problem the user is trying to solve and whether the system already covers it. If it's an enhancement, I'll handle it as a proper change. If it doesn't fit the current scope, I'll say so and explain why, then work out what we can do."),
+            ("How do you explain a technical issue to a non-technical user?", "I start with what it means for their work. So I'd say what they'll see or what changes on their side, in plain words. Then I check they're with me before I go further, and I keep it to the part they need to make a decision. If they want more, I'll go one level deeper, but I let them pull that from me."),
+            ("Tell me about a time something failed in UAT or production.", "There was a typo in an edge-case path, and UAT didn't cover that case, so it got through. It caused a data problem for that specific case, so it became a top-priority hotfix because it affected Operations. For cases like that, I stay responsible for my projects after work hours too."),
+            ("How do you prioritise when several users want things at the same time?", "I start by looking at what each request affects, so I can separate the urgent operational issues from the nice-to-haves. Then I check the impact and who's blocked, because something stopping a mechanic or an engineer from working comes first. After that I line them up with the stakeholders, so we agree on the order and everyone knows where their request sits. On the systems I own, bigger changes go through the full process, and smaller fixes I just slot in."),
+            ("Tell me about a time you had to learn something quickly.", "The clearest one is when I moved into AI-assisted development at HAECO. I had to learn how to work with an agentic CLI, which meant learning how to give it the right context and then review the diff properly. I picked it up on the job, starting with the later projects like Towing and carrying it into Read and Sign and Shift Briefing."),
+            ("Describe a time you improved a process, not just a system.", "At HAECO, the clearest one is how I build now. I moved from hand-coding CRUD systems to AI-assisted development across the full SDLC. That changed how fast we get from requirements to something testable."),
+            ("How do you get users to adopt a new system?", "I start by getting the high-value core scope right, so the system solves the thing users care about most. I sit with the users and coordinators, understand their actual workflow, and build around that. Then I take it through UAT with them, so they're testing it and shaping it before go-live. After go-live, I own the follow-ups, so later requests come back to me as enhancements."),
+            ("Do you have any questions for us?", "Yes, a couple. How is the team structured around this role, and who would I work with most closely day to day? And what does success look like in the first six months?")
+        ];
+        foreach (var (q, expected) in cases)
+        {
+            var system = pb.BuildSystem("Silas Wong", [], null, q);
+            Assert.Contains(expected, system);
+        }
+        Assert.Null(PromptBuilder.BehaviouralDirectiveFor("What did you do at HAECO?"));
+        Assert.Null(PromptBuilder.BehaviouralDirectiveFor("How do you handle security for an LLM-backed web app?"));
+        Assert.Null(PromptBuilder.BehaviouralDirectiveFor("How did you work as a technical BA with an outsourced team?"));
+        Assert.Contains("Never blame an error on another team or person", PromptBuilder.SpokenStyleDirective);
+        var incidents = File.ReadAllText(Path.Combine(TestSupport.FindKnowledgePath(), "facts", "incidents.md"));
+        Assert.DoesNotContain("Shenzhen team made a typo", incidents);
+    }
+
+    /// <summary>
+    /// Rule B: no sentence template (6+ words, normalised) may appear in 3 or more approved answers.
+    /// Approved answers = every example answer in the tone file (rounds 1-5) plus the team answer.
+    /// Allowed: fixed fact descriptors that name a thing (role, way of working, locked Shift Briefing facts, what InterviewMe is).
+    /// </summary>
+    [Fact]
+    public void No_sentence_template_repeats_across_three_or_more_approved_answers()
+    {
+        var tone = File.ReadAllText(Path.Combine(TestSupport.FindKnowledgePath(), "tone", "professional.md"));
+        var answers = new Dictionary<string, string>();
+        foreach (Match m in Regex.Matches(tone, "^(?:Approved example|Example), (.*?):\n\"(.*?)\"\n", RegexOptions.Multiline | RegexOptions.Singleline))
+        {
+            answers[m.Groups[1].Value] = m.Groups[2].Value;
+        }
+        var team = Regex.Match(PromptBuilder.TeamDirective, "\"(I report to.*?)\"", RegexOptions.Singleline).Groups[1].Value;
+        answers["team"] = team;
+        Assert.True(answers.Count >= 40, $"only {answers.Count} approved answers parsed");
+
+        string[] allowedDescriptors =
+        [
+            "technical ba with our shenzhen team",
+            "ai assisted fullstack development with an agentic cli",
+            "and it's at the uat stage",
+            "development using an agentic cli and",
+            "so people can interview me in the browser",
+        ];
+        var hits = RepeatedTemplates(answers.Values, 6, 3)
+            .Where(g => !allowedDescriptors.Any(a => a.Contains(g, StringComparison.Ordinal)))
+            .ToList();
+        Assert.True(hits.Count == 0, "Repeated templates: " + string.Join(" | ", hits));
+
+        // The detector itself flags the round-5 raw templates.
+        string[] raw =
+        [
+            "Later asks come through as enhancements, and I take those through requirement, UAT, and sign-off.",
+            "If it's really an enhancement, I'll take it through requirement, UAT, and sign-off.",
+            "On the systems I own, I take the bigger changes through requirement, UAT, and sign-off.",
+        ];
+        Assert.Contains("through requirement uat and sign off", RepeatedTemplates(raw, 6, 3));
+    }
+
+    internal static List<string> RepeatedTemplates(IEnumerable<string> answers, int n, int minAnswers)
+    {
+        var seen = new Dictionary<string, HashSet<int>>(StringComparer.Ordinal);
+        var i = 0;
+        foreach (var answer in answers)
+        {
+            var words = Regex.Matches(answer.ToLowerInvariant().Replace('\u2019', '\''), "[a-z0-9$']+").Select(m => m.Value).ToArray();
+            for (var k = 0; k + n <= words.Length; k++)
+            {
+                var gram = string.Join(' ', words, k, n);
+                if (!seen.TryGetValue(gram, out var set)) seen[gram] = set = [];
+                set.Add(i);
+            }
+            i++;
+        }
+        return seen.Where(kv => kv.Value.Count >= minAnswers).Select(kv => kv.Key).ToList();
+    }
+
+    [Fact]
+    public void Guard_drops_no_story_openings_and_mid_answer_in_person_lines()
+    {
+        var clean = BiographyGuard.Sanitize("I don't have a conflict story I'd tell here. With our Shenzhen team, I give them the requirements. That's one I'd rather answer properly in person.");
+        Assert.Equal("With our Shenzhen team, I give them the requirements.", clean);
+        Assert.Equal("I start with what it means for their work. Then I check.", BiographyGuard.Sanitize("I start with what it means for their work, not the technical detail. Then I check."));
+        var weakness = "That's one I'd rather answer properly in person, so I won't give you a rehearsed line here.";
+        Assert.Equal(weakness, BiographyGuard.Sanitize(weakness));
+        Assert.Equal("That's a good one to go through properly in person.", BiographyGuard.Sanitize("That's a good one to go through properly in person."));
+    }
+
+    [Fact]
     public void Guard_replaces_em_dash_fullstack_and_parenthesized_chinese()
     {
         var clean = BiographyGuard.Sanitize("Towing is the clearest one \u2014 it moves aircraft. I'm a full-stack developer. Fluid Use is for mechanics (入油).");
@@ -599,7 +700,7 @@ public class PromptPolicyTests
     [Fact]
     public void No_negative_emphasis_patterns_in_prompt_tone_or_knowledge_phrasing()
     {
-        string[] banned = ["instead of", "rather than", "rather than just", "less appealing", "moving away from", "genuinely", "paper or spreadsheet", "open memory", "inventing one", "UAT still includes people", "UAT is still people", "taught me a lot", "than a client", "client-vendor", "same side", "not listed", "wasn't", "aren't", "isn't", "not the main coder", "not main coder"];
+        string[] banned = ["don't have a specific", "story I'd tell", "not the technical detail", "keep it general", "instead of", "rather than", "rather than just", "less appealing", "moving away from", "genuinely", "paper or spreadsheet", "open memory", "inventing one", "UAT still includes people", "UAT is still people", "taught me a lot", "than a client", "client-vendor", "same side", "not listed", "wasn't", "aren't", "isn't", "not the main coder", "not main coder"];
         foreach (var text in SpokenPromptTexts())
         {
             var body = string.Join("\n", text.Split('\n').Where(l => !l.Contains("Banned phrasing:", StringComparison.Ordinal) && !l.Contains("No filler words", StringComparison.Ordinal)))

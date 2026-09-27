@@ -80,6 +80,19 @@ public static class BiographyGuard
         @"(?<=^|[.!?]\s)[^.!?]*\b(?:paper or spreadsheets?|paper and spreadsheets?|spreadsheet steps|paper-based)\b[^.!?]*[.!?]\s*",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+    // Negative openings on behavioural questions (rule A/F); prompt rules come first.
+    private static readonly Regex NoStorySentence = new(
+        @"(?<=^|[.!?]\s)I don'?t have an? (?:specific |particular )?[^.!?]*?\bstor(?:y|ies)\b[^.!?]*[.!?]\s*",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    private static readonly Regex KeepItGeneral = new(@",\s*so I'll keep it general(?=[.!?])", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    private static readonly Regex NotTheTechnicalDetail = new(@",\s*not the technical details?(?=[.!?,])", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    private static readonly Regex InPersonSentence = new(
+        @"(?<=[.!?]\s)[^.!?]*\brather (?:answer|discuss|talk about|go through)[^.!?]*\bin person\b[^.!?]*[.!?]\s*",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
     private static readonly Regex ExtraSpaces = new(@"[ \t]{2,}", RegexOptions.Compiled);
 
     public const string LanguageFallback =
@@ -116,6 +129,10 @@ public static class BiographyGuard
         result = FillerActually.Replace(result, "");
         result = FillerGenuinely.Replace(result, "");
         result = PaperSpreadsheetSentence.Replace(result, "");
+        result = NoStorySentence.Replace(result, "");
+        result = KeepItGeneral.Replace(result, "");
+        result = NotTheTechnicalDetail.Replace(result, "");
+        result = InPersonSentence.Replace(result, "");
         if (!PromptBuilder.LooksMostlyChinese(result))
         {
             result = ParenthesizedCjk.Replace(result, "");

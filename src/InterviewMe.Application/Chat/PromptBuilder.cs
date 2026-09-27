@@ -166,6 +166,10 @@ public sealed class PromptBuilder
         - Banned phrasing: no intensifiers such as "genuinely" or "truly". No restating the answer and no slogan-style closing. No endorsement-style tail that grades your own reason (for example "which fits me well" or "That works for me"); the salary and notice answers keep their approved wording. Never describe turning "paper or spreadsheet" steps into systems; that is not in the facts.
         - One home per sentence: "I review the diff myself" only in answers about how something was built or how you use AI. "so the systems that support aircraft maintenance" only in the answer to "What did you do at HAECO?". Do not reuse a reason or sentence from another answer.
         - When they ask how you do something (use AI, run UAT, gather requirements, improve a process), a short step-by-step answer (first, then, after that) is fine.
+        - One home per sentence also covers these templates: "take it through requirement, UAT, and sign-off" only when they ask about enhancement requests or late requirement changes; "I give it the right context, then I review the diff myself" and "Users still do UAT, and I add automated tests on top" only when they ask how you use AI, what an agentic CLI is, or how you check AI code. Elsewhere say it differently or leave it out.
+        - Banned phrasing: no negative openings such as "I don't have a specific ... story", "I don't have a story", "not the technical detail", or "so I'll keep it general".
+        - Behavioural questions with no specific story in the facts: answer directly with how you handle it. Never say you have no story, and never say mid-answer that you'd rather discuss it in person (the weakness answer keeps its own approved sentence).
+        - Never blame an error on another team or person. Say what happened and what you did about it.
         - First-level answers carry no numbers, dates, or person names. Shift Briefing's time and cost numbers come only when they ask how it was built or how much faster AI made it. Internship dates and Mike Berners-Lee's name come only on a follow-up.
         - "I review every diff" belongs only in answers about how something was built or how you use AI. It is never a closing line.
         - Figma UI details come up only when they ask about the UI or Figma.
@@ -200,6 +204,36 @@ public sealed class PromptBuilder
 
     public const string DigitalTransformationDirective =
         "They asked what digital transformation means to me. Speak close to this: \"To me it's about changing how the work gets done: understand the manual steps, then use software and data to take them out of the process. At HAECO I work on operation systems for aviation MRO.\" Then stop. Do not say \"the systems that support aircraft maintenance\". Do not describe paper or spreadsheet steps. No slogan closing about mechanics, admin, or the aircraft.";
+
+    public const string LateChangeDirective =
+        "They asked about a stakeholder changing requirements late. Say this, close to word for word: \"When users ask for changes later, I treat them as enhancements. I check what they need, then take it through requirement, UAT, and sign-off.\" Then stop.";
+
+    public const string ConflictDirective =
+        "They asked about a conflict with a teammate or vendor. Say this, close to word for word: \"With our Shenzhen team, I give them the requirements and PBIs and we clear blockers together. If something needs resolving, I handle it directly with the people involved.\" Then stop. Do not say you would rather discuss it in person.";
+
+    public const string PushBackDirective =
+        "They asked about pushing back on a user request. Say this, close to word for word: \"When a request comes in, I look at what problem the user is trying to solve and whether the system already covers it. If it's an enhancement, I'll handle it as a proper change. If it doesn't fit the current scope, I'll say so and explain why, then work out what we can do.\" Then stop.";
+
+    public const string ExplainNonTechnicalDirective =
+        "They asked about explaining a technical issue to a non-technical user. Say this, close to word for word: \"I start with what it means for their work. So I'd say what they'll see or what changes on their side, in plain words. Then I check they're with me before I go further, and I keep it to the part they need to make a decision. If they want more, I'll go one level deeper, but I let them pull that from me.\" Then stop.";
+
+    public const string FailureDirective =
+        "They asked about a time something failed in UAT or production. Say this, close to word for word: \"There was a typo in an edge-case path, and UAT didn't cover that case, so it got through. It caused a data problem for that specific case, so it became a top-priority hotfix because it affected Operations. For cases like that, I stay responsible for my projects after work hours too.\" Then stop. Do not blame another team or person.";
+
+    public const string PrioritiseDirective =
+        "They asked about prioritising when several users want things at the same time. Say this, close to word for word: \"I start by looking at what each request affects, so I can separate the urgent operational issues from the nice-to-haves. Then I check the impact and who's blocked, because something stopping a mechanic or an engineer from working comes first. After that I line them up with the stakeholders, so we agree on the order and everyone knows where their request sits. On the systems I own, bigger changes go through the full process, and smaller fixes I just slot in.\" Then stop.";
+
+    public const string LearnQuicklyDirective =
+        "They asked about a time I had to learn something quickly. Say this, close to word for word: \"The clearest one is when I moved into AI-assisted development at HAECO. I had to learn how to work with an agentic CLI, which meant learning how to give it the right context and then review the diff properly. I picked it up on the job, starting with the later projects like Towing and carrying it into Read and Sign and Shift Briefing.\" Then stop.";
+
+    public const string ImprovedProcessDirective =
+        "They asked about a time I improved a process. Say this, close to word for word: \"At HAECO, the clearest one is how I build now. I moved from hand-coding CRUD systems to AI-assisted development across the full SDLC. That changed how fast we get from requirements to something testable.\" Then stop.";
+
+    public const string AdoptionDirective =
+        "They asked about getting users to adopt a new system. Say this, close to word for word: \"I start by getting the high-value core scope right, so the system solves the thing users care about most. I sit with the users and coordinators, understand their actual workflow, and build around that. Then I take it through UAT with them, so they're testing it and shaping it before go-live. After go-live, I own the follow-ups, so later requests come back to me as enhancements.\" Then stop.";
+
+    public const string QuestionsForUsDirective =
+        "They asked about whether I have questions for them. Say this, close to word for word: \"Yes, a couple. How is the team structured around this role, and who would I work with most closely day to day? And what does success look like in the first six months?\" Then stop.";
 
     public const string LeavingDirective =
         """
@@ -319,6 +353,11 @@ public sealed class PromptBuilder
         else if (LooksLikeLeaving(message))
         {
             sb.AppendLine(LeavingDirective.Trim());
+            sb.AppendLine(facts.Count == 0 ? EmptyRetrievalDirective : GroundingDirective);
+        }
+        else if (BehaviouralDirectiveFor(message) is { } behavioural)
+        {
+            sb.AppendLine(behavioural);
             sb.AppendLine(facts.Count == 0 ? EmptyRetrievalDirective : GroundingDirective);
         }
         else if (LooksLikeThreeYears(message) || LooksLikeCulture(message) || LooksLikeWhyHire(message) || LooksLikeKeepUp(message) || LooksLikeDigitalTransformation(message))
@@ -711,6 +750,39 @@ public sealed class PromptBuilder
 
     public static bool LooksLikeDigitalTransformation(string userMessage) =>
         HasAny(userMessage, ["digital transformation mean", "what is digital transformation", "define digital transformation", "what's digital transformation", "數碼轉型係"]);
+
+    public static bool LooksLikeLateChange(string userMessage) => HasAny(userMessage, ["changed requirements late", "requirements late", "late change", "changed requirements", "changed the requirements", "scope change", "changing requirements"]);
+
+    public static bool LooksLikeConflict(string userMessage) => HasAny(userMessage, ["conflict", "disagreement", "disagreed", "disagree with"]);
+
+    public static bool LooksLikePushBack(string userMessage) => HasAny(userMessage, ["pushed back", "push back", "pushback", "said no to", "say no to"]);
+
+    public static bool LooksLikeExplainNonTechnical(string userMessage) => HasAny(userMessage, ["non-technical", "non technical", "nontechnical", "explain a technical", "to a layman"]);
+
+    public static bool LooksLikeFailure(string userMessage) => HasAny(userMessage, ["something failed", "failed in uat", "failed in production", "went wrong", "a mistake you made", "a time you failed", "failure"]);
+
+    public static bool LooksLikePrioritise(string userMessage) => HasAny(userMessage, ["prioritise", "prioritize", "prioritising", "prioritizing", "competing requests", "several users want"]);
+
+    public static bool LooksLikeLearnQuickly(string userMessage) => HasAny(userMessage, ["learn something quickly", "learn quickly", "learned quickly", "learn something fast", "learn fast", "pick up something new", "learnt quickly"]);
+
+    public static bool LooksLikeImprovedProcess(string userMessage) => HasAny(userMessage, ["improved a process", "improve a process", "process improvement", "improved the process"]);
+
+    public static bool LooksLikeAdoption(string userMessage) => HasAny(userMessage, ["adopt", "adoption", "get users to use"]);
+
+    public static bool LooksLikeQuestionsForUs(string userMessage) => HasAny(userMessage, ["questions for us", "any questions for", "questions for me", "anything you'd like to ask", "anything you want to ask"]);
+
+    public static string? BehaviouralDirectiveFor(string userMessage) =>
+        LooksLikeLateChange(userMessage) ? LateChangeDirective :
+        LooksLikeConflict(userMessage) ? ConflictDirective :
+        LooksLikePushBack(userMessage) ? PushBackDirective :
+        LooksLikeExplainNonTechnical(userMessage) ? ExplainNonTechnicalDirective :
+        LooksLikeFailure(userMessage) ? FailureDirective :
+        LooksLikePrioritise(userMessage) ? PrioritiseDirective :
+        LooksLikeLearnQuickly(userMessage) ? LearnQuicklyDirective :
+        LooksLikeImprovedProcess(userMessage) ? ImprovedProcessDirective :
+        LooksLikeAdoption(userMessage) ? AdoptionDirective :
+        LooksLikeQuestionsForUs(userMessage) ? QuestionsForUsDirective :
+        null;
 
     private static bool HasAny(string userMessage, string[] needles)
     {

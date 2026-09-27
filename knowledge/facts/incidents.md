@@ -18,6 +18,6 @@ Keywords: Shenzhen, 深圳, 分部, 夾方, 乙方, requirements, implementation
 
 ## Typo / edge-case missed in UAT
 
-There was a case where the Shenzhen team made a typo. It was edge-case handling, so UAT testing did not catch it. That led to a data problem: a specific case could not be handled. It became a hotfix at the highest priority and affected Operations. Because of hotfixes like this, I still have to stay responsible for the project after work hours.
+There was a typo in an edge-case path, and UAT didn't cover that case, so it got through. It caused a data problem for that specific case, so it became a top-priority hotfix because it affected Operations. For cases like that, I stay responsible for my projects after work hours too. (Never blame another team for it.)
 
 Keywords: typo, edge case, UAT miss, hotfix, highest priority, Operations, after hours, 打錯字, 收工
