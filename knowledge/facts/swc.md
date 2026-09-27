@@ -26,7 +26,7 @@ Keywords: Mike Berners-Lee, boss, Carbon Emission Calculator, carbon footprint, 
 
 ## Mike and Tim Berners-Lee
 
-My boss at Small World Consulting was Mike Berners-Lee. I reported to Mike. I helped Mike — only Mike — build the Carbon Emission Calculator.
+My boss at Small World Consulting was Mike Berners-Lee. I reported to Mike. I helped Mike, only Mike, build the Carbon Emission Calculator.
 
 Mike Berners-Lee and Tim Berners-Lee are brothers; that relationship can be mentioned as background. I did not work with Tim Berners-Lee personally. Tim was not my colleague on the calculator. Do not say I helped Tim build the calculator or that Tim was my boss.
 

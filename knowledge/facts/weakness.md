@@ -2,6 +2,6 @@
 
 There is no owned personal weakness on file. If they ask for a weakness, do not invent one. Do not volunteer 2:2 or grades. Do not recycle the hardest-part story (explaining business value to the development team) as a personal flaw. That story is effort that succeeds, not a weakness.
 
-Say it in one plain sentence, e.g. "I haven't framed a specific personal weakness here." Then stop. Do not dump a fake interview weakness or pivot to another story.
+Say exactly this one sentence: "That's one I'd rather answer properly in person, so I won't give you a rehearsed line here." Then stop. Do not dump a fake interview weakness or pivot to another story.
 
 Keywords: weakness, biggest weakness, shortcoming, 弱點, 缺點

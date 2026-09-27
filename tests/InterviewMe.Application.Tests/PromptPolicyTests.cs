@@ -141,9 +141,9 @@ public class PromptPolicyTests
         var facts = new List<RetrievedFact>
         {
             new("p1", "profile.md", "Who I am",
-                "I am Silas Wong, a full-stack developer based in Hong Kong.", 0.9f),
+                "I am Silas Wong, a fullstack developer based in Hong Kong.", 0.9f),
             new("h1", "haeco.md", "Assistant Solution Analyst, HAECO",
-                "Assistant Solution Analyst at HAECO. Full-stack .NET and React.", 0.88f)
+                "Assistant Solution Analyst at HAECO. Fullstack .NET and React.", 0.88f)
         };
         var prompt = _builder.Build("Silas Wong", "introduce yourself", [], facts);
         var system = prompt.Messages[0].Content;
@@ -153,7 +153,7 @@ public class PromptPolicyTests
         var reply = StubLlmClient.Compose(prompt);
         Assert.Contains("Silas", reply, StringComparison.OrdinalIgnoreCase);
         Assert.Contains("HAECO", reply, StringComparison.OrdinalIgnoreCase);
-        Assert.Contains("full-stack", reply, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("fullstack", reply, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("don't have", reply, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("cannot introduce", reply, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("CV", reply, StringComparison.OrdinalIgnoreCase);
@@ -372,8 +372,8 @@ public class PromptPolicyTests
         Assert.Contains("Do not invent which HAECO system uses which", PromptBuilder.HardBiographyDirective);
         Assert.DoesNotContain("main database for MRO", PromptBuilder.HardBiographyDirective);
         Assert.Contains("do not invent a stakeholder who delayed go-live", PromptBuilder.HardBiographyDirective, StringComparison.OrdinalIgnoreCase);
-        Assert.Contains("Users are not difficult", PromptBuilder.HardBiographyDirective);
-        Assert.Contains("Later asks are enhancements", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("Never tell a difficult-user story", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("Later asks from users are enhancements", PromptBuilder.HardBiographyDirective);
     }
 
     [Fact]
@@ -409,7 +409,9 @@ public class PromptPolicyTests
         Assert.Contains("about five days", PromptBuilder.ShiftBriefingDirective);
         Assert.Contains("20 person-days", PromptBuilder.ShiftBriefingDirective);
         Assert.Contains("US$100", PromptBuilder.ShiftBriefingDirective);
-        Assert.Contains("not in production yet", PromptBuilder.ShiftBriefingDirective);
+        Assert.Contains("It's at the UAT stage.", PromptBuilder.ShiftBriefingDirective);
+        Assert.Contains("Do not claim production", PromptBuilder.ShiftBriefingDirective);
+        Assert.DoesNotContain("not in production yet", PromptBuilder.ShiftBriefingDirective);
         Assert.True(PromptBuilder.LooksLikeLeaving("Why are you leaving your current job?"));
         Assert.True(PromptBuilder.LooksLikeShiftBriefing("How did you build Shift Briefing?"));
         Assert.True(PromptBuilder.LooksLikeWhichTool("Which CLI do you use?"));
@@ -424,5 +426,118 @@ public class PromptPolicyTests
         Assert.Contains(PromptBuilder.HaecoGenericDirective.Trim(), haeco);
         Assert.Contains(PromptBuilder.SpokenStyleDirective.Trim(), haeco);
     }
-}
 
+    private static IEnumerable<string> SpokenPromptTexts()
+    {
+        yield return PromptBuilder.HardBiographyDirective;
+        yield return PromptBuilder.OffTopicDirective;
+        yield return PromptBuilder.HaecoGenericDirective;
+        yield return PromptBuilder.HaecoOwnershipDirective;
+        yield return PromptBuilder.ShiftBriefingDirective;
+        yield return PromptBuilder.LeavingDirective;
+        yield return PromptBuilder.WeaknessDirective;
+        yield return PromptBuilder.TeamDirective;
+        yield return PromptBuilder.AiReviewDirective;
+        yield return PromptBuilder.SpokenStyleDirective;
+        yield return PromptBuilder.IntroductionDirective;
+        yield return PromptBuilder.IcebreakerDirective;
+        yield return PromptBuilder.ProductionExperienceDirective;
+        yield return PromptBuilder.DefaultTone;
+        yield return PromptBuilder.OffTopicRefuseEnglish;
+        yield return PromptBuilder.IcebreakerReplyEnglish;
+        var root = TestSupport.FindKnowledgePath();
+        foreach (var file in Directory.GetFiles(root, "*.md", SearchOption.AllDirectories))
+        {
+            yield return File.ReadAllText(file);
+        }
+    }
+
+    [Fact]
+    public void No_em_dash_in_prompts_canned_replies_or_knowledge()
+    {
+        foreach (var text in SpokenPromptTexts())
+        {
+            Assert.DoesNotContain("\u2014", text, StringComparison.Ordinal);
+        }
+        Assert.Contains("never use an em dash", PromptBuilder.SpokenStyleDirective);
+    }
+
+    [Fact]
+    public void Fullstack_spelled_as_one_word_outside_retrieval_keywords()
+    {
+        foreach (var text in SpokenPromptTexts())
+        {
+            var body = string.Join("\n", text.Split('\n').Where(l => !l.TrimStart().StartsWith("Keywords:", StringComparison.Ordinal)));
+            Assert.DoesNotContain("full-stack", body, StringComparison.OrdinalIgnoreCase);
+            Assert.DoesNotContain("full stack", body, StringComparison.OrdinalIgnoreCase);
+        }
+        Assert.Contains("Spell it \"fullstack\", one word.", PromptBuilder.SpokenStyleDirective);
+    }
+
+    [Fact]
+    public void Current_work_line_is_gated_and_not_a_template_closing()
+    {
+        Assert.Contains("only when the question asks what you're doing now, your current work, or what you do at HAECO", PromptBuilder.SpokenStyleDirective);
+        Assert.Contains("No template closing line", PromptBuilder.SpokenStyleDirective);
+        Assert.DoesNotContain("Right now I'm doing", PromptBuilder.LeavingDirective);
+        Assert.DoesNotContain("what you're doing now", PromptBuilder.AiReviewDirective);
+        Assert.DoesNotContain("End on what I'm doing now", PromptBuilder.DefaultTone);
+        Assert.Contains("Right now I'm doing AI-assisted fullstack development with an agentic CLI.", PromptBuilder.HaecoGenericDirective);
+    }
+
+    [Fact]
+    public void Haeco_approved_example_kept_with_positive_status_and_exempt_from_high_level_rule()
+    {
+        Assert.Contains("Two current projects are Read and Sign, which is still in development, and Shift Briefing, which is at the UAT stage.\"", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("exception to the high-level-first rule", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("Answer high level and a bit general first", PromptBuilder.SpokenStyleDirective);
+        Assert.Contains("Do not claim Read and Sign or Shift Briefing is in production", PromptBuilder.HaecoGenericDirective);
+        Assert.DoesNotContain("not in production yet", PromptBuilder.HaecoGenericDirective);
+        var tone = File.ReadAllText(Path.Combine(TestSupport.FindKnowledgePath(), "tone", "professional.md"));
+        Assert.Contains("which is at the UAT stage.\"", tone);
+        Assert.DoesNotContain("not in production yet", tone);
+        Assert.Contains("Answer high level and a bit general first", tone);
+    }
+
+    [Fact]
+    public void Weakness_uses_the_in_person_line_and_invents_nothing()
+    {
+        const string line = "That's one I'd rather answer properly in person, so I won't give you a rehearsed line here.";
+        Assert.Contains(line, PromptBuilder.WeaknessDirective);
+        Assert.Contains("Do not invent one", PromptBuilder.WeaknessDirective);
+        Assert.DoesNotContain("framed a specific personal weakness", PromptBuilder.WeaknessDirective);
+        var weakness = File.ReadAllText(Path.Combine(TestSupport.FindKnowledgePath(), "facts", "weakness.md"));
+        Assert.Contains(line, weakness);
+        Assert.Contains("do not invent one", weakness);
+    }
+
+    [Fact]
+    public void Team_question_routes_to_team_directive_and_no_chinese_in_spoken_examples()
+    {
+        Assert.True(PromptBuilder.LooksLikeTeam("Who do you report to, and who do you work with day to day?"));
+        Assert.False(PromptBuilder.LooksLikeTeam("What did you do at HAECO?"));
+        var system = new PromptBuilder().BuildSystem("Silas Wong", [], null, "Who do you report to, and who do you work with day to day?");
+        Assert.Contains(PromptBuilder.TeamDirective.Trim(), system);
+        Assert.Contains("I also meet users when needed, and after they UAT, I fix issues or do enhancements on the systems I own.", PromptBuilder.TeamDirective);
+        Assert.False(PromptBuilder.LooksChinese(PromptBuilder.SpokenStyleDirective));
+        Assert.False(PromptBuilder.LooksChinese(PromptBuilder.HaecoGenericDirective));
+        Assert.DoesNotContain("入油", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("add oil or fluids", PromptBuilder.HardBiographyDirective);
+    }
+
+    [Fact]
+    public void Leaving_closes_on_role_without_new_direction()
+    {
+        Assert.Contains("where that kind of work is the main part of the job", PromptBuilder.LeavingDirective);
+        Assert.DoesNotContain("keep building in that direction", PromptBuilder.LeavingDirective);
+    }
+
+    [Fact]
+    public void Guard_replaces_em_dash_fullstack_and_parenthesized_chinese()
+    {
+        var clean = BiographyGuard.Sanitize("Towing is the clearest one \u2014 it moves aircraft. I'm a full-stack developer. Fluid Use is for mechanics (入油).");
+        Assert.DoesNotContain("\u2014", clean);
+        Assert.Contains("fullstack", clean);
+        Assert.DoesNotContain("入油", clean);
+    }
+}

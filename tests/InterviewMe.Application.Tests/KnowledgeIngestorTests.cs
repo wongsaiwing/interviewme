@@ -93,9 +93,9 @@ public class KnowledgeIngestorTests
         Assert.DoesNotContain("and console apps", markdown, StringComparison.OrdinalIgnoreCase);
         Assert.Contains("Do not say console apps", PromptBuilder.HardBiographyDirective);
         Assert.Contains("Official title is Programmer", markdown);
-        Assert.Contains("Do not change the job title to full-stack developer", markdown);
+        Assert.Contains("Do not change the job title to fullstack developer", markdown);
         Assert.Contains("Programmer", PromptBuilder.HardBiographyDirective);
-        Assert.Contains("full-stack developer title", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("fullstack developer title", PromptBuilder.HardBiographyDirective);
         Assert.DoesNotContain("console apps", PromptBuilder.HardBiographyDirective.Replace("Do not say console apps", ""));
     }
 

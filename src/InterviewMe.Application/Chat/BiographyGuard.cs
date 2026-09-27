@@ -65,6 +65,12 @@ public static class BiographyGuard
         @"\b(?:an?\s+)?(?:A1|A2|B1|B2|C1|C2)\b",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+    private static readonly Regex EmDash = new(@"\s*\u2014\s*", RegexOptions.Compiled);
+
+    private static readonly Regex FullStack = new(@"\b(F|f)ull[\s\-]stack\b", RegexOptions.Compiled);
+
+    private static readonly Regex ParenthesizedCjk = new(@"\s*[\(\uFF08][\u4e00-\u9fff\s]+[\)\uFF09]", RegexOptions.Compiled);
+
     private static readonly Regex ExtraSpaces = new(@"[ \t]{2,}", RegexOptions.Compiled);
 
     public const string LanguageFallback =
@@ -95,6 +101,14 @@ public static class BiographyGuard
         result = Cefr.Replace(result, "");
         result = LanguageBand.Replace(result, "");
         result = CefrLevel.Replace(result, "fluent");
+        // Spoken-style safeguards (prompt rules come first; this only catches slips).
+        result = EmDash.Replace(result, ", ");
+        result = FullStack.Replace(result, m => m.Groups[1].Value + "ullstack");
+        if (!PromptBuilder.LooksMostlyChinese(result))
+        {
+            result = ParenthesizedCjk.Replace(result, "");
+        }
+
         result = ExtraSpaces.Replace(result, " ").Trim();
 
         if (string.IsNullOrWhiteSpace(result))

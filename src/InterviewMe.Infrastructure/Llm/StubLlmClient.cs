@@ -59,14 +59,14 @@ public sealed class StubLlmClient : ILlmClient
             var body = ComposeFromFacts(prompt.Facts, spoken: false);
             var hasSilas = ContainsIgnore(body, "Silas");
             var hasHaeco = ContainsIgnore(body, "HAECO");
-            var hasStack = ContainsIgnore(body, "full-stack") || ContainsIgnore(body, "full stack");
+            var hasStack = ContainsIgnore(body, "fullstack") || ContainsIgnore(body, "full-stack") || ContainsIgnore(body, "full stack");
             if (hasSilas && hasHaeco && hasStack)
             {
                 return body;
             }
         }
 
-        return "I'm Silas Wong, a full-stack developer based in Hong Kong. " +
+        return "I'm Silas Wong, a fullstack developer based in Hong Kong. " +
                "In my current role at HAECO I'm an Assistant Solution Analyst, mostly .NET and React. " +
                "I'd say the work sits end-to-end, from requirements through to production.";
     }
