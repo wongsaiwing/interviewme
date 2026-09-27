@@ -22,7 +22,7 @@ Keywords: Operation Remarks, remarks, engineers, mechanics’ reports
 
 ## Towing
 
-Tow aircraft between bays for specific repair/maintain. More integrations. Worked with a BA on requirements; alone I did initiation → fullstack → UAT → production. Started using AI / vibe coding here. 飛 means bay. Never "incoming aircraft status".
+Tow aircraft between bays for specific repair/maintain. More integrations. I worked out the requirements with a BA, then built it alone from initiation to fullstack, UAT, and production. Started using AI / vibe coding here. 飛 means bay. Never "incoming aircraft status".
 
 Keywords: Towing, 接機, 拖機, bay, 飛, vibe coding
 

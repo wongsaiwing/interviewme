@@ -58,9 +58,12 @@ public static class DependencyInjection
         }
         else
         {
+            // Without a provider, the grounded stub (which echoes retrieved chunks) is for local
+            // Development or an explicit Llm:AllowStub only. Otherwise visitors get the fixed line.
+            var allowStub = llm.AllowStub || environment.IsDevelopment();
             services.AddSingleton<ILlmClient>(sp =>
                 new FallbackLlmClient(
-                    sp.GetRequiredService<StubLlmClient>(),
+                    allowStub ? sp.GetRequiredService<StubLlmClient>() : null,
                     sp.GetRequiredService<ILogger<FallbackLlmClient>>()));
         }
 

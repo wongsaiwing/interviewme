@@ -43,7 +43,7 @@ public sealed class OpenAiCompatibleLlmClient : ILlmClient
             var code = (int)response.StatusCode;
             _logger.LogWarning("LLM HTTP {StatusCode}", code);
             await response.Content.CopyToAsync(Stream.Null, cancellationToken);
-            throw new HttpRequestException($"LLM HTTP {code}");
+            throw new HttpRequestException($"LLM HTTP {code}", null, response.StatusCode);
         }
 
         await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);

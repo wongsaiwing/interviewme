@@ -5,7 +5,7 @@ For follow-up questions about which systems or a named project only. All seven a
 Order / roster (seven):
 1. Fluid Use, for mechanics when they add oil or fluids; CRUD+integrate; FE/BE→UAT→prod; hand-coded pre-AI; NOT requirements owner.
 2. Operation Remarks, engineers write remarks from mechanics’ reports/situation; FE/BE→UAT→prod; hand-coded; separate from Fluid Use.
-3. Towing, tow between bays; more integrations; with BA on req; alone initiation→fullstack→UAT→prod; started AI/vibe coding.
+3. Towing, tow between bays; more integrations; requirements worked out with a BA, then built alone from initiation to fullstack, UAT, and production; started AI/vibe coding.
 4. Daily Operation Monitor (DOM), LM aircraft status maintenance→actual departure; technical BA: req, blockers, Agile PBIs for Shenzhen Dev, UAT+onboarding; not main coder. PBI OK.
 5. Capacity Checker, after DOM before Read and Sign; req+blockers only; manhour/task allocation + attendance ratios; team-level ADD allocation edits; future allocation focus.
 6. Read and Sign, first AI-assisted fullstack with an agentic CLI; company-wide notice sign-off; req from departments; audit; STILL DEV not UAT/PROD (Shift Briefing more urgent). Do not claim production.

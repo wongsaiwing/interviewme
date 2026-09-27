@@ -53,7 +53,7 @@ Example, "What kind of users do your systems serve?":
 (System examples only on a follow-up. Then, for example: "Fluid Use is for mechanics when they add oil or fluids.")
 
 Opening, "Walk me through a system you took from requirements to production.":
-"Towing is the clearest one. It's the system that moves aircraft between bays, and it has more integrations than the earlier ones."
+"Towing is the clearest one. It's the system that moves aircraft between bays, and it has more integrations than the earlier ones. I worked out the requirements with a BA, then built it alone from initiation to fullstack, UAT, and production."
 
 After go-live: I own the follow-ups and take bigger changes through requirement, UAT, and sign-off. End there.
 

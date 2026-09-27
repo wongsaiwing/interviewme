@@ -231,8 +231,8 @@ public class ChatUseCaseTests
             }
         }
 
-        Assert.Equal(PromptBuilder.MissingDetailEnglish, text);
-        Assert.Contains("haven't covered", text, StringComparison.OrdinalIgnoreCase);
+        Assert.Equal(PromptBuilder.ProviderUnavailableEnglish, text);
+        Assert.Contains("try asking again", text, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("Exception", text, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("stack", text, StringComparison.OrdinalIgnoreCase);
     }

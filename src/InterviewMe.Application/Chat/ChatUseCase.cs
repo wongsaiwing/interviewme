@@ -82,6 +82,7 @@ public sealed class ChatUseCase
         var prompt = _promptBuilder.Build(_profile.Name, command.Message, history, facts, _tone.GetFewShots());
 
         var assembled = new System.Text.StringBuilder();
+        string? failureLine = null;
         try
         {
             await foreach (var token in _llm.StreamCompletionAsync(prompt, cancellationToken))
@@ -89,24 +90,51 @@ public sealed class ChatUseCase
                 assembled.Append(token);
             }
         }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (LlmUnavailableException ex)
+        {
+            failureLine = ex.RateLimited
+                ? PromptBuilder.ProviderRateLimitedEnglish
+                : PromptBuilder.ProviderUnavailableEnglish;
+        }
         catch (Exception)
         {
-            assembled.Clear();
-            assembled.Append(PromptBuilder.MissingDetailEnglish);
+            failureLine = PromptBuilder.ProviderUnavailableEnglish;
         }
 
-        var reply = BiographyGuard.Sanitize(assembled.ToString());
-        if (string.IsNullOrWhiteSpace(reply))
+        // Provider failure or empty reply: fixed line only. Never partial output, retrieved
+        // chunks, prompt text, or instruction text.
+        if (failureLine is null && string.IsNullOrWhiteSpace(assembled.ToString()))
         {
-            reply = PromptBuilder.MissingDetailEnglish;
+            failureLine = PromptBuilder.ProviderUnavailableEnglish;
+        }
+
+        string reply;
+        if (failureLine is not null)
+        {
+            reply = failureLine;
+        }
+        else
+        {
+            reply = BiographyGuard.Sanitize(assembled.ToString());
+            if (string.IsNullOrWhiteSpace(reply))
+            {
+                reply = PromptBuilder.ProviderUnavailableEnglish;
+            }
         }
         foreach (var piece in ChunkReply(reply, 24))
         {
             yield return ChatStreamEvent.Token(piece);
         }
 
-        _conversations.Append(command.SessionId, new ChatMessage("user", command.Message.Trim()));
-        _conversations.Append(command.SessionId, new ChatMessage("assistant", reply));
+        if (failureLine is null)
+        {
+            _conversations.Append(command.SessionId, new ChatMessage("user", command.Message.Trim()));
+            _conversations.Append(command.SessionId, new ChatMessage("assistant", reply));
+        }
 
         yield return ChatStreamEvent.Done();
     }

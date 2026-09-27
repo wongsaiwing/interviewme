@@ -10,5 +10,8 @@ public sealed class LlmOptions
     public int MaxTokens { get; set; } = 180;
     public float Temperature { get; set; } = 0.33f;
 
+    /// <summary>Allow the grounded stub when no API key is set (local dev/tests only).</summary>
+    public bool AllowStub { get; set; }
+
     public bool HasApiKey => !string.IsNullOrWhiteSpace(ApiKey);
 }
