@@ -295,7 +295,7 @@ public class PromptPolicyTests
         Assert.False(PromptBuilder.LooksLikeShenzhenCollaboration("What did you do at HAECO?"));
         Assert.True(PromptBuilder.LooksLikeShenzhenCollaboration("Do you work with the Shenzhen team?"));
         Assert.True(PromptBuilder.LooksLikeShenzhenCollaboration("Do you work with the development team?"));
-        Assert.Contains("Shenzhen", PromptBuilder.HaecoGenericDirective); // arc mentions tech BA/PBIs with Shenzhen
+        Assert.Contains("Shenzhen", PromptBuilder.HaecoGenericDirective); // technical BA with the Shenzhen team
         Assert.Contains("Do not dump all seven system names", PromptBuilder.HaecoGenericDirective);
         Assert.Contains("still in DEV", PromptBuilder.HaecoGenericDirective);
         Assert.Contains("Do not open with Yeah", PromptBuilder.DefaultTone);
@@ -390,6 +390,39 @@ public class PromptPolicyTests
         Assert.Contains("US$100", PromptBuilder.HardBiographyDirective);
         Assert.Contains("metrics SB-only", PromptBuilder.HardBiographyDirective);
         Assert.Contains("NOT full Figma lock-in", PromptBuilder.HardBiographyDirective);
+    }
+
+    [Fact]
+    public void Spoken_style_plain_interview_english_and_generic_agentic_cli()
+    {
+        Assert.Contains("an agentic CLI", PromptBuilder.SpokenStyleDirective);
+        Assert.Contains("only when they ask which tool", PromptBuilder.SpokenStyleDirective);
+        Assert.Contains("At HAECO, I'm in HAECO Digital, working on operation systems for aviation MRO", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("agentic CLI", PromptBuilder.HaecoGenericDirective);
+        Assert.DoesNotContain("Copilot", PromptBuilder.HaecoGenericDirective);
+        Assert.DoesNotContain("arc", PromptBuilder.HaecoGenericDirective);
+        Assert.DoesNotContain("generic IT", PromptBuilder.HaecoGenericDirective);
+        Assert.DoesNotContain("twelve", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("agentic CLI", PromptBuilder.AiReviewDirective);
+        Assert.Contains("GitHub Copilot CLI only if they ask which tool", PromptBuilder.AiReviewDirective);
+        Assert.Contains("GitHub Copilot CLI", PromptBuilder.WhichToolDirective);
+        Assert.Contains("about five days", PromptBuilder.ShiftBriefingDirective);
+        Assert.Contains("20 person-days", PromptBuilder.ShiftBriefingDirective);
+        Assert.Contains("US$100", PromptBuilder.ShiftBriefingDirective);
+        Assert.Contains("not in production yet", PromptBuilder.ShiftBriefingDirective);
+        Assert.True(PromptBuilder.LooksLikeLeaving("Why are you leaving your current job?"));
+        Assert.True(PromptBuilder.LooksLikeShiftBriefing("How did you build Shift Briefing?"));
+        Assert.True(PromptBuilder.LooksLikeWhichTool("Which CLI do you use?"));
+        Assert.False(PromptBuilder.LooksLikeWhichTool("How do you use AI at work?"));
+        Assert.Contains("GitHub Copilot CLI", PromptBuilder.HardBiographyDirective);
+
+        var pb = new PromptBuilder();
+        var leaving = pb.BuildSystem("Silas Wong", [], null, "Why are you leaving your current job?");
+        Assert.Contains(PromptBuilder.LeavingDirective.Trim(), leaving);
+        Assert.DoesNotContain(PromptBuilder.HaecoGenericDirective.Trim(), leaving);
+        var haeco = pb.BuildSystem("Silas Wong", [], null, "What did you do at HAECO?");
+        Assert.Contains(PromptBuilder.HaecoGenericDirective.Trim(), haeco);
+        Assert.Contains(PromptBuilder.SpokenStyleDirective.Trim(), haeco);
     }
 }
 
