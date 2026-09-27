@@ -611,5 +611,7 @@ public class PromptPolicyTests
         Assert.Contains("so it's easy to track who has read and acknowledged each document", tone);
         var education = File.ReadAllText(Path.Combine(root, "facts", "education.md"));
         Assert.Contains("The Mythical Man-Month comparison is for a follow-up only", education);
+        Assert.Contains("Add nothing about the project format, team, grade, or supervisor.", tone);
+        Assert.DoesNotContain("Mythical", tone);
     }
 }
