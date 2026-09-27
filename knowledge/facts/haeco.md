@@ -46,9 +46,9 @@ Keywords: Read and Sign, Copilot CLI, AI-assisted, 簽署, DEV
 
 ## Shift Briefing
 
-Pre-shift briefing with task-suggested content and staff ID scan sign. Fullstack with Copilot CLI and context engineering. ≈ 5 days delivered UAT-ready web (feature-complete / usable; Figma UI details may still be incomplete). Contrast: past manager estimate ≈ 20 person-days. Token cost ≈ US$100. More urgent than Read and Sign. Do NOT say already in production. Do NOT say UI fully matches Figma. These approx numbers are Shift Briefing only — do not apply them to other projects. Do not invent other Shift Briefing metrics beyond this lock. When asked how you built Shift Briefing, speak Copilot CLI and context engineering plus the locked metrics — not other skill slogans.
+Pre-shift briefing with task-suggested content and staff ID scan sign. AI-assisted .NET / React fullstack with GitHub Copilot CLI, and I review every diff. ≈ 5 days delivered UAT-ready web (feature-complete / usable; Figma UI details may still be incomplete). Contrast: past manager estimate ≈ 20 person-days. Token cost ≈ US$100. More urgent than Read and Sign. Do NOT say already in production. Do NOT say UI fully matches Figma. These approx numbers are Shift Briefing only — do not apply them to other projects. Do not invent other Shift Briefing metrics beyond this lock. When asked how you built or started Shift Briefing, say AI-assisted .NET / React with GitHub Copilot CLI plus diff review, then the locked metrics. Nothing else about method.
 
-Keywords: Shift Briefing, staff ID, pre-shift, UAT-ready, 5 days, 20 person-days, token cost, Copilot CLI, context engineering
+Keywords: Shift Briefing, staff ID, pre-shift, UAT-ready, 5 days, 20 person-days, token cost, Copilot CLI, diff review, .NET, React, how did you build Shift Briefing
 
 ## Team
 
