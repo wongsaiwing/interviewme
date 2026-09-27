@@ -643,6 +643,7 @@ public class PromptPolicyTests
             "and it's at the uat stage",
             "development using an agentic cli and",
             "so people can interview me in the browser",
+            "on operation systems for aviation mro",
         ];
         var hits = RepeatedTemplates(answers.Values, 6, 3)
             .Where(g => !allowedDescriptors.Any(a => a.Contains(g, StringComparison.Ordinal)))
