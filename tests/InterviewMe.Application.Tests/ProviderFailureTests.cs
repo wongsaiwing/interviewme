@@ -149,10 +149,21 @@ public class ProviderFailureTests
     [Fact]
     public void Towing_source_phrasing_says_requirements_with_a_BA()
     {
-        const string phrase = "I worked out the requirements with a BA, then built it alone from initiation to fullstack, UAT, and production";
+        const string phrase = "I worked out the requirements with a BA, then built it fullstack myself and took it through UAT to production";
         Assert.Contains(phrase, PromptBuilder.HardBiographyDirective);
         var root = TestSupport.FindKnowledgePath();
         Assert.Contains(phrase, File.ReadAllText(Path.Combine(root, "facts", "haeco.md")));
         Assert.Contains(phrase, File.ReadAllText(Path.Combine(root, "tone", "professional.md")));
+        Assert.Contains(phrase, File.ReadAllText(Path.Combine(root, "facts", "haeco-projects.md")));
+        foreach (var file in Directory.GetFiles(root, "*.md", SearchOption.AllDirectories))
+        {
+            var text = File.ReadAllText(file);
+            Assert.DoesNotContain("initiation to fullstack", text);
+            Assert.DoesNotContain("BA on req", text);
+            Assert.DoesNotContain("requirements with the users", text);
+            Assert.DoesNotContain("I was the BA", text);
+        }
+        Assert.DoesNotContain("initiation to fullstack", PromptBuilder.HardBiographyDirective);
+        Assert.DoesNotContain("BA on req", PromptBuilder.HardBiographyDirective);
     }
 }

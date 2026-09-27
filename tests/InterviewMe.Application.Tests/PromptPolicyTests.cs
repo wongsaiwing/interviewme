@@ -607,7 +607,7 @@ public class PromptPolicyTests
         Assert.Contains(PromptBuilder.InterviewMeProjectDirective, why);
 
         var tone = File.ReadAllText(Path.Combine(root, "tone", "professional.md"));
-        Assert.Contains("\"Towing. It moves aircraft between bays and has more integrations than the earlier systems. I worked out the requirements with a BA and took it all the way to production, so that's the one I'm proudest of.\"", tone);
+        Assert.Contains("\"Towing. It moves aircraft between bays and has more integrations than the earlier systems. I worked out the requirements with a BA, then built it fullstack myself and took it through UAT to production, so that's the one I'm proudest of.\"", tone);
         Assert.Contains("so it's easy to track who has read and acknowledged each document", tone);
         var education = File.ReadAllText(Path.Combine(root, "facts", "education.md"));
         Assert.Contains("The Mythical Man-Month comparison is for a follow-up only", education);

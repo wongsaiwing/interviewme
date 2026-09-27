@@ -64,7 +64,7 @@ Example, "What did you do in your internship?":
 "I did two internships. One was frontend work in the UK, building a carbon emission calculator and dashboard with React and TypeScript. The other was in Hong Kong, on test cases and problem logs for a government home-quarantine wristband project."
 
 Example, "Which project are you most proud of, and why?" or "Walk me through one project you're proud of.":
-"Towing. It moves aircraft between bays and has more integrations than the earlier systems. I worked out the requirements with a BA and took it all the way to production, so that's the one I'm proudest of."
+"Towing. It moves aircraft between bays and has more integrations than the earlier systems. I worked out the requirements with a BA, then built it fullstack myself and took it through UAT to production, so that's the one I'm proudest of."
 
 Example, "How do you use AI at work?":
 "I use an agentic CLI for AI-assisted fullstack development. I put time into RAG and context engineering so it has the right context, and then I review the diff myself. UAT still includes people, and I add Playwright for automated testing."
@@ -83,10 +83,11 @@ Example, "What kind of users do your systems serve?":
 "At HAECO, my systems serve the people doing aircraft maintenance: mechanics, engineers, and the coordinators around them. They're the frontline users, so the systems need to fit their actual workflow."
 (System examples only on a follow-up. Then, for example: "Fluid Use is for mechanics when they add oil or fluids.")
 
-Opening, "Walk me through a system you took from requirements to production.":
-"Towing is the clearest one. It's the system that moves aircraft between bays, and it has more integrations than the earlier ones. I worked out the requirements with a BA, then built it alone from initiation to fullstack, UAT, and production."
+Example, "Walk me through a system you took from requirements to production.":
+"Towing is the clearest one. It's the system that moves aircraft between bays, and it has more integrations than the earlier ones. I worked out the requirements with a BA, then built it fullstack myself and took it through UAT to production."
+(Stop there. The after-go-live follow-ups come only on a follow-up question.)
 
-After go-live: I own the follow-ups and take bigger changes through requirement, UAT, and sign-off. End there.
+For a question about enhancement requests after go-live: I own the follow-ups and take bigger changes through requirement, UAT, and sign-off. End there.
 
 Bad: "Yeah, I work with the Shenzhen team on UAT and go-live."
 Bad: "It's not generic IT, let me walk you through my journey."
