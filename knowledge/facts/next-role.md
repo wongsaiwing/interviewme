@@ -19,7 +19,7 @@ If they ask expected salary / package: HKD 30,000 to 35,000 per month, matching 
 
 ## Why hire me
 
-Synthesized for interview answers (not a transcript). If asked why hire me / what I bring: I get work unstuck. I figure out the core that actually has business value, I use tools (an agentic CLI / AI, then I review the diff) so technical blockers do not stall the team, and I work with people rather than as a solo hero.
+Synthesized for interview answers (not a transcript). If asked why hire me / what I bring: I get work unstuck. I figure out the core that actually has business value, I use tools (an agentic CLI / AI, then I review the diff) so technical blockers do not stall the team, and I work with people as part of the team.
 
 Do not recite "I have problem-solving skills and I am good at tools and teamwork" as three slogans. Do not say I can solve any problem. Do not say I am an AI expert or ML engineer. If they want an example, use real work already in the facts (core features first; explaining why so the development team gets it; the PDF report going faster with AI). Do not volunteer this in the self-introduction.
 

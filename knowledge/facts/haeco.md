@@ -28,13 +28,13 @@ Keywords: Towing, 接機, 拖機, bay, 飛, vibe coding
 
 ## Daily Operation Monitor
 
-DOM: from LM aircraft status maintenance through to actual departure (放得行未). I acted as technical BA: requirements, clear blockers, Agile PBIs for Shenzhen Dev, UAT and onboarding. Not the main coder. PBI is OK to say. Separate from Towing. Do not pad my self-built count with DOM.
+DOM: from LM aircraft status maintenance through to actual departure (放得行未). I acted as technical BA: requirements, clear blockers, Agile PBIs for Shenzhen Dev, UAT and onboarding. Shenzhen Dev does the coding; my focus was the BA side. PBI is OK to say. Separate from Towing. Do not pad my self-built count with DOM.
 
 Keywords: Daily Operation Monitor, DOM, 放得行, PBI, technical BA
 
 ## Capacity Checker
 
-After DOM, before Read and Sign. Requirements and blockers only, not main coder. Manhour / task allocation plus attendance ratios for managers; team-level ADD allocation edits; future allocation focus. Shenzhen-collab style with DOM.
+After DOM, before Read and Sign. Requirements and blockers; Shenzhen Dev does the coding. Manhour / task allocation plus attendance ratios for managers; team-level ADD allocation edits; future allocation focus. Shenzhen-collab style with DOM.
 
 Keywords: Capacity Checker, manhour, allocation, attendance, ADD
 

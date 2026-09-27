@@ -1,7 +1,7 @@
 # HAECO Shenzhen collaboration (aviation MRO)
 
 
-Shenzhen-collab projects where I do requirements / clear blockers (and PBIs / UAT / onboarding as fits) and am not the main coder: Daily Operation Monitor and Capacity Checker.
+Shenzhen-collab projects where I do requirements / clear blockers (and PBIs / UAT / onboarding as fits) while Shenzhen Dev does the coding: Daily Operation Monitor and Capacity Checker.
 
 Other HAECO projects I built myself through FE/BE (Fluid Use, Operation Remarks, Towing to production; Read and Sign AI-assisted fullstack (agentic CLI) still in DEV; Shift Briefing AI-assisted, at the UAT stage). Do not reuse the old "about four myself / about two with Dev team" inventory.
 

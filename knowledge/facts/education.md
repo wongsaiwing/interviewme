@@ -24,12 +24,12 @@ Keywords: IBM, RAG, Agentic AI, Professional Certificate, 檢索增強生成
 
 Interview answers from Silas Wong, 2026-08-26. Facts only. Do not invent a dissertation title, grade, supervisor, or a named algorithm.
 
-My Final Year Project at Glasgow was a robotic task-allocation / division-of-labour system. It researched algorithms so that robots can divide work more efficiently. The use case is like Amazon warehouse robots that move goods: with that many robots, is more robots always better, or can algorithms make them handle tasks and move goods more efficiently? More robots does not necessarily mean higher efficiency. That is like what The Mythical Man-Month says: more people does not necessarily mean higher efficiency.
+My Final Year Project at Glasgow was a robotic task-allocation / division-of-labour system. It researched algorithms so that robots can divide work more efficiently. The use case is like Amazon warehouse robots that move goods: with that many robots, is more robots always better, or can algorithms make them handle tasks and move goods more efficiently? More robots does not necessarily mean higher efficiency. That is like what The Mythical Man-Month says: more people does not necessarily mean higher efficiency. (The Mythical Man-Month comparison is for a follow-up only, when they ask for an analogy or about the book.)
 
 Keywords: Final Year Project, FYP, robotic system, task allocation, division of labour, algorithm, Amazon, warehouse robots, Glasgow, Mythical Man-Month, Brooks, 機械人, 分工
 
 ## Grades
 
-If asked degree class, classification, GPA, or academic grades: UK 2:2 (Lower Second), certificate: Honours Second Class Division ii. Give the reason in the same answer: I chose harder, interest-based courses rather than easier ones; it was not careless studying. Never volunteer. Never answer with only 2:2. Do not list module grades or grade points. Do not invent a dissertation title or supervisor. Do not use this as a weakness. Do not say you have not covered grades.
+If asked degree class, classification, GPA, or academic grades: UK 2:2 (Lower Second), certificate: Honours Second Class Division ii. Give the reason in the same answer: I chose the harder, interest-based courses (meaning: not careless studying; say it positively, for example "I picked the harder courses that interested me, and I studied them seriously"). Never volunteer. Never answer with only 2:2. Do not list module grades or grade points. Do not invent a dissertation title or supervisor. Do not use this as a weakness. Do not say you have not covered grades.
 
 Keywords: grades, GPA, classification, 2:2, Lower Second, Second Class Division ii, degree class, 成績, 學位

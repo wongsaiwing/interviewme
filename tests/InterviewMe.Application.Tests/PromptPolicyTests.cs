@@ -442,6 +442,10 @@ public class PromptPolicyTests
         yield return PromptBuilder.IntroductionDirective;
         yield return PromptBuilder.IcebreakerDirective;
         yield return PromptBuilder.ProductionExperienceDirective;
+        yield return PromptBuilder.ExtraExperienceDirective;
+        yield return PromptBuilder.InterviewMeProjectDirective;
+        yield return PromptBuilder.InterviewMeArchitectureDirective;
+        yield return PromptBuilder.DegreeClassDirective;
         yield return PromptBuilder.DefaultTone;
         yield return PromptBuilder.OffTopicRefuseEnglish;
         yield return PromptBuilder.IcebreakerReplyEnglish;
@@ -540,5 +544,72 @@ public class PromptPolicyTests
         Assert.DoesNotContain("\u2014", clean);
         Assert.Contains("fullstack", clean);
         Assert.DoesNotContain("入油", clean);
+    }
+
+    [Fact]
+    public void No_negative_emphasis_patterns_in_prompt_tone_or_knowledge_phrasing()
+    {
+        string[] banned = ["instead of", "rather than", "than a client", "client-vendor", "same side", "not listed", "wasn't", "aren't", "isn't", "not the main coder", "not main coder"];
+        foreach (var text in SpokenPromptTexts())
+        {
+            var body = string.Join("\n", text.Split('\n').Where(l => !l.Contains("Banned phrasing:", StringComparison.Ordinal)));
+            foreach (var b in banned)
+            {
+                Assert.DoesNotContain(b, body, StringComparison.OrdinalIgnoreCase);
+            }
+        }
+        Assert.Contains("Banned phrasing:", PromptBuilder.SpokenStyleDirective);
+        Assert.Contains("\"instead of\"", PromptBuilder.SpokenStyleDirective);
+        Assert.Contains("\"rather than\"", PromptBuilder.SpokenStyleDirective);
+        Assert.Contains("\"not listed\"", PromptBuilder.SpokenStyleDirective);
+    }
+
+    [Fact]
+    public void Round2_first_level_rules_and_examples()
+    {
+        Assert.Contains("First-level answers carry no numbers, dates, or person names", PromptBuilder.SpokenStyleDirective);
+        Assert.Contains("\"I review every diff\" belongs only in answers about how something was built or how you use AI", PromptBuilder.SpokenStyleDirective);
+        Assert.Contains("Figma UI details come up only when they ask about the UI or Figma", PromptBuilder.SpokenStyleDirective);
+
+        // Shift Briefing: first level has no numbers; metrics lock intact for how-built / how-much-faster.
+        Assert.Contains("Shift Briefing is a pre-shift briefing system. It shows the content for the shift and lets staff sign in by scanning their ID.", PromptBuilder.ShiftBriefingDirective);
+        Assert.Contains("It's in UAT right now. We're working through UAT, and production comes after that.", PromptBuilder.ShiftBriefingDirective);
+        Assert.Contains("how much faster AI made it", PromptBuilder.ShiftBriefingDirective);
+        Assert.Contains("about five days", PromptBuilder.ShiftBriefingDirective);
+        Assert.Contains("US$100", PromptBuilder.ShiftBriefingDirective);
+        Assert.DoesNotContain("some Figma UI details may still need finishing. It's", PromptBuilder.ShiftBriefingDirective);
+        Assert.True(PromptBuilder.LooksLikeShiftBriefing("How much faster did AI make Shift Briefing?"));
+
+        // Internships: first level plain; dates and Mike stay available for follow-ups.
+        Assert.Contains("I did two internships. One was frontend work in the UK, building a carbon emission calculator and dashboard with React and TypeScript.", PromptBuilder.ExtraExperienceDirective);
+        Assert.Contains("Mike Berners-Lee", PromptBuilder.ExtraExperienceDirective);
+        Assert.Contains("Sep 2020–Mar 2021", PromptBuilder.ExtraExperienceDirective);
+        Assert.Contains("only when they follow up", PromptBuilder.ExtraExperienceDirective);
+        var root = TestSupport.FindKnowledgePath();
+        Assert.Contains("My boss was Mike Berners-Lee", File.ReadAllText(Path.Combine(root, "facts", "swc.md")));
+        Assert.Contains("September 2020 to March 2021", File.ReadAllText(Path.Combine(root, "facts", "swc.md")));
+
+        // Shenzhen team routing and wording.
+        Assert.True(PromptBuilder.LooksLikeShenzhenTeam("Tell me about a project you built with the Shenzhen team."));
+        Assert.True(PromptBuilder.LooksLikeShenzhenTeam("How did you work as a technical BA with an outsourced team?"));
+        var shenzhen = new PromptBuilder().BuildSystem("Silas Wong", [], null, "How did you work as a technical BA with an outsourced team?");
+        Assert.Contains(PromptBuilder.HaecoOwnershipDirective, shenzhen);
+        Assert.Contains("My focus on those two was the BA side.", PromptBuilder.HaecoOwnershipDirective);
+
+        // InterviewMe architecture answers architecture and never exposes secrets.
+        Assert.True(PromptBuilder.LooksLikeArchitecture("How does InterviewMe answer questions? Explain the architecture."));
+        var arch = new PromptBuilder().BuildSystem("Silas Wong", [], null, "How does InterviewMe answer questions? Explain the architecture.");
+        Assert.Contains(PromptBuilder.InterviewMeArchitectureDirective, arch);
+        Assert.Contains("Never share keys, secrets", PromptBuilder.InterviewMeArchitectureDirective);
+        Assert.Contains("so people can ask about my work anytime", PromptBuilder.InterviewMeArchitectureDirective);
+        Assert.DoesNotContain("in the room", PromptBuilder.InterviewMeArchitectureDirective);
+        var why = new PromptBuilder().BuildSystem("Silas Wong", [], null, "What's InterviewMe, and why did you build it?");
+        Assert.Contains(PromptBuilder.InterviewMeProjectDirective, why);
+
+        var tone = File.ReadAllText(Path.Combine(root, "tone", "professional.md"));
+        Assert.Contains("\"Towing. It moves aircraft between bays and has more integrations than the earlier systems. I worked out the requirements with a BA and took it all the way to production, so that's the one I'm proudest of.\"", tone);
+        Assert.Contains("so it's easy to track who has read and acknowledged each document", tone);
+        var education = File.ReadAllText(Path.Combine(root, "facts", "education.md"));
+        Assert.Contains("The Mythical Man-Month comparison is for a follow-up only", education);
     }
 }
