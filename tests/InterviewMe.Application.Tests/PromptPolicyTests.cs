@@ -497,6 +497,7 @@ public class PromptPolicyTests
         Assert.Contains("which is at the UAT stage.\"", tone);
         Assert.DoesNotContain("not in production yet", tone);
         Assert.Contains("Answer high level and a bit general first", tone);
+        Assert.Contains("A typical week is a general question, so leave out the current-work line.", tone);
     }
 
     [Fact]
