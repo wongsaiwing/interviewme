@@ -112,6 +112,17 @@ public static class BiographyGuard
     // Glasgow graduation is July 2022 (07/2022); rewrite the superseded June date in graduation answers.
     private static readonly Regex GlasgowJune = new(@"\b(?:23(?:rd)?\s+)?June,?\s+2022\b|\b06/2022\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+    // Shift Briefing metrics lock (2026-09-28): old figures are rewritten to the confirmed ones or dropped.
+    private static readonly Regex OldSbMetricsClause = new(
+        @"It took about (?:five|5) days to get it UAT-ready, against a past manager estimate of about 20 person-days, and the token cost was about US\$100",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    private static readonly Regex OldSbMetricSentence = new(
+        @"(?<=^|[.!?]\s)[^.!?]*(?:\b(?:five|5) days\b[^.!?]*UAT|20 person-days|US\$100|\b75%|\b4x\b|\b4\u00d7|four times faster)[^.!?]*[.!?]\s*",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    private static readonly Regex AiNative = new(@"\bAI[- ]native\s+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
     private static readonly Regex ExtraSpaces = new(@"[ \t]{2,}", RegexOptions.Compiled);
 
     public const string LanguageFallback =
@@ -156,6 +167,9 @@ public static class BiographyGuard
         {
             result = GlasgowJune.Replace(result, m => m.Value.Contains('/') ? "07/2022" : "July 2022");
         }
+        result = OldSbMetricsClause.Replace(result, "It cut delivery from an estimated 60 man-days to 10, about 83% less time and labour cost");
+        result = OldSbMetricSentence.Replace(result, "");
+        result = AiNative.Replace(result, "AI-assisted ");
         result = FillerActually.Replace(result, "");
         result = FillerGenuinely.Replace(result, "");
         result = PaperSpreadsheetSentence.Replace(result, "");
