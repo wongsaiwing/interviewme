@@ -128,6 +128,10 @@ public static class BiographyGuard
 
     // Method wording: AI-assisted -> AI-native SDLC (prompt is primary; this only catches slips).
     private static readonly Regex AiAssistedFullStackDev = new(@"\bAI-assisted full-stack development\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    // Read and Sign scope corrected 2026-09-29: old "up to 9 stakeholders across up to 3 departments" becomes "more than 10 stakeholders".
+    private static readonly Regex OldRsStakeholders = new(@"up to (?:9|nine) stakeholders across up to (?:3|three) departments", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    // "reviewed every diff" retired 2026-09-29 00:08: strip the clause if it slips back in.
+    private static readonly Regex ReviewedEveryDiff = new(@",?\s+and\s+(?:I\s+)?review(?:ed|ing)?\s+(?:every|each)\s+diffs?\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
     private static readonly Regex AiAssistedDev = new(@"\bAI-assisted development\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
     private static readonly Regex ExtraSpaces = new(@"[ \t]{2,}", RegexOptions.Compiled);
@@ -179,6 +183,8 @@ public static class BiographyGuard
         result = OldSbMetricSentence.Replace(result, "");
         result = AiAssistedFullStackDev.Replace(result, "full-stack development with an AI-native SDLC");
         result = AiAssistedDev.Replace(result, "an AI-native SDLC");
+        result = ReviewedEveryDiff.Replace(result, "");
+        result = OldRsStakeholders.Replace(result, "more than 10 stakeholders");
         result = FillerActually.Replace(result, "");
         result = FillerGenuinely.Replace(result, "");
         result = PaperSpreadsheetSentence.Replace(result, "");
