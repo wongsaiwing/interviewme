@@ -1001,6 +1001,30 @@ public class PromptPolicyTests
     }
 
     [Fact]
+    public void Towing_first_answer_holds_back_after_go_live_2026_09_29_0014()
+    {
+        const string first = "Towing is the system that moves aircraft between bays. It has more integrations than the earlier systems I worked on. I worked out the requirements with a BA, then built it full-stack myself and took it through UAT to production.";
+        Assert.Contains(first, PromptBuilder.TowingDirective);
+        Assert.DoesNotContain("own the follow-ups", PromptBuilder.TowingDirective);
+        Assert.DoesNotContain("own the follow-ups", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("own the follow-ups", PromptBuilder.TowingGoLiveDirective);
+
+        var pb = new PromptBuilder();
+        var sys = pb.BuildSystem("Silas Wong", [], null, "Tell me about Towing.");
+        Assert.Contains(PromptBuilder.TowingDirective, sys);
+        Assert.DoesNotContain(PromptBuilder.TowingGoLiveDirective, sys);
+        Assert.DoesNotContain("own the follow-ups", sys);
+
+        Assert.True(PromptBuilder.LooksLikeGoLiveFollowUp("What happened after go-live?"));
+        Assert.False(PromptBuilder.LooksLikeTowing("What happened after go-live?"));
+        var follow = pb.BuildSystem("Silas Wong", [], null, "Towing: What happened after go-live?");
+        Assert.Contains(PromptBuilder.TowingGoLiveDirective, follow);
+        Assert.Contains("own the follow-ups", follow);
+        var prompt = pb.Build("Silas Wong", "What happened after go-live?", [], [], null, "Towing: What happened after go-live?");
+        Assert.DoesNotContain(PromptBuilder.FollowUpDirective, prompt.Messages[0].Content);
+    }
+
+    [Fact]
     public void Guard_keeps_salary_to_the_single_approved_figure()
     {
         const string approved = "I'm looking for a fair market rate for this kind of role, which I'd put at HKD 35,000 per month.";

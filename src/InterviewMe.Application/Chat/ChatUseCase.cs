@@ -87,6 +87,14 @@ public sealed class ChatUseCase
             retrievalQuery = "Shift Briefing " + command.Message;
             routingMessage = "Shift Briefing: " + command.Message;
         }
+        else if (PromptBuilder.LooksLikeGoLiveFollowUp(command.Message)
+            && !PromptBuilder.LooksLikeTowing(command.Message)
+            && history.TakeLast(2).Any(m => PromptBuilder.LooksLikeTowing(m.Content)))
+        {
+            // "What happened after go-live?" right after a Towing answer.
+            retrievalQuery = "Towing " + command.Message;
+            routingMessage = "Towing: " + command.Message;
+        }
         else if (PromptBuilder.LooksLikeFollowUp(command.Message))
         {
             var lastUser = history.LastOrDefault(m => m.Role == "user")?.Content;
