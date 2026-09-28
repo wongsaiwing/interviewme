@@ -298,7 +298,6 @@ public class PromptPolicyTests
         Assert.True(PromptBuilder.LooksLikeShenzhenCollaboration("Do you work with the development team?"));
         Assert.Contains("Shenzhen", PromptBuilder.HaecoGenericDirective); // technical BA with the Shenzhen team
         Assert.Contains("Do not dump all seven system names", PromptBuilder.HaecoGenericDirective);
-        Assert.Contains("still in DEV", PromptBuilder.HaecoGenericDirective);
         Assert.Contains("Do not open with Yeah", PromptBuilder.DefaultTone);
         Assert.Contains("Vibe-coded", PromptBuilder.DefaultTone);
         Assert.Contains("bug fix, never buff fix", PromptBuilder.DefaultTone);
@@ -387,7 +386,7 @@ public class PromptPolicyTests
         Assert.True(PromptBuilder.LooksLikeHaecoNamedSystems("Tell me about Read and Sign"));
         Assert.True(PromptBuilder.LooksLikeHaecoNamedSystems("What is Capacity Checker?"));
         Assert.True(PromptBuilder.LooksLikeHaecoNamedSystems("Tell me about Shift Briefing"));
-        Assert.Contains("Do not claim Read and Sign or Shift Briefing is in production", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("do not claim production", PromptBuilder.HardBiographyDirective);
         Assert.DoesNotContain("the main one", PromptBuilder.HaecoGenericDirective);
         Assert.Contains("≈5 days UAT-ready", PromptBuilder.HardBiographyDirective);
         Assert.Contains("≈20 person-days", PromptBuilder.HardBiographyDirective);
@@ -401,8 +400,8 @@ public class PromptPolicyTests
     {
         Assert.Contains("an agentic CLI", PromptBuilder.SpokenStyleDirective);
         Assert.Contains("only when they ask which tool", PromptBuilder.SpokenStyleDirective);
-        Assert.Contains("At HAECO, I'm in HAECO Digital, working on operation systems for aviation MRO", PromptBuilder.HaecoGenericDirective);
-        Assert.Contains("agentic CLI", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("At HAECO I'm an Assistant Solution Analyst on MRO engineering IT solutions.", PromptBuilder.HaecoGenericDirective);
+        Assert.DoesNotContain("agentic CLI", PromptBuilder.HaecoGenericDirective);
         Assert.DoesNotContain("Copilot", PromptBuilder.HaecoGenericDirective);
         Assert.DoesNotContain("arc", PromptBuilder.HaecoGenericDirective);
         Assert.DoesNotContain("generic IT", PromptBuilder.HaecoGenericDirective);
@@ -485,24 +484,39 @@ public class PromptPolicyTests
     [Fact]
     public void Current_work_line_is_gated_and_not_a_template_closing()
     {
-        Assert.Contains("only when the question asks what you're doing now, your current work, or what you do at HAECO", PromptBuilder.SpokenStyleDirective);
+        Assert.Contains("only when the question asks what you're doing now. Leave it out of the generic HAECO / current-role answer.", PromptBuilder.SpokenStyleDirective);
         Assert.Contains("No template closing line", PromptBuilder.SpokenStyleDirective);
         Assert.DoesNotContain("Right now I'm doing", PromptBuilder.LeavingDirective);
         Assert.DoesNotContain("what you're doing now", PromptBuilder.AiReviewDirective);
         Assert.DoesNotContain("End on what I'm doing now", PromptBuilder.DefaultTone);
-        Assert.Contains("Right now I'm doing AI-assisted fullstack development with an agentic CLI.", PromptBuilder.HaecoGenericDirective);
+        Assert.DoesNotContain("Right now I'm doing", PromptBuilder.HaecoGenericDirective);
     }
 
     [Fact]
-    public void Haeco_approved_example_kept_with_positive_status_and_exempt_from_high_level_rule()
+    public void Haeco_generic_answer_is_the_approved_high_level_answer_only()
     {
-        Assert.Contains("Two current projects are Read and Sign, which is still in development, and Shift Briefing, which is at the UAT stage.\"", PromptBuilder.HaecoGenericDirective);
-        Assert.Contains("exception to the high-level-first rule", PromptBuilder.HaecoGenericDirective);
+        const string approved = "At HAECO I'm an Assistant Solution Analyst on MRO engineering IT solutions. I cover the full cycle from requirements and specs through fullstack delivery, UAT, go-live and support, and on some work I partner with our Shenzhen team more as a technical BA.";
+        Assert.Contains("\"" + approved + "\"", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("Then stop.", PromptBuilder.HaecoGenericDirective);
+        foreach (var banned in new[] { "When I started", "CRUD", "agentic CLI", "Read and Sign", "Shift Briefing", "by hand", "AI-assisted", "main stack", "support aircraft maintenance" })
+        {
+            Assert.DoesNotContain(banned, PromptBuilder.HaecoGenericDirective, StringComparison.OrdinalIgnoreCase);
+        }
         Assert.Contains("Answer high level and a bit general first", PromptBuilder.SpokenStyleDirective);
-        Assert.Contains("Do not claim Read and Sign or Shift Briefing is in production", PromptBuilder.HaecoGenericDirective);
         Assert.DoesNotContain("not in production yet", PromptBuilder.HaecoGenericDirective);
-        var tone = File.ReadAllText(Path.Combine(TestSupport.FindKnowledgePath(), "tone", "professional.md"));
-        Assert.Contains("which is at the UAT stage.\"", tone);
+        var root = TestSupport.FindKnowledgePath();
+        var tone = File.ReadAllText(Path.Combine(root, "tone", "professional.md"));
+        Assert.Contains("Approved example, \"What did you do at HAECO?\":\n\"" + approved + "\"", tone);
+        Assert.DoesNotContain("When I started, I built CRUD systems by hand", tone);
+        var haeco = File.ReadAllText(Path.Combine(root, "facts", "haeco.md"));
+        Assert.Contains(approved, haeco);
+        Assert.DoesNotContain("Say it in time order", haeco);
+        Assert.DoesNotContain("in time order", PromptBuilder.DefaultTone);
+        Assert.DoesNotContain("Tell it in time order", PromptBuilder.HardBiographyDirective);
+        // Current-role phrasing routes to the same answer.
+        var pb = new PromptBuilder();
+        foreach (var q in new[] { "What did you do at HAECO?", "What do you do at HAECO?", "Tell me about your current role." })
+            Assert.Contains(approved, pb.BuildSystem("Silas Wong", [], null, q));
         Assert.DoesNotContain("not in production yet", tone);
         Assert.Contains("Answer high level and a bit general first", tone);
         Assert.Contains("A typical week is a general question, so leave out the current-work line.", tone);
@@ -573,10 +587,10 @@ public class PromptPolicyTests
         // One home per sentence.
         Assert.DoesNotContain("review the diff", PromptBuilder.WhyHireDirective.Replace("Do not mention diff review", ""));
         Assert.DoesNotContain("review the diff", nextRole);
-        Assert.Contains("so the systems that support aircraft maintenance", PromptBuilder.HaecoGenericDirective);
+        Assert.DoesNotContain("so the systems that support aircraft maintenance", PromptBuilder.HaecoGenericDirective);
         foreach (var f in new[] { "production.md", "haeco-projects.md" })
             Assert.DoesNotContain("the systems that support aircraft maintenance", File.ReadAllText(Path.Combine(TestSupport.FindKnowledgePath(), "facts", f)));
-        Assert.Contains("\"so the systems that support aircraft maintenance\" only in the answer to \"What did you do at HAECO?\"", PromptBuilder.SpokenStyleDirective);
+        Assert.Contains("\"so the systems that support aircraft maintenance\" is retired; do not say it.", PromptBuilder.SpokenStyleDirective);
         Assert.Contains("step-by-step", PromptBuilder.SpokenStyleDirective);
 
         // Salary and notice untouched.
