@@ -148,7 +148,7 @@ public class ChatUseCaseTests
             text.Contains("Silas", StringComparison.OrdinalIgnoreCase) ||
             text.Contains("HAECO", StringComparison.OrdinalIgnoreCase) ||
             text.Contains("TradeLink", StringComparison.OrdinalIgnoreCase) ||
-            text.Contains("fullstack", StringComparison.OrdinalIgnoreCase) ||
+            text.Contains("full-stack", StringComparison.OrdinalIgnoreCase) ||
             text.Contains("Hong Kong", StringComparison.OrdinalIgnoreCase),
             "Expected a grounded Silas reply, got: " + text);
         Assert.DoesNotContain("Avery", text, StringComparison.OrdinalIgnoreCase);
@@ -174,7 +174,7 @@ public class ChatUseCaseTests
 
         Assert.Contains("Silas", text, StringComparison.OrdinalIgnoreCase);
         Assert.Contains("HAECO", text, StringComparison.OrdinalIgnoreCase);
-        Assert.Contains("fullstack", text, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("full-stack", text, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("don't have", text, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("cannot introduce", text, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain(PromptBuilder.OffTopicRefuseEnglish, text, StringComparison.Ordinal);

@@ -67,7 +67,7 @@ public static class BiographyGuard
 
     private static readonly Regex EmDash = new(@"\s*\u2014\s*", RegexOptions.Compiled);
 
-    private static readonly Regex FullStack = new(@"\b(F|f)ull(?:\s+stack\b|-stack\b(?!\s+delivery\b))", RegexOptions.Compiled); // approved HAECO answer keeps "full-stack delivery"
+    private static readonly Regex FullStack = new(@"\b(F|f)ull(?:\s+stack\b|stack\b)", RegexOptions.Compiled); // "fullstack" / "full stack" -> "full-stack" (CV spelling)
 
     private static readonly Regex ParenthesizedCjk = new(@"\s*[\(\uFF08][\u4e00-\u9fff\s]+[\)\uFF09]", RegexOptions.Compiled);
 
@@ -153,7 +153,7 @@ public static class BiographyGuard
         result = CefrLevel.Replace(result, "fluent");
         // Spoken-style safeguards (prompt rules come first; this only catches slips).
         result = EmDash.Replace(result, ", ");
-        result = FullStack.Replace(result, m => m.Groups[1].Value + "ullstack");
+        result = FullStack.Replace(result, m => m.Groups[1].Value + "ull-stack");
         result = InterviewMeStack.Replace(result, "a React front end and a .NET back end");
         if (result.Contains("HKD", StringComparison.OrdinalIgnoreCase))
         {

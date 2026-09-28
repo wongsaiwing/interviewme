@@ -142,9 +142,9 @@ public class PromptPolicyTests
         var facts = new List<RetrievedFact>
         {
             new("p1", "profile.md", "Who I am",
-                "I am Silas Wong, a fullstack developer based in Hong Kong.", 0.9f),
+                "I am Silas Wong, a full-stack developer based in Hong Kong.", 0.9f),
             new("h1", "haeco.md", "Assistant Solution Analyst, HAECO",
-                "Assistant Solution Analyst at HAECO. Fullstack .NET and React.", 0.88f)
+                "Assistant Solution Analyst at HAECO. Full-stack .NET and React.", 0.88f)
         };
         var prompt = _builder.Build("Silas Wong", "introduce yourself", [], facts);
         var system = prompt.Messages[0].Content;
@@ -154,7 +154,7 @@ public class PromptPolicyTests
         var reply = StubLlmClient.Compose(prompt);
         Assert.Contains("Silas", reply, StringComparison.OrdinalIgnoreCase);
         Assert.Contains("HAECO", reply, StringComparison.OrdinalIgnoreCase);
-        Assert.Contains("fullstack", reply, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("full-stack", reply, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("don't have", reply, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("cannot introduce", reply, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("CV", reply, StringComparison.OrdinalIgnoreCase);
@@ -472,16 +472,17 @@ public class PromptPolicyTests
     }
 
     [Fact]
-    public void Fullstack_spelled_as_one_word_outside_retrieval_keywords()
+    public void Full_stack_spelled_with_hyphen_everywhere()
     {
         foreach (var text in SpokenPromptTexts())
         {
-            var body = string.Join("\n", text.Split('\n').Where(l => !l.TrimStart().StartsWith("Keywords:", StringComparison.Ordinal)))
-                .Replace("full-stack delivery", "", StringComparison.Ordinal);
-            Assert.DoesNotContain("full-stack", body, StringComparison.OrdinalIgnoreCase);
+            var body = string.Join("\n", text.Split('\n').Where(l => !l.TrimStart().StartsWith("Keywords:", StringComparison.Ordinal)));
+            Assert.DoesNotContain("fullstack", body, StringComparison.OrdinalIgnoreCase);
             Assert.DoesNotContain("full stack", body, StringComparison.OrdinalIgnoreCase);
         }
-        Assert.Contains("Spell it \"fullstack\", one word.", PromptBuilder.SpokenStyleDirective);
+        Assert.Contains("Spell it \"full-stack\", with a hyphen.", PromptBuilder.SpokenStyleDirective);
+        Assert.DoesNotContain("one word", PromptBuilder.SpokenStyleDirective);
+        Assert.DoesNotContain("One exception", PromptBuilder.SpokenStyleDirective);
     }
 
     [Fact]
@@ -507,12 +508,13 @@ public class PromptPolicyTests
         Assert.Equal(approved, BiographyGuard.Sanitize(approved)); // guard never rewrites Mainland
         // Other Shenzhen facts stay.
         Assert.Contains("I worked with our Shenzhen team on two systems, Daily Operation Monitor and Capacity Checker.", PromptBuilder.HaecoOwnershipDirective);
-        Assert.DoesNotContain("fullstack delivery", PromptBuilder.HaecoGenericDirective);
-        Assert.Contains("One exception: the approved HAECO answer says \"full-stack delivery\"", PromptBuilder.SpokenStyleDirective);
-        // The output check keeps the approved hyphen but still fixes other spellings.
+        Assert.DoesNotContain("fullstack", PromptBuilder.HaecoGenericDirective);
+        // The output check keeps the approved answer and turns other spellings into full-stack.
         Assert.Equal(approved, BiographyGuard.Sanitize(approved));
-        Assert.Equal("I'm a fullstack developer.", BiographyGuard.Sanitize("I'm a full-stack developer."));
-        Assert.Equal("I do fullstack work.", BiographyGuard.Sanitize("I do full stack work."));
+        Assert.Equal("I'm a full-stack developer.", BiographyGuard.Sanitize("I'm a fullstack developer."));
+        Assert.Equal("Full-stack work.", BiographyGuard.Sanitize("Fullstack work."));
+        Assert.Equal("I do full-stack work.", BiographyGuard.Sanitize("I do full stack work."));
+        Assert.Equal("I'm a full-stack developer.", BiographyGuard.Sanitize("I'm a full-stack developer."));
         foreach (var banned in new[] { "When I started", "CRUD", "agentic CLI", "Read and Sign", "Shift Briefing", "by hand", "AI-assisted", "main stack", "support aircraft maintenance" })
         {
             Assert.DoesNotContain(banned, PromptBuilder.HaecoGenericDirective, StringComparison.OrdinalIgnoreCase);
@@ -671,7 +673,7 @@ public class PromptPolicyTests
         string[] allowedDescriptors =
         [
             "technical ba with our shenzhen team",
-            "ai assisted fullstack development with an agentic cli",
+            "ai assisted full stack development with an agentic cli",
             "and it's at the uat stage",
             "cut delivery from an estimated 60 man days to 10 about 83 less time and labour cost",
             "i reviewed every diff it cut delivery from an estimated",
@@ -744,6 +746,30 @@ public class PromptPolicyTests
     [Fact]
     public void Read_and_Sign_UAT_seven_system_split_and_stakeholders_2026_09_28()
     {
+        // Site-wide: no team-level; no fullstack in knowledge or answer-facing prompt text.
+        foreach (var path in Directory.GetFiles(TestSupport.FindKnowledgePath(), "*.md", SearchOption.AllDirectories))
+        {
+            var t = File.ReadAllText(path);
+            Assert.DoesNotContain("team-level", t, StringComparison.OrdinalIgnoreCase);
+            Assert.DoesNotContain("team level", t, StringComparison.OrdinalIgnoreCase);
+            Assert.DoesNotContain("fullstack", t, StringComparison.OrdinalIgnoreCase);
+        }
+        foreach (var text in new[]
+                 {
+                     PromptBuilder.HardBiographyDirective, PromptBuilder.SpokenStyleDirective, PromptBuilder.DefaultTone,
+                     PromptBuilder.HaecoGenericDirective, PromptBuilder.HaecoSystemsDirective, PromptBuilder.ReadAndSignDirective,
+                     PromptBuilder.StakeholderCountDirective, PromptBuilder.HaecoOwnershipDirective, PromptBuilder.ProductionExperienceDirective,
+                     PromptBuilder.TeamDirective, PromptBuilder.ShiftBriefingDirective
+                 })
+        {
+            Assert.DoesNotContain("team-level", text, StringComparison.OrdinalIgnoreCase);
+            Assert.DoesNotContain("team level", text, StringComparison.OrdinalIgnoreCase);
+            Assert.DoesNotContain("fullstack", text, StringComparison.OrdinalIgnoreCase);
+        }
+        Assert.Contains("I built it full-stack using an AI-native SDLC with an agentic CLI", PromptBuilder.ReadAndSignDirective);
+        Assert.Contains("Smaller tools like Fluid Use had fewer.", PromptBuilder.StakeholderCountDirective);
+        Assert.DoesNotContain("team-level", PromptBuilder.StakeholderCountDirective);
+
         string[] old = ["still in DEV", "STILL DEV", "still in development", "more urgent", "SB more urgent"];
         var root = TestSupport.FindKnowledgePath();
         var texts = Directory.GetFiles(root, "*.md", SearchOption.AllDirectories).Select(File.ReadAllText).ToList();
@@ -763,11 +789,11 @@ public class PromptPolicyTests
         Assert.Contains("up to 9 stakeholders across up to 3 departments", PromptBuilder.ReadAndSignDirective);
         Assert.Contains("Read and Sign only", PromptBuilder.ReadAndSignDirective);
         Assert.Contains("I've delivered seven MRO and operations systems at HAECO", PromptBuilder.HaecoSystemsDirective);
-        Assert.Contains("Three I built fullstack and took to go-live: Fluid Use, Operation Remarks, and Towing", PromptBuilder.HaecoSystemsDirective);
+        Assert.Contains("Three I built full-stack and took to go-live: Fluid Use, Operation Remarks, and Towing", PromptBuilder.HaecoSystemsDirective);
         Assert.Contains("Daily Operation Monitor and Capacity Checker", PromptBuilder.HaecoSystemsDirective);
         Assert.Contains("our Mainland team did the coding", PromptBuilder.HaecoSystemsDirective);
         Assert.Contains("Read and Sign and Shift Briefing, I've taken to UAT", PromptBuilder.HaecoSystemsDirective);
-        Assert.Contains("3 fullstack to go-live", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("3 full-stack to go-live", PromptBuilder.HardBiographyDirective);
         Assert.Contains("2 to UAT (Read and Sign, Shift Briefing)", PromptBuilder.HardBiographyDirective);
         Assert.Contains("up to 9 stakeholders across up to 3 departments", PromptBuilder.HardBiographyDirective);
         Assert.Contains("It depends on the system. The largest was Read and Sign", PromptBuilder.StakeholderCountDirective);
@@ -780,7 +806,7 @@ public class PromptPolicyTests
         Assert.Contains("up to 9 stakeholders across up to 3 departments", haeco);
         Assert.DoesNotContain("STILL in DEV", haeco, StringComparison.OrdinalIgnoreCase);
         var projects = File.ReadAllText(Path.Combine(root, "facts", "haeco-projects.md"));
-        Assert.Contains("3 fullstack to go-live", projects);
+        Assert.Contains("3 full-stack to go-live", projects);
         Assert.Contains("2 to UAT (Read and Sign, Shift Briefing)", projects);
         Assert.Contains("at the UAT stage, not production", projects);
         var tone = File.ReadAllText(Path.Combine(root, "tone", "professional.md"));
@@ -902,11 +928,11 @@ public class PromptPolicyTests
     }
 
     [Fact]
-    public void Guard_replaces_em_dash_fullstack_and_parenthesized_chinese()
+    public void Guard_replaces_em_dash_full_stack_and_parenthesized_chinese()
     {
-        var clean = BiographyGuard.Sanitize("Towing is the clearest one \u2014 it moves aircraft. I'm a full-stack developer. Fluid Use is for mechanics (入油).");
+        var clean = BiographyGuard.Sanitize("Towing is the clearest one \u2014 it moves aircraft. I'm a fullstack developer. Fluid Use is for mechanics (入油).");
         Assert.DoesNotContain("\u2014", clean);
-        Assert.Contains("fullstack", clean);
+        Assert.Contains("full-stack", clean);
         Assert.DoesNotContain("入油", clean);
     }
 
@@ -971,7 +997,7 @@ public class PromptPolicyTests
         Assert.Contains(PromptBuilder.InterviewMeProjectDirective, why);
 
         var tone = File.ReadAllText(Path.Combine(root, "tone", "professional.md"));
-        Assert.Contains("\"Towing. It moves aircraft between bays and has more integrations than the earlier systems. I worked out the requirements with a BA, then built it fullstack myself and took it through UAT to production, so that's the one I'm proudest of.\"", tone);
+        Assert.Contains("\"Towing. It moves aircraft between bays and has more integrations than the earlier systems. I worked out the requirements with a BA, then built it full-stack myself and took it through UAT to production, so that's the one I'm proudest of.\"", tone);
         Assert.Contains("so it's easy to track who has read and acknowledged each document", tone);
         var education = File.ReadAllText(Path.Combine(root, "facts", "education.md"));
         Assert.Contains("The Mythical Man-Month comparison is for a follow-up only", education);

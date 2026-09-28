@@ -22,7 +22,7 @@ Keywords: Operation Remarks, remarks, engineers, mechanics’ reports
 
 ## Towing
 
-Tow aircraft between bays for specific repair/maintain. More integrations. I worked out the requirements with a BA, then built it fullstack myself and took it through UAT to production. After go-live I own the follow-ups (detail for a follow-up question). Started using AI / vibe coding here. 飛 means bay. Never "incoming aircraft status".
+Tow aircraft between bays for specific repair/maintain. More integrations. I worked out the requirements with a BA, then built it full-stack myself and took it through UAT to production. After go-live I own the follow-ups (detail for a follow-up question). Started using AI / vibe coding here. 飛 means bay. Never "incoming aircraft status".
 
 Keywords: Towing, 接機, 拖機, bay, 飛, vibe coding
 
@@ -34,25 +34,25 @@ Keywords: Daily Operation Monitor, DOM, 放得行, PBI, technical BA
 
 ## Capacity Checker
 
-After DOM, before Read and Sign. Requirements and blockers; Shenzhen Dev does the coding. Manhour / task allocation plus attendance ratios for managers; team-level ADD allocation edits; future allocation focus. Shenzhen-collab style with DOM.
+After DOM, before Read and Sign. Requirements and blockers; Shenzhen Dev does the coding. Manhour / task allocation plus attendance ratios for managers; ADD allocation edits; future allocation focus. Shenzhen-collab style with DOM.
 
 Keywords: Capacity Checker, manhour, allocation, attendance, ADD
 
 ## Read and Sign
 
-First AI-assisted fullstack with an agentic CLI (if asked which tool: GitHub Copilot CLI). Company-wide notice / document sign-off; requirements from departments; audit. At the UAT stage, not production. Largest scope of the seven: up to 9 stakeholders across up to 3 departments (Read and Sign only; say it only on a follow-up about Read and Sign or about stakeholders; never apply it to other systems or to HAECO overall). Do not claim production or near-complete-as-production. Do not say Re-Ensign. Do not invent automated email product or user counts. "Vibe-coded" / AI-assisted framing OK chronologically. Audit snapshot reports for coordinators still fine if asked.
+Built full-stack using an AI-native SDLC with an agentic CLI (if asked which tool: GitHub Copilot CLI). Company-wide notice / document sign-off; requirements from departments; audit. At the UAT stage, not production. Largest scope of the seven: up to 9 stakeholders across up to 3 departments (Read and Sign only; say it only on a follow-up about Read and Sign or about stakeholders; never apply it to other systems or to HAECO overall). Do not claim production or near-complete-as-production. Do not say Re-Ensign. Do not invent automated email product or user counts. "Vibe-coded" / AI-assisted framing OK chronologically. Audit snapshot reports for coordinators still fine if asked.
 
 Keywords: Read and Sign, Read & Sign, Copilot CLI, AI-assisted, 簽署, UAT, stakeholders, departments, audit
 
 ## Shift Briefing
 
-Pre-shift briefing with task-suggested content and staff ID scan sign. Built with an AI-native SDLC, using an agentic CLI for the .NET / React fullstack development, and I review every diff (if asked which tool: GitHub Copilot CLI). Method matches the CV line "Adopted an AI-native SDLC to cut delivery from an estimated 60 man-days to 10, saving about 83% in time and labour cost." Delivery took 10 man-days to get the frontend and backend to UAT (feature-complete / usable; Figma UI details may still be incomplete), against an original estimate of 60 man-days, so about 83% saved in time and labour cost. Follow-up only (when they ask about cost or how the saving was calculated): token cost was HK$200 per day x 10 days = HK$2,000; net saving HK$48,000, at HK$1,000 per person per day. Do NOT say already in production. Do NOT say UI fully matches Figma. These numbers are Shift Briefing only, do not apply them to other projects. Do not invent other Shift Briefing metrics beyond this lock. When asked how you built or started Shift Briefing, say: I built it with an AI-native SDLC, using an agentic CLI for the .NET and React development, and I reviewed every diff; then "it cut delivery from an estimated 60 man-days to 10, about 83% less time and labour cost", and close with "It's at the UAT stage." Token cost and net saving only on a cost follow-up. Never claim it is in production. Nothing else about method.
+Pre-shift briefing with task-suggested content and staff ID scan sign. Built with an AI-native SDLC, using an agentic CLI for the .NET / React full-stack development, and I review every diff (if asked which tool: GitHub Copilot CLI). Method matches the CV line "Adopted an AI-native SDLC to cut delivery from an estimated 60 man-days to 10, saving about 83% in time and labour cost." Delivery took 10 man-days to get the frontend and backend to UAT (feature-complete / usable; Figma UI details may still be incomplete), against an original estimate of 60 man-days, so about 83% saved in time and labour cost. Follow-up only (when they ask about cost or how the saving was calculated): token cost was HK$200 per day x 10 days = HK$2,000; net saving HK$48,000, at HK$1,000 per person per day. Do NOT say already in production. Do NOT say UI fully matches Figma. These numbers are Shift Briefing only, do not apply them to other projects. Do not invent other Shift Briefing metrics beyond this lock. When asked how you built or started Shift Briefing, say: I built it with an AI-native SDLC, using an agentic CLI for the .NET and React development, and I reviewed every diff; then "it cut delivery from an estimated 60 man-days to 10, about 83% less time and labour cost", and close with "It's at the UAT stage." Token cost and net saving only on a cost follow-up. Never claim it is in production. Nothing else about method.
 
 Keywords: Shift Briefing, staff ID, pre-shift, UAT-ready, 10 man-days, 60 man-days, 83%, token cost, HK$2,000, net saving, HK$48,000, impact, AI-native SDLC, agentic CLI, Copilot CLI, which tool, diff review, .NET, React, how did you build Shift Briefing
 
 ## Team
 
-There are twelve of us including the manager: two UI/UX designers, and the rest are fullstack engineers and Solution Analysts like me. Give the size only when asked about the team or its size.
+There are twelve of us including the manager: two UI/UX designers, and the rest are full-stack engineers and Solution Analysts like me. Give the size only when asked about the team or its size.
 
 How I work in the team: I report to my manager. Do not invent the manager's name or a more specific title. Inside the Hong Kong team I mainly work with the UI/UX designers. I also meet users when needed, and after they UAT, I fix issues or do enhancements on the systems I own. Do not mention Shenzhen on a generic team question.
 
@@ -80,6 +80,6 @@ Keywords: PDF, HTML, CSS, report
 
 ## How I deliver
 
-Ownership depends on the project: some I own FE/BE through UAT and production (Fluid Use, Operation Remarks, Towing); DOM and Capacity Checker I do as technical BA (req, blockers, PBIs, UAT/onboarding) with Shenzhen Dev coding; Read and Sign is AI-assisted fullstack (agentic CLI) at the UAT stage; Shift Briefing is AI-assisted and at the UAT stage. Core high-value scope first; later asks from users and coordinators are enhancements (background, not a line to say). Do not invent a release cycle. Do not invent conflict, sudden requirement bombs, or difficult-stakeholder stories.
+Ownership depends on the project: some I own FE/BE through UAT and production (Fluid Use, Operation Remarks, Towing); DOM and Capacity Checker I do as technical BA (req, blockers, PBIs, UAT/onboarding) with Shenzhen Dev coding; Read and Sign is full-stack using an AI-native SDLC with an agentic CLI, at the UAT stage; Shift Briefing is AI-assisted and at the UAT stage. Core high-value scope first; later asks from users and coordinators are enhancements (background, not a line to say). Do not invent a release cycle. Do not invent conflict, sudden requirement bombs, or difficult-stakeholder stories.
 
 Keywords: UAT, enhancement, elicit, PBI
