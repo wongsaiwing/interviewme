@@ -117,9 +117,18 @@ public static class BiographyGuard
         @"It took about (?:five|5) days to get it UAT-ready, against a past manager estimate of about 20 person-days, and the token cost was about US\$100",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-    private static readonly Regex OldSbMetricSentence = new(
-        @"(?<=^|[.!?]\s)[^.!?]*(?:\b(?:five|5) days\b[^.!?]*UAT|20 person-days|US\$100|\b75%|\b4x\b|\b4\u00d7|four times faster)[^.!?]*[.!?]\s*",
+    // Retired 2026-09-28 23:48: 60 man-days to 10 / about 83% / HK$48,000 become the 80% claim or are dropped.
+    private static readonly Regex RetiredSbMetricsClause = new(
+        @"(?:cut delivery|delivery went) from an estimated 60 man-days to 10, (?:about|saving about) 83% (?:less time and labour cost|in time and labour cost)",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    private static readonly Regex OldSbMetricSentence = new(
+        @"(?<=^|[.!?]\s)[^.!?]*(?:\b(?:five|5) days\b[^.!?]*UAT|20 person-days|US\$100|\b75%|\b4x\b|\b4\u00d7|four times faster|\b83%|\b60 man-?days?\b|\b60 man-day\b|48,000)[^.!?]*[.!?]\s*",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    // Method wording: AI-assisted -> AI-native SDLC (prompt is primary; this only catches slips).
+    private static readonly Regex AiAssistedFullStackDev = new(@"\bAI-assisted full-stack development\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    private static readonly Regex AiAssistedDev = new(@"\bAI-assisted development\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
     private static readonly Regex ExtraSpaces = new(@"[ \t]{2,}", RegexOptions.Compiled);
 
@@ -165,8 +174,11 @@ public static class BiographyGuard
         {
             result = GlasgowJune.Replace(result, m => m.Value.Contains('/') ? "07/2022" : "July 2022");
         }
-        result = OldSbMetricsClause.Replace(result, "It cut delivery from an estimated 60 man-days to 10, about 83% less time and labour cost");
+        result = OldSbMetricsClause.Replace(result, "It cut delivery time by 80% and man-hour cost by 80%");
+        result = RetiredSbMetricsClause.Replace(result, "cut delivery time by 80% and man-hour cost by 80%");
         result = OldSbMetricSentence.Replace(result, "");
+        result = AiAssistedFullStackDev.Replace(result, "full-stack development with an AI-native SDLC");
+        result = AiAssistedDev.Replace(result, "an AI-native SDLC");
         result = FillerActually.Replace(result, "");
         result = FillerGenuinely.Replace(result, "");
         result = PaperSpreadsheetSentence.Replace(result, "");

@@ -79,7 +79,15 @@ public sealed class ChatUseCase
         // Short follow-ups ("Can you go into more detail?") retrieve and route with the previous question.
         var retrievalQuery = command.Message;
         string? routingMessage = null;
-        if (PromptBuilder.LooksLikeFollowUp(command.Message))
+        if (PromptBuilder.LooksLikeMetricFollowUp(command.Message)
+            && !PromptBuilder.LooksLikeShiftBriefing(command.Message)
+            && history.Any(m => PromptBuilder.LooksLikeShiftBriefing(m.Content) || m.Content.Contains("Shift Briefing", StringComparison.OrdinalIgnoreCase)))
+        {
+            // "How did you estimate that?" / "What did it cost?" after a Shift Briefing answer.
+            retrievalQuery = "Shift Briefing " + command.Message;
+            routingMessage = "Shift Briefing: " + command.Message;
+        }
+        else if (PromptBuilder.LooksLikeFollowUp(command.Message))
         {
             var lastUser = history.LastOrDefault(m => m.Role == "user")?.Content;
             if (!string.IsNullOrWhiteSpace(lastUser))
