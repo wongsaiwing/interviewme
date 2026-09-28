@@ -474,7 +474,8 @@ public class PromptPolicyTests
     {
         foreach (var text in SpokenPromptTexts())
         {
-            var body = string.Join("\n", text.Split('\n').Where(l => !l.TrimStart().StartsWith("Keywords:", StringComparison.Ordinal)));
+            var body = string.Join("\n", text.Split('\n').Where(l => !l.TrimStart().StartsWith("Keywords:", StringComparison.Ordinal)))
+                .Replace("full-stack delivery", "", StringComparison.Ordinal);
             Assert.DoesNotContain("full-stack", body, StringComparison.OrdinalIgnoreCase);
             Assert.DoesNotContain("full stack", body, StringComparison.OrdinalIgnoreCase);
         }
@@ -495,9 +496,16 @@ public class PromptPolicyTests
     [Fact]
     public void Haeco_generic_answer_is_the_approved_high_level_answer_only()
     {
-        const string approved = "At HAECO I'm an Assistant Solution Analyst on MRO engineering IT solutions. I cover the full cycle from requirements and specs through fullstack delivery, UAT, go-live and support, and on some work I partner with our Shenzhen team more as a technical BA.";
+        const string approved = "At HAECO I'm an Assistant Solution Analyst on MRO engineering IT solutions. I cover the full cycle from requirements and specs through full-stack delivery, UAT, go-live and support, and on some work I partner with our Shenzhen team more as a technical BA.";
         Assert.Contains("\"" + approved + "\"", PromptBuilder.HaecoGenericDirective);
         Assert.Contains("Then stop.", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("full-stack delivery", PromptBuilder.HaecoGenericDirective);
+        Assert.DoesNotContain("fullstack delivery", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("One exception: the approved HAECO answer says \"full-stack delivery\"", PromptBuilder.SpokenStyleDirective);
+        // The output check keeps the approved hyphen but still fixes other spellings.
+        Assert.Equal(approved, BiographyGuard.Sanitize(approved));
+        Assert.Equal("I'm a fullstack developer.", BiographyGuard.Sanitize("I'm a full-stack developer."));
+        Assert.Equal("I do fullstack work.", BiographyGuard.Sanitize("I do full stack work."));
         foreach (var banned in new[] { "When I started", "CRUD", "agentic CLI", "Read and Sign", "Shift Briefing", "by hand", "AI-assisted", "main stack", "support aircraft maintenance" })
         {
             Assert.DoesNotContain(banned, PromptBuilder.HaecoGenericDirective, StringComparison.OrdinalIgnoreCase);
