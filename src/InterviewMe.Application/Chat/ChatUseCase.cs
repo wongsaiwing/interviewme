@@ -342,7 +342,7 @@ public sealed class ChatUseCase
         List<RetrievedFact> facts,
         CancellationToken cancellationToken)
     {
-        if (!PromptBuilder.LooksLikeHaecoNamedSystems(message) && !PromptBuilder.LooksLikeShiftBriefing(message))
+        if (!PromptBuilder.LooksLikeHaecoNamedSystems(message) && !PromptBuilder.LooksLikeShiftBriefing(message) && !PromptBuilder.LooksLikeWhichSystems(message) && !PromptBuilder.LooksLikeStakeholderCount(message) && !PromptBuilder.LooksLikeReadAndSign(message))
         {
             return facts;
         }

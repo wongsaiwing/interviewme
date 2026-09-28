@@ -285,7 +285,8 @@ public class PromptPolicyTests
         Assert.False(PromptBuilder.LooksLikeProductionExperience("How do you handle production incidents?"));
         Assert.False(PromptBuilder.LooksLikeProductionExperience("Tell me about a hotfix"));
         Assert.Contains("Fluid Use, Operation Remarks, and Towing", PromptBuilder.ProductionExperienceDirective);
-        Assert.Contains("still in DEV", PromptBuilder.ProductionExperienceDirective);
+        Assert.Contains("Read and Sign is at the UAT stage", PromptBuilder.ProductionExperienceDirective);
+        Assert.DoesNotContain("still in DEV", PromptBuilder.ProductionExperienceDirective);
         Assert.Contains("UAT-ready", PromptBuilder.ProductionExperienceDirective);
         Assert.Contains("Do not answer as incidents", PromptBuilder.ProductionExperienceDirective);
     }
@@ -431,6 +432,9 @@ public class PromptPolicyTests
     private static IEnumerable<string> SpokenPromptTexts()
     {
         yield return PromptBuilder.HardBiographyDirective;
+        yield return PromptBuilder.StakeholderCountDirective;
+        yield return PromptBuilder.HaecoSystemsDirective;
+        yield return PromptBuilder.ReadAndSignDirective;
         yield return PromptBuilder.OffTopicDirective;
         yield return PromptBuilder.HaecoGenericDirective;
         yield return PromptBuilder.HaecoOwnershipDirective;
@@ -676,6 +680,8 @@ public class PromptPolicyTests
             "development using an agentic cli and",
             "so people can interview me in the browser",
             "on operation systems for aviation mro",
+            "up to 9 stakeholders across up to 3 departments",
+            "daily operation monitor and capacity checker",
         ];
         var hits = RepeatedTemplates(answers.Values, 6, 3)
             .Where(g => !allowedDescriptors.Any(a => a.Contains(g, StringComparison.Ordinal)))
@@ -733,6 +739,78 @@ public class PromptPolicyTests
         Assert.Equal("I graduated in July 2022.", BiographyGuard.Sanitize("I graduated in 23 June 2022."));
         // Other June dates are untouched (Compathnion internship started June 2021).
         Assert.Equal("My internship started in June 2021.", BiographyGuard.Sanitize("My internship started in June 2021."));
+    }
+
+    [Fact]
+    public void Read_and_Sign_UAT_seven_system_split_and_stakeholders_2026_09_28()
+    {
+        string[] old = ["still in DEV", "STILL DEV", "still in development", "more urgent", "SB more urgent"];
+        var root = TestSupport.FindKnowledgePath();
+        var texts = Directory.GetFiles(root, "*.md", SearchOption.AllDirectories).Select(File.ReadAllText).ToList();
+        texts.AddRange(SpokenPromptTexts());
+        texts.Add(PromptBuilder.HardBiographyDirective);
+        texts.Add(PromptBuilder.ProductionExperienceDirective);
+        texts.Add(PromptBuilder.HaecoOwnershipDirective);
+        texts.Add(PromptBuilder.ReadAndSignDirective);
+        texts.Add(PromptBuilder.HaecoSystemsDirective);
+        texts.Add(PromptBuilder.StakeholderCountDirective);
+        foreach (var text in texts)
+            foreach (var o in old)
+                Assert.DoesNotContain(o, text, StringComparison.OrdinalIgnoreCase);
+
+        Assert.Contains("at the UAT stage", PromptBuilder.ReadAndSignDirective);
+        Assert.Contains("Never claim production", PromptBuilder.ReadAndSignDirective);
+        Assert.Contains("up to 9 stakeholders across up to 3 departments", PromptBuilder.ReadAndSignDirective);
+        Assert.Contains("Read and Sign only", PromptBuilder.ReadAndSignDirective);
+        Assert.Contains("I've delivered seven MRO and operations systems at HAECO", PromptBuilder.HaecoSystemsDirective);
+        Assert.Contains("Three I built fullstack and took to go-live: Fluid Use, Operation Remarks, and Towing", PromptBuilder.HaecoSystemsDirective);
+        Assert.Contains("Daily Operation Monitor and Capacity Checker", PromptBuilder.HaecoSystemsDirective);
+        Assert.Contains("our Mainland team did the coding", PromptBuilder.HaecoSystemsDirective);
+        Assert.Contains("Read and Sign and Shift Briefing, I've taken to UAT", PromptBuilder.HaecoSystemsDirective);
+        Assert.Contains("3 fullstack to go-live", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("2 to UAT (Read and Sign, Shift Briefing)", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("up to 9 stakeholders across up to 3 departments", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("It depends on the system. The largest was Read and Sign", PromptBuilder.StakeholderCountDirective);
+        Assert.DoesNotContain("9 stakeholders", PromptBuilder.HaecoGenericDirective);
+        Assert.DoesNotContain("9 stakeholders", PromptBuilder.HaecoSystemsDirective);
+        Assert.DoesNotContain("60 man-days", PromptBuilder.HaecoGenericDirective);
+
+        var haeco = File.ReadAllText(Path.Combine(root, "facts", "haeco.md"));
+        Assert.Contains("At the UAT stage, not production", haeco);
+        Assert.Contains("up to 9 stakeholders across up to 3 departments", haeco);
+        Assert.DoesNotContain("STILL in DEV", haeco, StringComparison.OrdinalIgnoreCase);
+        var projects = File.ReadAllText(Path.Combine(root, "facts", "haeco-projects.md"));
+        Assert.Contains("3 fullstack to go-live", projects);
+        Assert.Contains("2 to UAT (Read and Sign, Shift Briefing)", projects);
+        Assert.Contains("at the UAT stage, not production", projects);
+        var tone = File.ReadAllText(Path.Combine(root, "tone", "professional.md"));
+        Assert.Contains("it's at the UAT stage", tone);
+        Assert.DoesNotContain("still in development", tone, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("I've delivered seven MRO and operations systems at HAECO", tone);
+        Assert.Contains("up to 9 stakeholders across up to 3 departments", tone);
+
+        Assert.True(PromptBuilder.LooksLikeReadAndSign("Tell me about Read & Sign."));
+        Assert.True(PromptBuilder.LooksLikeReadAndSign("Is Read and Sign in production?"));
+        Assert.True(PromptBuilder.LooksLikeStakeholderCount("How many stakeholders did you work with?"));
+        Assert.True(PromptBuilder.LooksLikeWhichSystems("Which systems did you work on at HAECO?"));
+        Assert.True(PromptBuilder.LooksLikeWhichSystems("How many systems have you delivered?"));
+        Assert.True(PromptBuilder.LooksLikeHaecoNamedSystems("How many stakeholders did you work with?"));
+
+        var pb = new PromptBuilder();
+        Assert.Contains(PromptBuilder.ReadAndSignDirective.Trim(), pb.BuildSystem("Silas Wong", [], null, "Tell me about Read and Sign."));
+        Assert.Contains(PromptBuilder.ReadAndSignDirective.Trim(), pb.BuildSystem("Silas Wong", [], null, "Is Read and Sign in production?"));
+        Assert.Contains(PromptBuilder.StakeholderCountDirective.Trim(), pb.BuildSystem("Silas Wong", [], null, "How many stakeholders did you work with?"));
+        Assert.Contains(PromptBuilder.HaecoSystemsDirective.Trim(), pb.BuildSystem("Silas Wong", [], null, "Which systems did you work on at HAECO?"));
+        Assert.Contains(PromptBuilder.HaecoGenericDirective.Trim(), pb.BuildSystem("Silas Wong", [], null, "What did you do at HAECO?"));
+        Assert.DoesNotContain(PromptBuilder.HaecoSystemsDirective.Trim(), pb.BuildSystem("Silas Wong", [], null, "What did you do at HAECO?"));
+
+        // Guard must not rewrite UAT status for Read and Sign or strip AI-native elsewhere.
+        Assert.Equal(
+            "Read and Sign is at the UAT stage.",
+            BiographyGuard.Sanitize("Read and Sign is at the UAT stage."));
+        Assert.Equal(
+            "I worked with up to 9 stakeholders across up to 3 departments.",
+            BiographyGuard.Sanitize("I worked with up to 9 stakeholders across up to 3 departments."));
     }
 
     [Fact]
