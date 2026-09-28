@@ -672,6 +672,7 @@ public class PromptPolicyTests
             "cut delivery from an estimated 60 man days to 10 about 83 less time and labour cost",
             "i reviewed every diff it cut delivery from an estimated",
             "and react development using an agentic cli and i reviewed every diff",
+            "with an ai native sdlc using an agentic cli for the net and react development and i reviewed every diff",
             "development using an agentic cli and",
             "so people can interview me in the browser",
             "on operation systems for aviation mro",
@@ -748,19 +749,27 @@ public class PromptPolicyTests
                 Assert.DoesNotContain(o, text, StringComparison.OrdinalIgnoreCase);
 
         var sb = PromptBuilder.ShiftBriefingDirective;
-        Assert.Contains("I built Shift Briefing with AI-assisted .NET and React development, using an agentic CLI, and I reviewed every diff. It cut delivery from an estimated 60 man-days to 10, about 83% less time and labour cost, and it's at the UAT stage.", sb);
-        Assert.Contains("On Shift Briefing, AI-assisted development cut delivery from an estimated 60 man-days to 10, about 83% less time and labour cost. I built it with .NET and React using an agentic CLI, and I reviewed every diff. It's at the UAT stage.", sb);
+        Assert.Contains("I built Shift Briefing with an AI-native SDLC, using an agentic CLI for the .NET and React development, and I reviewed every diff. It cut delivery from an estimated 60 man-days to 10, about 83% less time and labour cost, and it's at the UAT stage.", sb);
+        Assert.Contains("On Shift Briefing, the AI-native SDLC cut delivery from an estimated 60 man-days to 10, about 83% less time and labour cost. I used an agentic CLI for the .NET and React work and reviewed every diff. It's at the UAT stage.", sb);
         Assert.Contains("Cost follow-up only", sb);
         Assert.Contains("The token cost was HK$200 a day over 10 days, so HK$2,000. At HK$1,000 per person per day, the net saving against the 60 man-day estimate was HK$48,000.", sb);
         Assert.Contains("Never give the token cost or net saving before they ask about cost.", sb);
-        Assert.Contains("never say the words \"AI-native\"", sb);
+        // AI-native ban lifted (Scyko via Mega, 2026-09-28 23:25): the SB method is described as an AI-native SDLC.
+        Assert.Contains("AI-native SDLC", sb);
+        Assert.DoesNotContain("never say the words", sb);
+        var bannedWordsLine = PromptBuilder.SpokenStyleDirective.Split('\n').First(l => l.Contains("Words that never appear"));
+        Assert.DoesNotContain("AI-native", bannedWordsLine);
+        Assert.Contains("orchestrator", bannedWordsLine);
+        var toneFile = File.ReadAllText(Path.Combine(TestSupport.FindKnowledgePath(), "tone", "professional.md"));
+        Assert.DoesNotContain("Never echo the words", toneFile);
+        Assert.DoesNotContain("AI-native", toneFile.Split('\n').First(l => l.Contains("Words that never appear")));
         var haeco = File.ReadAllText(Path.Combine(root, "facts", "haeco.md"));
         Assert.Contains("10 man-days", haeco);
         Assert.Contains("60 man-days", haeco);
         Assert.Contains("about 83% saved in time and labour cost", haeco);
         Assert.Contains("Follow-up only (when they ask about cost or how the saving was calculated): token cost was HK$200 per day x 10 days = HK$2,000; net saving HK$48,000, at HK$1,000 per person per day.", haeco);
         var tone = File.ReadAllText(Path.Combine(root, "tone", "professional.md"));
-        Assert.Contains("I built Shift Briefing with AI-assisted .NET and React development, using an agentic CLI, and I reviewed every diff. It cut delivery from an estimated 60 man-days to 10, about 83% less time and labour cost, and it's at the UAT stage.", tone);
+        Assert.Contains("I built Shift Briefing with an AI-native SDLC, using an agentic CLI for the .NET and React development, and I reviewed every diff. It cut delivery from an estimated 60 man-days to 10, about 83% less time and labour cost, and it's at the UAT stage.", tone);
         Assert.Contains("(Only on a cost follow-up.)", tone);
 
         // First level stays number-free; impact / cost questions route to Shift Briefing.
@@ -773,10 +782,11 @@ public class PromptPolicyTests
         }
         Assert.DoesNotContain("60 man-days", PromptBuilder.HaecoGenericDirective);
 
-        // Guard rewrites the old figures and never echoes "AI-native".
-        Assert.Equal("I built Shift Briefing with AI-assisted .NET and React development, using an agentic CLI, and I reviewed every diff. It cut delivery from an estimated 60 man-days to 10, about 83% less time and labour cost, and it's at the UAT stage.", BiographyGuard.Sanitize("I built Shift Briefing with AI-assisted .NET and React development, using an agentic CLI, and I reviewed every diff. It took about five days to get it UAT-ready, against a past manager estimate of about 20 person-days, and the token cost was about US$100, and it's at the UAT stage."));
+        // Guard rewrites the old figures; AI-native is no longer rewritten.
+        Assert.Equal("I built Shift Briefing with an AI-native SDLC, using an agentic CLI for the .NET and React development, and I reviewed every diff. It cut delivery from an estimated 60 man-days to 10, about 83% less time and labour cost, and it's at the UAT stage.", BiographyGuard.Sanitize("I built Shift Briefing with an AI-native SDLC, using an agentic CLI for the .NET and React development, and I reviewed every diff. It took about five days to get it UAT-ready, against a past manager estimate of about 20 person-days, and the token cost was about US$100, and it's at the UAT stage."));
         Assert.Equal("Shift Briefing is at the UAT stage.", BiographyGuard.Sanitize("Shift Briefing is at the UAT stage. It was about 4x faster, roughly 75% less effort."));
-        Assert.Equal("AI-assisted development cut delivery time.", BiographyGuard.Sanitize("AI-native development cut delivery time."));
+        Assert.Equal("The AI-native SDLC cut delivery time.", BiographyGuard.Sanitize("The AI-native SDLC cut delivery time."));
+        Assert.Equal("On Shift Briefing, the AI-native SDLC cut delivery from an estimated 60 man-days to 10, about 83% less time and labour cost. I used an agentic CLI for the .NET and React work and reviewed every diff. It's at the UAT stage.", BiographyGuard.Sanitize("On Shift Briefing, the AI-native SDLC cut delivery from an estimated 60 man-days to 10, about 83% less time and labour cost. I used an agentic CLI for the .NET and React work and reviewed every diff. It's at the UAT stage."));
         Assert.Equal("The token cost was HK$200 a day over 10 days, so HK$2,000. At HK$1,000 per person per day, the net saving against the 60 man-day estimate was HK$48,000.", BiographyGuard.Sanitize("The token cost was HK$200 a day over 10 days, so HK$2,000. At HK$1,000 per person per day, the net saving against the 60 man-day estimate was HK$48,000."));
     }
 

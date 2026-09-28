@@ -121,8 +121,6 @@ public static class BiographyGuard
         @"(?<=^|[.!?]\s)[^.!?]*(?:\b(?:five|5) days\b[^.!?]*UAT|20 person-days|US\$100|\b75%|\b4x\b|\b4\u00d7|four times faster)[^.!?]*[.!?]\s*",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-    private static readonly Regex AiNative = new(@"\bAI[- ]native\s+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
     private static readonly Regex ExtraSpaces = new(@"[ \t]{2,}", RegexOptions.Compiled);
 
     public const string LanguageFallback =
@@ -169,7 +167,6 @@ public static class BiographyGuard
         }
         result = OldSbMetricsClause.Replace(result, "It cut delivery from an estimated 60 man-days to 10, about 83% less time and labour cost");
         result = OldSbMetricSentence.Replace(result, "");
-        result = AiNative.Replace(result, "AI-assisted ");
         result = FillerActually.Replace(result, "");
         result = FillerGenuinely.Replace(result, "");
         result = PaperSpreadsheetSentence.Replace(result, "");
