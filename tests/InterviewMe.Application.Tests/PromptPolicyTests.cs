@@ -796,8 +796,15 @@ public class PromptPolicyTests
     public void InterviewMe_architecture_has_the_one_approved_stack_fact_and_no_secrets()
     {
         var root = TestSupport.FindKnowledgePath();
-        Assert.Contains("It has a React front end and an ASP.NET back end.", File.ReadAllText(Path.Combine(root, "facts", "interviewme.md")));
-        Assert.Contains("React front end and an ASP.NET back end", PromptBuilder.InterviewMeArchitectureDirective);
+        var interviewMe = File.ReadAllText(Path.Combine(root, "facts", "interviewme.md"));
+        Assert.Contains("It has a React front end and a .NET back end.", interviewMe);
+        Assert.Contains("Follow-up detail only", interviewMe);
+        Assert.Contains("the back end is ASP.NET Core.", interviewMe);
+        Assert.Contains("It's a RAG setup with a React front end and a .NET back end.", PromptBuilder.InterviewMeArchitectureDirective);
+        Assert.DoesNotContain("ASP.NET back end", PromptBuilder.InterviewMeArchitectureDirective);
+        Assert.Contains("It's a RAG setup with a React front end and a .NET back end.", File.ReadAllText(Path.Combine(root, "tone", "professional.md")));
+        Assert.Equal("It's a RAG setup with a React front end and a .NET back end.", BiographyGuard.Sanitize("It's a RAG setup with a React front end and an ASP.NET back end."));
+        Assert.Equal("The back end is ASP.NET Core.", BiographyGuard.Sanitize("The back end is ASP.NET Core."));
         Assert.Contains("Never share keys, secrets", PromptBuilder.InterviewMeArchitectureDirective);
         Assert.DoesNotContain("agentic CLI", PromptBuilder.InterviewMeProjectDirective);
         Assert.DoesNotContain("one team", PromptBuilder.HaecoOwnershipDirective);
