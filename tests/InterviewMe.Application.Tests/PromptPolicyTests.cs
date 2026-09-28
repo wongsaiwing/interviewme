@@ -682,6 +682,31 @@ public class PromptPolicyTests
     }
 
     [Fact]
+    public void Glasgow_graduation_is_July_2022_everywhere()
+    {
+        var root = TestSupport.FindKnowledgePath();
+        foreach (var f in Directory.GetFiles(root, "*.md", SearchOption.AllDirectories))
+        {
+            var text = File.ReadAllText(f);
+            Assert.DoesNotContain("June 2022", text, StringComparison.OrdinalIgnoreCase);
+            Assert.DoesNotContain("06/2022", text);
+            Assert.DoesNotContain("2022-06", text);
+            Assert.DoesNotContain("23 June", text, StringComparison.OrdinalIgnoreCase);
+        }
+        var education = File.ReadAllText(Path.Combine(root, "facts", "education.md"));
+        Assert.Contains("Graduated July 2022 (07/2022).", education);
+        Assert.Contains("say July 2022 (CV 07/2022)", education);
+        Assert.Contains("Glasgow BSc CS 07/2022", File.ReadAllText(Path.Combine(root, "facts", "extra-experience.md")));
+        Assert.Contains("Glasgow: only the graduation date, July 2022 (CV 07/2022).", PromptBuilder.HardBiographyDirective);
+        Assert.DoesNotContain("June 2022", PromptBuilder.HardBiographyDirective);
+        Assert.DoesNotContain("06/2022", PromptBuilder.HardBiographyDirective);
+        Assert.Equal("I graduated from the University of Glasgow in July 2022.", BiographyGuard.Sanitize("I graduated from the University of Glasgow in June 2022."));
+        Assert.Equal("I graduated in July 2022.", BiographyGuard.Sanitize("I graduated in 23 June 2022."));
+        // Other June dates are untouched (Compathnion internship started June 2021).
+        Assert.Equal("My internship started in June 2021.", BiographyGuard.Sanitize("My internship started in June 2021."));
+    }
+
+    [Fact]
     public void Guard_keeps_salary_to_the_single_approved_figure()
     {
         const string approved = "I'm looking for a fair market rate for this kind of role, which I'd put at HKD 35,000 per month.";

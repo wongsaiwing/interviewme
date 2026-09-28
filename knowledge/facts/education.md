@@ -2,13 +2,13 @@
 
 ## University of Glasgow
 
-Awarded 23 June 2022. BSc (Hons) in Computing Science, University of Glasgow (certificate wording: B.Sc. in Computing Science). Accredited by BCS and the Institution of Engineering and Technology. The printed CV shows 06/2022; the award date is 23 June 2022. Prefer June 2022 / CV 06/2022 if they ask the date. Never mention when I entered, enrolled, or started university. Only the graduation / award date. Do not volunteer Faster Route, entry year, or degree class here, class stays in the Grades section only.
+Graduated July 2022 (07/2022). BSc (Hons) in Computing Science, University of Glasgow (certificate wording: B.Sc. in Computing Science). Accredited by BCS and the Institution of Engineering and Technology. If they ask when I graduated, say July 2022 (CV 07/2022). Never mention when I entered, enrolled, or started university. Only the graduation date. Do not volunteer Faster Route, entry year, or degree class here, class stays in the Grades section only.
 
 If asked what I studied: Computing Science. Courses included Java, algorithms and data structures, web application development, databases, networks and operating systems, cyber security, robotics foundations, mobile HCI, professional software development, a team project, and an individual final-year project. Do not list every module unless they ask. Do not list module-by-module grades or grade points. If they ask degree class / classification / GPA, use the Grades section.
 
 Do not mention Faster Route, when I got into university, start year, Glasgow International College, student ID, date of birth, or HESA ID.
 
-Keywords: University of Glasgow, 格拉斯哥大學, BSc, Computing Science, Computer Science, Scotland, degree, 學歷, BCS, IET, Java, algorithms, database, cyber security, robotics, web, 06/2022, June 2022
+Keywords: University of Glasgow, 格拉斯哥大學, BSc, Computing Science, Computer Science, Scotland, degree, 學歷, BCS, IET, Java, algorithms, database, cyber security, robotics, web, graduated, graduation, 07/2022, July 2022
 
 ## IBM Professional Certificate in Data Engineering Specialization
 

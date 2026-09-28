@@ -109,6 +109,9 @@ public static class BiographyGuard
     private static readonly Regex SalaryEnoughSentence = new(
         @"\s*(?:That's|That is|That range) (?:enough|works)(?: for me)?\.", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+    // Glasgow graduation is July 2022 (07/2022); rewrite the superseded June date in graduation answers.
+    private static readonly Regex GlasgowJune = new(@"\b(?:23(?:rd)?\s+)?June,?\s+2022\b|\b06/2022\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
     private static readonly Regex ExtraSpaces = new(@"[ \t]{2,}", RegexOptions.Compiled);
 
     public const string LanguageFallback =
@@ -148,6 +151,10 @@ public static class BiographyGuard
             result = SalaryRange.Replace(result, "HKD 35,000");
             result = SalaryTail.Replace(result, "");
             result = SalaryEnoughSentence.Replace(result, "");
+        }
+        if (result.Contains("Glasgow", StringComparison.OrdinalIgnoreCase) || result.Contains("graduat", StringComparison.OrdinalIgnoreCase))
+        {
+            result = GlasgowJune.Replace(result, m => m.Value.Contains('/') ? "07/2022" : "July 2022");
         }
         result = FillerActually.Replace(result, "");
         result = FillerGenuinely.Replace(result, "");
