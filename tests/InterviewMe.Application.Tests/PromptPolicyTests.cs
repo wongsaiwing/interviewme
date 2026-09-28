@@ -311,9 +311,12 @@ public class PromptPolicyTests
         Assert.True(PromptBuilder.LooksLikeExpectedSalary("What salary are you expecting?"));
         Assert.True(PromptBuilder.LooksLikeExpectedSalary("what salary"));
         Assert.False(PromptBuilder.LooksLikeExpectedSalary("What is your current package?"));
-        Assert.Contains("30,000 to 35,000", PromptBuilder.ExpectedSalaryDirective);
-        Assert.Contains("That is enough", PromptBuilder.ExpectedSalaryDirective);
-        Assert.Contains("matching industry standard", PromptBuilder.ExpectedSalaryDirective);
+        Assert.Contains("I'm looking for a fair market rate for this kind of role, which I'd put at HKD 35,000 per month.", PromptBuilder.ExpectedSalaryDirective);
+        Assert.DoesNotContain("30,000", PromptBuilder.ExpectedSalaryDirective);
+        Assert.DoesNotContain("That is enough", PromptBuilder.ExpectedSalaryDirective);
+        Assert.DoesNotContain("industry standard", PromptBuilder.ExpectedSalaryDirective);
+        Assert.DoesNotContain("30,000", PromptBuilder.HardBiographyDirective);
+        Assert.DoesNotContain("That is enough", PromptBuilder.HardBiographyDirective);
         Assert.Contains("Do not say it depends on bonus", PromptBuilder.ExpectedSalaryDirective);
         Assert.DoesNotContain("WFH day", PromptBuilder.ExpectedSalaryDirective);
         Assert.DoesNotContain("one WFH day", PromptBuilder.ExpectedSalaryDirective);
@@ -577,7 +580,7 @@ public class PromptPolicyTests
         Assert.Contains("step-by-step", PromptBuilder.SpokenStyleDirective);
 
         // Salary and notice untouched.
-        Assert.Contains("HKD 30,000 to 35,000 per month, matching industry standard and years of experience. That is enough.", PromptBuilder.ExpectedSalaryDirective);
+        Assert.Contains("Say exactly this one sentence: \"I'm looking for a fair market rate for this kind of role, which I'd put at HKD 35,000 per month.\" Then stop.", PromptBuilder.ExpectedSalaryDirective);
         Assert.Equal("They asked notice period or when I can start. Answer one month. Do not volunteer notice on other questions.", PromptBuilder.NoticeDirective);
     }
 
@@ -676,6 +679,28 @@ public class PromptPolicyTests
             i++;
         }
         return seen.Where(kv => kv.Value.Count >= minAnswers).Select(kv => kv.Key).ToList();
+    }
+
+    [Fact]
+    public void Guard_keeps_salary_to_the_single_approved_figure()
+    {
+        const string approved = "I'm looking for a fair market rate for this kind of role, which I'd put at HKD 35,000 per month.";
+        Assert.Equal(approved, BiographyGuard.Sanitize(approved));
+        Assert.Equal("My expected salary is HKD 35,000 per month.", BiographyGuard.Sanitize("My expected salary is HKD 30,000 to 35,000 per month, which matches the industry standard and my years of experience. That range works for me."));
+        Assert.Equal("My expected salary is HKD 35,000 per month.", BiographyGuard.Sanitize("My expected salary is HKD 35,000 per month, matching industry standard and years of experience. That's enough for me."));
+        Assert.Equal("My expected salary is HKD 35,000 per month.", BiographyGuard.Sanitize("My expected salary is HKD 35,000 per month. That's enough."));
+        // Outside salary answers the guard leaves wording alone.
+        Assert.Equal("That's enough for the first release.", BiographyGuard.Sanitize("That's enough for the first release."));
+        var root = TestSupport.FindKnowledgePath();
+        foreach (var f in Directory.GetFiles(root, "*.md", SearchOption.AllDirectories))
+        {
+            var text = File.ReadAllText(f);
+            Assert.DoesNotContain("30,000", text);
+            Assert.DoesNotContain("30000", text);
+            Assert.DoesNotContain("That is enough", text);
+        }
+        Assert.Contains(approved, File.ReadAllText(Path.Combine(root, "facts", "compensation.md")));
+        Assert.Contains(approved, File.ReadAllText(Path.Combine(root, "tone", "professional.md")));
     }
 
     [Fact]

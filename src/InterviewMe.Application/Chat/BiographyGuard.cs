@@ -98,6 +98,17 @@ public static class BiographyGuard
         @"(?:\ban?\s+)?React front[- ]end and (?:an?\s+)?ASP\.NET(?: Core)? back[- ]end",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+    // Expected salary: single figure, no range, no endorsement tail (approved "fair market rate" sentence is untouched).
+    private static readonly Regex SalaryRange = new(
+        @"HKD\s*30,?000\s*(?:to|-|\u2013)\s*(?:HKD\s*)?35,?000", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    private static readonly Regex SalaryTail = new(
+        @",?\s*(?:which\s+)?(?:matching|matches|in line with)\s+(?:the\s+)?industry standard(?:\s+and\s+(?:my\s+)?years of experience)?",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    private static readonly Regex SalaryEnoughSentence = new(
+        @"\s*(?:That's|That is|That range) (?:enough|works)(?: for me)?\.", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
     private static readonly Regex ExtraSpaces = new(@"[ \t]{2,}", RegexOptions.Compiled);
 
     public const string LanguageFallback =
@@ -132,6 +143,12 @@ public static class BiographyGuard
         result = EmDash.Replace(result, ", ");
         result = FullStack.Replace(result, m => m.Groups[1].Value + "ullstack");
         result = InterviewMeStack.Replace(result, "a React front end and a .NET back end");
+        if (result.Contains("HKD", StringComparison.OrdinalIgnoreCase))
+        {
+            result = SalaryRange.Replace(result, "HKD 35,000");
+            result = SalaryTail.Replace(result, "");
+            result = SalaryEnoughSentence.Replace(result, "");
+        }
         result = FillerActually.Replace(result, "");
         result = FillerGenuinely.Replace(result, "");
         result = PaperSpreadsheetSentence.Replace(result, "");

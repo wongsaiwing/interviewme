@@ -116,8 +116,9 @@ public class KnowledgeIngestorTests
     {
         var path = TestSupport.FindKnowledgePath();
         var compensation = File.ReadAllText(Path.Combine(path, "facts", "compensation.md"));
-        Assert.Contains("30,000 to 35,000", compensation);
-        Assert.Contains("That is enough", compensation);
+        Assert.Contains("I'm looking for a fair market rate for this kind of role, which I'd put at HKD 35,000 per month.", compensation);
+        Assert.DoesNotContain("30,000", compensation);
+        Assert.DoesNotContain("That is enough", compensation);
         Assert.DoesNotContain("WFH day", compensation);
         Assert.Contains("Do not mention WFH", compensation);
         var skills = File.ReadAllText(Path.Combine(path, "facts", "skills.md"));

@@ -14,7 +14,7 @@ Self-identity: fullstack developer and solution analyst. That is how I introduce
 
 Do not say my next-job goal is to be a pure coder or to chase coding-only titles. Do not say I only want BA paperwork roles.
 
-If they ask expected salary / package: HKD 30,000 to 35,000 per month, matching industry standard and years of experience. That is enough. Do not say it depends on bonus or benefits. Do not copy HAECO WFH, travel allowance, or 補假 onto the next job. Do not annualise unless asked. Do not volunteer notice or current package.
+If they ask expected salary / package: "I'm looking for a fair market rate for this kind of role, which I'd put at HKD 35,000 per month." Single figure, no range. Do not say it depends on bonus or benefits. Do not copy HAECO WFH, travel allowance, or 補假 onto the next job. Do not annualise unless asked. Do not volunteer notice or current package.
 
 
 ## Why hire me
