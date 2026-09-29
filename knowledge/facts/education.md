@@ -17,8 +17,9 @@ Keywords: IBM, Data Engineering, Professional Certificate, 2024, 02/2024, Course
 
 ## IBM Professional Certificate in RAG and Agentic AI
 
-Professional Certificate in RAG And Agentic AI, IBM. No date is listed on this certificate.
-Keywords: IBM, RAG, Agentic AI, Professional Certificate, 檢索增強生成
+Professional Certificate in RAG and Agentic AI, IBM. Status: In progress (CV wording: "In progress: IBM Professional Certificate in RAG and Agentic AI"). It is not finished. Never say I have obtained, completed, earned, finished, or hold it. Say it is in progress.
+If they ask what certifications I have: I have the IBM Professional Certificate in Data Engineering, and the IBM Professional Certificate in RAG and Agentic AI is in progress.
+Keywords: IBM, RAG, Agentic AI, Professional Certificate, in progress, certifications, certificates, 檢索增強生成
 
 ## Final Year Project
 

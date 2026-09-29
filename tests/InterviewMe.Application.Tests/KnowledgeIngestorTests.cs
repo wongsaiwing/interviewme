@@ -88,7 +88,7 @@ public class KnowledgeIngestorTests
     {
         var path = TestSupport.FindKnowledgePath();
         var markdown = File.ReadAllText(Path.Combine(path, "facts", "tradelink.md"));
-        Assert.Contains("web-based applications only", markdown);
+        Assert.Contains("web-based applications (.NET Framework)", markdown); // CV wording (2026-09-29): .NET Framework only, no React.
         Assert.Contains("Do not say console apps", markdown);
         Assert.DoesNotContain("and console apps", markdown, StringComparison.OrdinalIgnoreCase);
         Assert.Contains("Do not say console apps", PromptBuilder.HardBiographyDirective);

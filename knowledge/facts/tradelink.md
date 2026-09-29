@@ -2,7 +2,7 @@
 
 October 2022 – July 2024. Programmer at TradeLink Technologies, Hong Kong. Official title is Programmer. Describe the work as web / portal backend. Do not change the job title to full-stack developer.
 
-Developed and maintained web-based applications only (.NET Framework, React) to support user requirements and improve system functionality. Do not say console apps or console applications. TradeLink work was web, portal backend, database, ETL/SSIS, and SSRS.
+Developed and maintained web-based applications (.NET Framework) to support user requirements and improve system functionality. Do not say React for TradeLink; the TradeLink stack is .NET Framework only. Do not say console apps or console applications. TradeLink work was web, portal backend, database, ETL/SSIS, and SSRS.
 
 Applications and database architecture design.
 
@@ -14,7 +14,7 @@ Participated in Business Intelligence platform implementation projects (SSRS).
 
 Conducted research on emerging technologies and solutions to enhance project efficiency, and specification documentation.
 
-Keywords: TradeLink, TradeLink Technologies, Programmer, 程式設計師, .NET Framework, React, ETL, SSIS, SSRS, Git, DevOps, UAT
+Keywords: TradeLink, TradeLink Technologies, Programmer, 程式設計師, .NET Framework, ETL, SSIS, SSRS, Git, DevOps, UAT
 
 ## Why I left
 

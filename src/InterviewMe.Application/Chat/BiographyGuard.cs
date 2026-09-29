@@ -37,6 +37,25 @@ public static class BiographyGuard
         @"Tim(?: Berners-Lee)? was my boss",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+    // MCP: only connecting existing MCP servers to an agent. Never wrote / built an MCP server.
+    private static readonly Regex McpServerBuiltSentence = new(
+        @"[^.!?]*\b(?:wrote|written|write|writing|built|build|building|developed|develop|developing|created|create|creating|made|implemented|implement)\s+(?:an?\s+|my\s+own\s+|our\s+own\s+|own\s+|custom\s+|a\s+custom\s+|some\s+|several\s+|two\s+|the\s+)*MCP\s+servers?\b[^.!?]*[.!?]?",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    // IBM RAG and Agentic AI certificate is In progress; never obtained / completed.
+    private static readonly Regex RagCertCompletedSentence = new(
+        @"[^.!?]*\bRAG\s+(?:and|&)\s+Agentic\s+AI\b[^.!?]*[.!?]?",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    private static readonly Regex CompletedWords = new(
+        @"\b(?:completed|complete|obtained|earned|finished|achieved|awarded|passed|got|hold|holds|received)\b",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    // TradeLink stack is .NET Framework only (CV wording).
+    private static readonly Regex TradeLinkReact = new(
+        @"\.NET Framework(?:\s*(?:,|and|&|/|\+)\s*|\s+with\s+)React\b(?:\s+front[- ]?end)?",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
     private static readonly Regex LanguageExamSentence = new(
         @"[^.!?]*\b(?:IELTS|TOEFL|PTE|CEFR|formal grading|grading|formal language certificate|language certificate|language certification|certificate to share|language exam|language test|band score|score to quote|(?:don't|do not|didn't|did not)\s+have\s+a\s+(?:formal\s+)?(?:language\s+)?(?:score|certificate))\b[^.!?]*[.!?]?",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -157,6 +176,15 @@ public static class BiographyGuard
         result = WorkedWithTim.Replace(result, "worked with Mike Berners-Lee");
         result = TimWasBoss.Replace(result, "Mike Berners-Lee was my boss");
 
+        result = McpServerBuiltSentence.Replace(result, m => m.Value.StartsWith(" ") ? " I've connected existing MCP servers to an agent." : "I've connected existing MCP servers to an agent.");
+        result = RagCertCompletedSentence.Replace(result, m =>
+            CompletedWords.IsMatch(m.Value) && !m.Value.Contains("in progress", StringComparison.OrdinalIgnoreCase)
+                ? (m.Value.StartsWith(" ") ? " " : "") + "The IBM Professional Certificate in RAG and Agentic AI is in progress."
+                : m.Value);
+        if (result.Contains("TradeLink", StringComparison.OrdinalIgnoreCase))
+        {
+            result = TradeLinkReact.Replace(result, ".NET Framework");
+        }
         result = LanguageExamSentence.Replace(result, "");
         result = Ielts.Replace(result, "");
         result = Toefl.Replace(result, "");
