@@ -58,6 +58,24 @@ public class CvAlignmentTests
             BiographyGuard.Sanitize("At TradeLink I built web applications in .NET Framework and React."));
     }
 
+    // TradeLink first answer names .NET Framework (Scyko via Mega, 2026-09-29 09:23).
+    [Fact]
+    public void TradeLink_first_answer_names_dotnet_framework_not_react()
+    {
+        const string q = "What did you do at TradeLink?";
+        Assert.True(PromptBuilder.LooksLikeTradeLinkGeneric(q));
+        Assert.False(PromptBuilder.LooksLikeTradeLinkGeneric("Why did you leave TradeLink?"));
+        Assert.Contains(PromptBuilder.TradeLinkGenericDirective, Build(q));
+        var answer = PromptBuilder.TradeLinkGenericDirective.Split('"')[1].Replace("\\", "");
+        Assert.Contains("At TradeLink I was a Programmer, working on web-based applications in .NET Framework and the portal backend.", PromptBuilder.TradeLinkGenericDirective);
+        Assert.Contains(".NET Framework", answer);
+        Assert.DoesNotContain("React", answer);
+        var tl = Fact("tradelink.md");
+        var instr = tl.Split('\n').First(l => l.StartsWith("When asked generally what I did at TradeLink"));
+        Assert.Contains(".NET Framework", instr);
+        Assert.DoesNotContain("React", instr);
+    }
+
     // 3. Agentic AI skills; SDD / HITL / AI-native bans lifted; MCP connecting only.
     [Fact]
     public void Item3_agentic_ai_skills_and_bans_lifted()

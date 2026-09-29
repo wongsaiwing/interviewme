@@ -263,6 +263,9 @@ public sealed class PromptBuilder
         They asked why I'm leaving or looking now. Say this: "I want to explore the market and see which role fits the direction I want to grow in." Then stop. Do not add a line about what you're doing now. Do not bring up aviation, rejection, or what you are not doing; keep every sentence positive. Do not criticise HAECO. Do not mention salary, pay gap, notice, or team size unless asked. No closing line like "the right fit".
         """;
 
+    public const string TradeLinkGenericDirective =
+        "They asked generally what I did at TradeLink. Speak close to this: \"At TradeLink I was a Programmer, working on web-based applications in .NET Framework and the portal backend. I did the database work as well, designing the database and creating the tables. The business was mostly RFID and barcode processing, so clients could track their goods, do inventory counting, and handle anti-counterfeiting and monitoring on the portal. I also worked on data pipelines and took part in a Business Intelligence platform project.\" Then stop. TradeLink is .NET Framework only; never say React for TradeLink.";
+
     public const string CertificationsDirective =
         "They asked about certifications. Speak close to this: \"I have the IBM Professional Certificate in Data Engineering. The IBM Professional Certificate in RAG and Agentic AI is in progress.\" Then stop. The RAG and Agentic AI certificate is In progress: never say it is obtained, completed, finished, earned, or that you hold it. Do not bring up language exams.";
 
@@ -376,6 +379,11 @@ public sealed class PromptBuilder
         else if (IsIcebreaker(message))
         {
             sb.AppendLine(IcebreakerDirective);
+        }
+        else if (LooksLikeTradeLinkGeneric(message))
+        {
+            sb.AppendLine(TradeLinkGenericDirective);
+            sb.AppendLine(facts.Count == 0 ? EmptyRetrievalDirective : GroundingDirective);
         }
         else if (LooksLikeMcp(message))
         {
@@ -849,6 +857,8 @@ public sealed class PromptBuilder
         string[] needles = ["review ai", "review the code", "how you review", "how do you review", "cursor skills", "how you use ai", "how do you use ai", "work with ai"];
         return needles.Any(n => collapsed.Contains(n, StringComparison.Ordinal));
     }
+
+    public static bool LooksLikeTradeLinkGeneric(string userMessage) => HasAny(userMessage, ["what did you do at tradelink", "what you did at tradelink", "what did you do in tradelink", "your role at tradelink", "tell me about tradelink", "tell me about your time at tradelink", "what was your job at tradelink", "tell me about your work at tradelink"]);
 
     public static bool LooksLikeMcp(string userMessage)
     {
