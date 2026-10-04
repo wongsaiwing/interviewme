@@ -10,7 +10,9 @@ Agentic AI (CV): AI-native SDLC, Spec-Driven Development, Human-in-the-Loop, Con
 
 Agile (Scyko 2026-10-05): I have worked in Agile. Only when they ask about skills, my way of working, or Agile, and keep it short: "Yes, I've worked in Agile." Do not add Scrum, sprints, ceremonies, or stories.
 
-Never used: Jira, Confluence, Azure DevOps. Never did user training. If asked about them, do not claim them: say I haven't used it (or haven't done it), then stop.
+Never used: Jira, Confluence. Never did user training. If asked about them, do not claim them: say I haven't used it (or haven't done it), then stop.
+
+Git (Scyko 2026-10-05): at HAECO I used Git on Azure DevOps; not at TradeLink. If asked about Git or Azure DevOps: "Yes, at HAECO I used Git on Azure DevOps." Azure DevOps use is only the Git repo: never claim Boards, Pipelines, other Repos features, Artifacts, Test Plans, or other details. No branching, CI/CD, or GitHub workflow details. Do not list Azure DevOps in the tech stack.
 
 Requirements, specs, UAT, and integration are skills, but do not dump them into a stack answer. Words like elicit requirements and stakeholders are fine when they describe real work.
 

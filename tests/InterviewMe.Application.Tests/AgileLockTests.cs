@@ -33,7 +33,7 @@ public class AgileLockTests
     [Fact]
     public void Never_used_tools_are_not_claimed_in_prompts_or_knowledge()
     {
-        foreach (var q in new[] { "Have you used Jira?", "Do you use Confluence?", "Have you worked with Azure DevOps?", "Have you done user training?" })
+        foreach (var q in new[] { "Have you used Jira?", "Do you use Confluence?", "Have you done user training?" })
         {
             Assert.True(PromptBuilder.LooksLikeNeverUsedTools(q), q);
             Assert.Contains(PromptBuilder.NeverUsedToolsDirective, Build(q));
@@ -43,13 +43,14 @@ public class AgileLockTests
         Assert.DoesNotContain("Git, Azure DevOps", PromptBuilder.HardBiographyDirective);
         Assert.DoesNotContain("Azure DevOps", Fact("skills.md").Split('\n')[2]);
         Assert.DoesNotContain("DevOps", Fact("tradelink.md"));
-        Assert.Contains("Never used: Jira, Confluence, Azure DevOps. Never did user training.", Fact("skills.md"));
+        Assert.Contains("Never used: Jira, Confluence. Never did user training.", Fact("skills.md"));
+        Assert.False(PromptBuilder.LooksLikeNeverUsedTools("Have you worked with Azure DevOps?")); // Azure DevOps un-denied (Scyko 2026-10-05 07:53)
     }
 
     [Theory]
     [InlineData("Yes, I've used Jira for tracking work.", "I haven't used Jira.")]
     [InlineData("I wrote pages in Confluence.", "I haven't used Confluence.")]
-    [InlineData("At HAECO we track PBIs in Azure DevOps. It works well.", "I haven't used Azure DevOps. It works well.")]
+    [InlineData("At HAECO we track PBIs in Azure DevOps. It works well.", "At HAECO I used Git on Azure DevOps. It works well.")]
     [InlineData("I also ran user training before go-live.", "I haven't done user training.")]
     [InlineData("I trained users on the new system.", "I haven't done user training.")]
     public void Guard_never_claims_jira_confluence_azure_devops_or_user_training(string raw, string expected)
@@ -59,7 +60,7 @@ public class AgileLockTests
 
     [Theory]
     [InlineData("No, I haven't used Jira.")]
-    [InlineData("I've never used Confluence or Azure DevOps.")]
+    [InlineData("I've never used Confluence.")]
     [InlineData("No, I haven't done user training.")]
     public void Guard_keeps_denials(string s) => Assert.Equal(s, BiographyGuard.Sanitize(s));
 
