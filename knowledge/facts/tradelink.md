@@ -6,7 +6,7 @@ Developed and maintained web-based applications (.NET Framework) to support user
 
 Applications and database architecture design.
 
-Source control (Git and DevOps), functional and system integration, and UAT.
+Source control (Git), functional and system integration, and UAT.
 
 Built, maintained, and optimized data pipelines (ETL, SSIS) to meet business needs and ensure accurate data delivery.
 
@@ -14,7 +14,7 @@ Participated in Business Intelligence platform implementation projects (SSRS).
 
 Conducted research on emerging technologies and solutions to enhance project efficiency, and specification documentation.
 
-Keywords: TradeLink, TradeLink Technologies, Programmer, 程式設計師, .NET Framework, ETL, SSIS, SSRS, Git, DevOps, UAT
+Keywords: TradeLink, TradeLink Technologies, Programmer, 程式設計師, .NET Framework, ETL, SSIS, SSRS, Git, UAT
 
 ## Why I left
 

@@ -56,6 +56,19 @@ public static class BiographyGuard
         @"\.NET Framework(?:\s*(?:,|and|&|/|\+)\s*|\s+with\s+)React\b(?:\s+front[- ]?end)?",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+    // Never used Jira / Confluence / Azure DevOps; never did user training (Scyko 2026-10-05).
+    private static readonly Regex NeverUsedSentence = new(
+        @"[^.!?]*\b(?:Jira|Confluence|Azure\s+DevOps|user\s+training|train(?:ed|ing)?\s+(?:the\s+)?(?:end\s+)?users)\b[^.!?]*[.!?]?",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    private static readonly Regex NegationWords = new(
+        @"\b(?:haven'?t|have\s+not|hasn'?t|never|didn'?t|did\s+not|don'?t|do\s+not|not|no)\b",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    private static readonly Regex NeverUsedTool = new(
+        @"\b(?:Jira|Confluence|Azure\s+DevOps)\b",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
     private static readonly Regex LanguageExamSentence = new(
         @"[^.!?]*\b(?:IELTS|TOEFL|PTE|CEFR|formal grading|grading|formal language certificate|language certificate|language certification|certificate to share|language exam|language test|band score|score to quote|(?:don't|do not|didn't|did not)\s+have\s+a\s+(?:formal\s+)?(?:language\s+)?(?:score|certificate))\b[^.!?]*[.!?]?",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -185,6 +198,15 @@ public static class BiographyGuard
         {
             result = TradeLinkReact.Replace(result, ".NET Framework");
         }
+        result = NeverUsedSentence.Replace(result, m =>
+        {
+            if (NegationWords.IsMatch(m.Value)) return m.Value;
+            var lead = m.Value.StartsWith(" ") ? " " : "";
+            var tool = NeverUsedTool.Match(m.Value);
+            if (!tool.Success) return lead + "I haven't done user training.";
+            var name = tool.Value.ToLowerInvariant() switch { "jira" => "Jira", "confluence" => "Confluence", _ => "Azure DevOps" };
+            return lead + $"I haven't used {name}.";
+        });
         result = LanguageExamSentence.Replace(result, "");
         result = Ielts.Replace(result, "");
         result = Toefl.Replace(result, "");

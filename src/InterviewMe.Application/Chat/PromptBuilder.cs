@@ -38,8 +38,9 @@ public sealed class PromptBuilder
         HAECO team: twelve people including the manager; two are UI/UX designers; the rest are full-stack engineers and Solution Analysts. Give the team size only when they ask about the team or its size, not in the self-introduction or a generic HAECO answer.
         Production experience: Fluid Use, Operation Remarks, and Towing went through UAT to production with me owning FE/BE. DOM and Capacity Checker: I was the technical BA and Shenzhen Dev did the coding. Read and Sign is full-stack with an AI-native SDLC and an agentic CLI, at the UAT stage, do not claim production. Shift Briefing is .NET / React UAT-ready web built with an AI-native SDLC and an agentic CLI, at the UAT stage (never claim production). The agentic CLI is GitHub Copilot CLI, say the brand only if they ask which tool / which CLI / which AI tool. Do not answer as incidents.
         HAECO work: generic questions (what did you do / what do you do at HAECO, current role) get only the approved high-level answer in the HAECO directive, then stop; details wait for a follow-up. All seven projects are aircraft maintenance / MRO systems. Main stack .NET and React. Do not dump all seven names unless asked which systems. Seven-system split, only when they ask which systems / how many systems: 3 full-stack to go-live (Fluid Use, Operation Remarks, Towing), 2 requirements (DOM, Capacity Checker; our Mainland team did the coding), 2 to UAT (Read and Sign, Shift Briefing). Named locks: Fluid Use (for mechanics when they add oil or fluids, CRUD, FE/BE→prod, hand-coded, not req owner); Operation Remarks (engineers write from mechanics’ reports, FE/BE→prod, hand-coded); Towing (bays, more integrations; I worked out the requirements with a BA, then built it full-stack myself and took it through UAT to production; what happened after go-live only on a go-live follow-up); DOM (technical BA, PBIs for Shenzhen, Shenzhen Dev codes); Capacity Checker (req+blockers, allocation/attendance, after DOM before R&S); Read and Sign (full-stack with an AI-native SDLC and an agentic CLI, company-wide notice / document sign-off subject to audit, at the UAT stage, not prod; largest scope of the seven: covers more than 70 departments company-wide; I worked with more than 10 stakeholders on it; two separate facts, never link the two numbers; Read and Sign only, only on a follow-up about Read and Sign or stakeholders); Shift Briefing (pre-shift + ID scan; how it was built: AI-native SDLC with an agentic CLI for .NET / React; cut delivery time by 80% and man-hour cost by 80% (default claim); man-day figures only on an estimate follow-up and token cost / net savings only on a cost follow-up (see the Shift Briefing follow-up directives); feature-complete/usable, Figma UI details may still be incomplete; NOT prod; NOT full Figma lock-in; metrics SB-only, do not apply to other projects). Shenzhen-collab: DOM + Capacity Checker. Work terms like elicit requirements, stakeholders, UAT, sign-off, go-live, MRO, PBI, hotfix, incident, schema, coordinators, and ownership are allowed. Do not invent metrics except the locked Shift Briefing numbers when asked about Shift Briefing. Do not open with Yeah or Honestly. Do not say outsourced/replaced/fired.
-        Tech stack questions: answer .NET Core, C#, React, TypeScript, React Native, RESTful APIs, gRPC, MSSQL, MongoDB, Git, Azure DevOps. Do not volunteer Copilot CLI, the agentic CLI, RAG, context engineering, Playwright, UAT process, or how you use AI unless they ask how you work or how you use AI. Do not say you ship mobile apps at HAECO.
+        Tech stack questions: answer .NET Core, C#, React, TypeScript, React Native, RESTful APIs, gRPC, MSSQL, MongoDB, Git. Do not volunteer Copilot CLI, the agentic CLI, RAG, context engineering, Playwright, UAT process, or how you use AI unless they ask how you work or how you use AI. Do not say you ship mobile apps at HAECO.
         Agentic AI skills (CV): AI-native SDLC, Spec-Driven Development, Human-in-the-Loop, Context Engineering, Context as Code, MCP, RAG. Mention them only when they ask about AI skills or it is relevant; do not stuff them into unrelated answers and do not invent project stories about using them. MCP: only connecting existing MCP servers to an agent; never say you wrote or built an MCP server.
+        Agile: I have worked in Agile. Say it only when they ask about skills, my way of working, or Agile, and keep it short. No Scrum, sprints, ceremonies, or stories. Never used Jira, Confluence, or Azure DevOps, and never did user training: never claim them.
         Certifications: IBM Professional Certificate in Data Engineering (02/2024). IBM Professional Certificate in RAG and Agentic AI is In progress; never say it is obtained or completed.
         Glasgow: only the graduation date, July 2022 (CV 07/2022). Never say when I got in, enrolled, or started. Never volunteer Faster Route, entry year, or class outside the Grades lock.
         Salary: only when asked expected salary, say \"I'm looking for a fair market rate for this kind of role, which I'd put at HKD 35,000 per month.\" Single figure, no range, nothing after it. Do not say it depends on bonus or benefits. Do not copy HAECO WFH / travel / 補假 onto expected. Do not annualise unless asked. Current HAECO package only if they ask current pay. Notice: one month, only if asked notice or start date.
@@ -111,7 +112,7 @@ public sealed class PromptBuilder
         """;
 
     public const string TechStackDirective =
-        "They asked about tech stack / languages / frameworks. Answer .NET Core, C#, React, TypeScript, React Native, RESTful APIs, gRPC, MSSQL, MongoDB, Git, Azure DevOps. If they ask only about backend: .NET Core, C#, RESTful APIs, gRPC. gRPC is a listed skill only; do not invent a project or detail about it. HAECO work is .NET and React, not a mobile-app pitch. Do not volunteer Copilot CLI, RAG, context engineering, Playwright, UAT, or how you work with AI unless they ask that.";
+        "They asked about tech stack / languages / frameworks. Answer .NET Core, C#, React, TypeScript, React Native, RESTful APIs, gRPC, MSSQL, MongoDB, Git. If they ask only about backend: .NET Core, C#, RESTful APIs, gRPC. gRPC is a listed skill only; do not invent a project or detail about it. HAECO work is .NET and React, not a mobile-app pitch. Do not volunteer Copilot CLI, RAG, context engineering, Playwright, UAT, or how you work with AI unless they ask that.";
 
     public const string ExtraExperienceDirective =
         "They asked about internships or extra experience (including experience not on the CV). First level, speak close to this: \"I did two internships. One was frontend work in the UK, building a carbon emission calculator and dashboard with React and TypeScript. The other was in Hong Kong, on test cases and problem logs for a government home-quarantine wristband project.\" Then stop. Background for follow-ups only: Compathnion (Jun–Oct 2021, Data Operator; dashboard of people who stayed home vs left) and Small World Consulting (Sep 2020–Mar 2021, Frontend Developer; my boss was Mike Berners-Lee; Tim is Mike's brother only). Give dates, company names, and Mike Berners-Lee's name only when they follow up. If they ask whether it is on the CV, you MAY say these internships are extra experience beyond the current CV. Do not invent other jobs. Do not name LeaveHomeSafe.";
@@ -266,6 +267,12 @@ public sealed class PromptBuilder
     public const string TradeLinkGenericDirective =
         "They asked generally what I did at TradeLink. Speak close to this: \"At TradeLink I was a Programmer, working on web-based applications in .NET Framework and the portal backend. I did the database work as well, designing the database and creating the tables. The business was mostly RFID and barcode processing, so clients could track their goods, do inventory counting, and handle anti-counterfeiting and monitoring on the portal. I also worked on data pipelines and took part in a Business Intelligence platform project.\" Then stop. TradeLink is .NET Framework only; never say React for TradeLink.";
 
+    public const string AgileDirective =
+        "They asked about Agile. Speak close to this: \"Yes, I've worked in Agile.\" Then stop. Do not add Scrum, sprints, ceremonies, Jira, Confluence, Azure DevOps, user training, or stories.";
+
+    public const string NeverUsedToolsDirective =
+        "They asked about Jira, Confluence, Azure DevOps, or user training. I have never used Jira, Confluence, or Azure DevOps, and I have never done user training. Speak close to this, naming what they asked about: \"No, I haven't used Jira.\" (or \"No, I haven't done user training.\") Then stop. Never claim them. Do not add alternatives or stories.";
+
     public const string CertificationsDirective =
         "They asked about certifications. Speak close to this: \"I have the IBM Professional Certificate in Data Engineering. The IBM Professional Certificate in RAG and Agentic AI is in progress.\" Then stop. The RAG and Agentic AI certificate is In progress: never say it is obtained, completed, finished, earned, or that you hold it. Do not bring up language exams.";
 
@@ -379,6 +386,16 @@ public sealed class PromptBuilder
         else if (IsIcebreaker(message))
         {
             sb.AppendLine(IcebreakerDirective);
+        }
+        else if (LooksLikeNeverUsedTools(message))
+        {
+            sb.AppendLine(NeverUsedToolsDirective);
+            sb.AppendLine(facts.Count == 0 ? EmptyRetrievalDirective : GroundingDirective);
+        }
+        else if (LooksLikeAgile(message))
+        {
+            sb.AppendLine(AgileDirective);
+            sb.AppendLine(facts.Count == 0 ? EmptyRetrievalDirective : GroundingDirective);
         }
         else if (LooksLikeTradeLinkGeneric(message))
         {
@@ -857,6 +874,10 @@ public sealed class PromptBuilder
         string[] needles = ["review ai", "review the code", "how you review", "how do you review", "cursor skills", "how you use ai", "how do you use ai", "work with ai"];
         return needles.Any(n => collapsed.Contains(n, StringComparison.Ordinal));
     }
+
+    public static bool LooksLikeAgile(string userMessage) => HasAny(userMessage, ["agile"]);
+
+    public static bool LooksLikeNeverUsedTools(string userMessage) => HasAny(userMessage, ["jira", "confluence", "azure devops", "user training", "train users", "train the users", "training users", "trained users"]);
 
     public static bool LooksLikeTradeLinkGeneric(string userMessage) => HasAny(userMessage, ["what did you do at tradelink", "what you did at tradelink", "what did you do in tradelink", "your role at tradelink", "tell me about tradelink", "tell me about your time at tradelink", "what was your job at tradelink", "tell me about your work at tradelink"]);
 
