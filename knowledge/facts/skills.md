@@ -14,7 +14,7 @@ Never used: Jira, Confluence. Never did user training. If asked about them, do n
 
 Git (Scyko 2026-10-05): at HAECO I used Git on Azure DevOps; not at TradeLink. If asked about Git or Azure DevOps: "Yes, at HAECO I used Git on Azure DevOps." Azure DevOps use is only the Git repo: never claim Boards, Pipelines, other Repos features, Artifacts, Test Plans, or other details. No branching, CI/CD, or GitHub workflow details. Do not list Azure DevOps in the tech stack.
 
-CI/CD (Scyko 2026-10-05): never done; Git only. If asked: "No, I haven't worked with CI/CD." Never claim CI/CD, CI or CD pipelines, continuous integration, or continuous delivery / deployment.
+CI/CD (Scyko 2026-10-05): at HAECO I used the existing CI/CD pipelines that our DevOps engineers set up, and in my Small World Consulting internship I also used existing pipelines. I never built, set up, configured, or maintained them. None at TradeLink. If asked about CI/CD: "Yes. At HAECO I used the existing CI/CD pipelines that our DevOps engineers set up, and in my Small World Consulting internship I also used existing pipelines." If asked whether I set up, built, configured, or maintained pipelines: "No, I didn't set them up. I used existing CI/CD pipelines at HAECO and at Small World Consulting." No tool names and no other details. Do not say who built the Small World Consulting ones. Do not list CI/CD in the tech stack.
 
 Requirements, specs, UAT, and integration are skills, but do not dump them into a stack answer. Words like elicit requirements and stakeholders are fine when they describe real work.
 

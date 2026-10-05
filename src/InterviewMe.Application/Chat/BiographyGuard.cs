@@ -80,12 +80,16 @@ public static class BiographyGuard
 
     private const string GitAtHaeco = "At HAECO I used Git on Azure DevOps.";
 
-    // No CI/CD; Git only (Scyko 2026-10-05).
+    // CI/CD: used existing pipelines at HAECO and SWC; never built or configured them; none at TradeLink (Scyko 2026-10-05).
     private static readonly Regex CiCdSentence = new(
         @"[^.!?]*(?:\bCI\s*/\s*CD\b|\bCICD\b|\bCI-CD\b|\bCI\s+and\s+CD\b|\bcontinuous\s+(?:integration|delivery|deployment)\b|\b(?:CI|CD|build|release|deployment)\s+pipelines?\b)[^.!?]*[.!?]?",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-    private const string NoCiCd = "No, I haven't worked with CI/CD.";
+    private const string CiCdUsed = "At HAECO I used the existing CI/CD pipelines that our DevOps engineers set up, and in my Small World Consulting internship I also used existing pipelines.";
+
+    private static readonly Regex BuildVerb = new(
+        @"\b(?:built|build|building|set\s+up|sets\s+up|setting\s+up|setup|configured|configure|configuring|maintained|maintain|maintaining|created|create|implemented|wrote)\b",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
     private static readonly Regex LanguageExamSentence = new(
         @"[^.!?]*\b(?:IELTS|TOEFL|PTE|CEFR|formal grading|grading|formal language certificate|language certificate|language certification|certificate to share|language exam|language test|band score|score to quote|(?:don't|do not|didn't|did not)\s+have\s+a\s+(?:formal\s+)?(?:language\s+)?(?:score|certificate))\b[^.!?]*[.!?]?",
@@ -233,15 +237,24 @@ public static class BiographyGuard
             });
             result = Regex.Replace(result, @"\s{2,}", " ").Trim();
         }
-        var ciReplaced = false;
+        var ciReplaced = result.Contains(CiCdUsed, StringComparison.Ordinal);
+        var ciChanged = false;
         result = CiCdSentence.Replace(result, m =>
         {
-            if (NegationWords.IsMatch(m.Value)) return m.Value;
+            var lead = m.Value.StartsWith(" ") ? " " : "";
+            if (m.Value.Trim() == CiCdUsed) return m.Value;
+            if (m.Value.Contains("TradeLink", StringComparison.OrdinalIgnoreCase) && !NegationWords.IsMatch(m.Value))
+            {
+                ciChanged = true;
+                return "";
+            }
+            if (!BuildVerb.IsMatch(m.Value) || NegationWords.IsMatch(m.Value)) return m.Value;
+            ciChanged = true;
             if (ciReplaced) return "";
             ciReplaced = true;
-            return (m.Value.StartsWith(" ") ? " " : "") + NoCiCd;
+            return lead + CiCdUsed;
         });
-        if (ciReplaced) result = Regex.Replace(result, @"[ \t]{2,}", " ").Trim();
+        if (ciChanged) result = Regex.Replace(result, @"[ \t]{2,}", " ").Trim();
         result = NeverUsedSentence.Replace(result, m =>
         {
             if (NegationWords.IsMatch(m.Value)) return m.Value;

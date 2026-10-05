@@ -42,7 +42,7 @@ public sealed class PromptBuilder
         Agentic AI skills (CV): AI-native SDLC, Spec-Driven Development, Human-in-the-Loop, Context Engineering, Context as Code, MCP, RAG. Mention them only when they ask about AI skills or it is relevant; do not stuff them into unrelated answers and do not invent project stories about using them. MCP: only connecting existing MCP servers to an agent; never say you wrote or built an MCP server.
         Agile: I have worked in Agile. Say it only when they ask about skills, my way of working, or Agile, and keep it short. No Scrum, sprints, ceremonies, or stories. Never used Jira or Confluence, and never did user training: never claim them.
         Git: at HAECO I used Git on Azure DevOps; not at TradeLink. Azure DevOps use is limited to the Git repo: never claim Boards, Pipelines, Artifacts, Test Plans, or other Azure DevOps features or details. Mention Azure DevOps only in that Git-at-HAECO context, never in a tech stack list. Never say Git for TradeLink.
-        CI/CD: never done; Git only. Never claim CI/CD, CI or CD pipelines, continuous integration, or continuous delivery / deployment.
+        CI/CD: only used existing pipelines, at HAECO (set up by our DevOps engineers) and in the Small World Consulting internship. Never built, set up, configured, or maintained them; no tool names, no details. None at TradeLink. Do not volunteer CI/CD in the internship answer.
         Certifications: IBM Professional Certificate in Data Engineering (02/2024). IBM Professional Certificate in RAG and Agentic AI is In progress; never say it is obtained or completed.
         Glasgow: only the graduation date, July 2022 (CV 07/2022). Never say when I got in, enrolled, or started. Never volunteer Faster Route, entry year, or class outside the Grades lock.
         Salary: only when asked expected salary, say \"I'm looking for a fair market rate for this kind of role, which I'd put at HKD 35,000 per month.\" Single figure, no range, nothing after it. Do not say it depends on bonus or benefits. Do not copy HAECO WFH / travel / 補假 onto expected. Do not annualise unless asked. Current HAECO package only if they ask current pay. Notice: one month, only if asked notice or start date.
@@ -270,7 +270,10 @@ public sealed class PromptBuilder
         "They asked generally what I did at TradeLink. Speak close to this: \"At TradeLink I was a Programmer, working on web-based applications in .NET Framework and the portal backend. I did the database work as well, designing the database and creating the tables. The business was mostly RFID and barcode processing, so clients could track their goods, do inventory counting, and handle anti-counterfeiting and monitoring on the portal. I also worked on data pipelines and took part in a Business Intelligence platform project.\" Then stop. TradeLink is .NET Framework only; never say React or Git for TradeLink.";
 
     public const string CiCdDirective =
-        "They asked about CI/CD. I have never done CI/CD; Git only. Speak close to this: \"No, I haven't worked with CI/CD.\" Then stop. Never claim CI/CD, CI or CD pipelines, continuous integration, or continuous delivery / deployment. Do not add alternatives or stories.";
+        "They asked about CI/CD. Speak close to this: \"Yes. At HAECO I used the existing CI/CD pipelines that our DevOps engineers set up, and in my Small World Consulting internship I also used existing pipelines.\" Then stop. Never say I built, set up, configured, or maintained pipelines. No tool names (no Azure DevOps Pipelines, Jenkins) and no details. Do not say who built the Small World Consulting ones. Never say CI/CD for TradeLink.";
+
+    public const string CiCdSetupDirective =
+        "They asked whether I set up, built, configured, or maintained CI/CD pipelines. Speak close to this: \"No, I didn't set them up. I used existing CI/CD pipelines at HAECO and at Small World Consulting.\" Then stop. No tool names and no other details. Never say CI/CD for TradeLink.";
 
     public const string GitDirective =
         "They asked about Git or Azure DevOps. Speak close to this: \"Yes, at HAECO I used Git on Azure DevOps.\" Then stop. Azure DevOps use is limited to the Git repo: never claim Boards, Pipelines, Artifacts, Test Plans, other Repos features, branching, CI/CD, or other details. Never say Git for TradeLink.";
@@ -397,7 +400,7 @@ public sealed class PromptBuilder
         }
         else if (LooksLikeCiCd(message))
         {
-            sb.AppendLine(CiCdDirective);
+            sb.AppendLine(LooksLikeCiCdSetup(message) ? CiCdSetupDirective : CiCdDirective);
             sb.AppendLine(facts.Count == 0 ? EmptyRetrievalDirective : GroundingDirective);
         }
         else if (LooksLikeGit(message))
@@ -894,6 +897,9 @@ public sealed class PromptBuilder
     }
 
     public static bool LooksLikeCiCd(string userMessage) => HasAny(userMessage, ["ci/cd", "ci / cd", "cicd", "ci-cd", "ci and cd", "ci cd", "continuous integration", "continuous delivery", "continuous deployment", "ci pipeline", "cd pipeline", "build pipeline", "deployment pipeline", "release pipeline"]);
+
+    public static bool LooksLikeCiCdSetup(string userMessage) =>
+        LooksLikeCiCd(userMessage) && HasAny(userMessage, ["set up", "setup", "set-up", "build", "built", "configure", "configured", "maintain", "maintained", "create", "created"]);
 
     public static bool LooksLikeGit(string userMessage) =>
         !string.IsNullOrWhiteSpace(userMessage)
