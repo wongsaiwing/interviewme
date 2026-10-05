@@ -68,8 +68,8 @@ public class AgileLockTests
     public void Other_locks_unchanged()
     {
         Assert.Contains("At HAECO I'm an Assistant Solution Analyst on MRO engineering IT solutions. I cover the full cycle from requirements and specs through full-stack delivery, UAT, go-live and support, and on some work I partner with our Mainland team more as a technical BA.", PromptBuilder.HaecoGenericDirective);
-        Assert.Contains("I built Shift Briefing with an AI-native SDLC, using an agentic CLI for the .NET and React development. It cut delivery time by 80% and man-hour cost by 80%, and it's at the UAT stage.", PromptBuilder.ShiftBriefingDirective);
-        Assert.Contains("The original estimate was 50 man-days, and with the AI-native SDLC it took 10.", PromptBuilder.ShiftBriefingEstimateDirective);
+        Assert.Contains("I built Shift Briefing with an AI-native SDLC, using an agentic CLI for the .NET and React development. It cut frontend delivery time and man-hour cost by 80%, and it's at the UAT stage.", PromptBuilder.ShiftBriefingDirective);
+        Assert.Contains("For the frontend, the original estimate was 50 man-days, and with the AI-native SDLC it took 10.", PromptBuilder.ShiftBriefingEstimateDirective);
         Assert.Contains("net savings were HK$38,000", PromptBuilder.ShiftBriefingCostDirective);
         Assert.Contains("Read and Sign is a system where staff read a document and then sign it off", PromptBuilder.ReadAndSignDirective);
         Assert.Contains("It depends on the system. The largest was Read and Sign, which covers more than 70 departments company-wide, and I worked with more than 10 stakeholders on it.", PromptBuilder.StakeholderCountDirective);
