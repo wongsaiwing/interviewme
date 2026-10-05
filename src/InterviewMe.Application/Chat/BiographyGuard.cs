@@ -80,6 +80,13 @@ public static class BiographyGuard
 
     private const string GitAtHaeco = "At HAECO I used Git on Azure DevOps.";
 
+    // No CI/CD; Git only (Scyko 2026-10-05).
+    private static readonly Regex CiCdSentence = new(
+        @"[^.!?]*(?:\bCI\s*/\s*CD\b|\bCICD\b|\bCI-CD\b|\bCI\s+and\s+CD\b|\bcontinuous\s+(?:integration|delivery|deployment)\b|\b(?:CI|CD|build|release|deployment)\s+pipelines?\b)[^.!?]*[.!?]?",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    private const string NoCiCd = "No, I haven't worked with CI/CD.";
+
     private static readonly Regex LanguageExamSentence = new(
         @"[^.!?]*\b(?:IELTS|TOEFL|PTE|CEFR|formal grading|grading|formal language certificate|language certificate|language certification|certificate to share|language exam|language test|band score|score to quote|(?:don't|do not|didn't|did not)\s+have\s+a\s+(?:formal\s+)?(?:language\s+)?(?:score|certificate))\b[^.!?]*[.!?]?",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -226,6 +233,15 @@ public static class BiographyGuard
             });
             result = Regex.Replace(result, @"\s{2,}", " ").Trim();
         }
+        var ciReplaced = false;
+        result = CiCdSentence.Replace(result, m =>
+        {
+            if (NegationWords.IsMatch(m.Value)) return m.Value;
+            if (ciReplaced) return "";
+            ciReplaced = true;
+            return (m.Value.StartsWith(" ") ? " " : "") + NoCiCd;
+        });
+        if (ciReplaced) result = Regex.Replace(result, @"[ \t]{2,}", " ").Trim();
         result = NeverUsedSentence.Replace(result, m =>
         {
             if (NegationWords.IsMatch(m.Value)) return m.Value;
