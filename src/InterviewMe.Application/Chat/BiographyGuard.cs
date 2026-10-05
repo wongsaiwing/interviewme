@@ -193,6 +193,19 @@ public static class BiographyGuard
         @"[^.!?]*\bShift Briefing\b[^.!?]*\b(?:is|was|has been|it's)\s+(?:now\s+|already\s+|fully\s+)?(?:finished|complete|completed|done|live|in production)\b[^.!?]*[.!?]?",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+    // Shift Briefing is only in the dev environment, still in development, not UAT (Scyko 2026-10-05 08:24).
+    private static readonly Regex SbUatSentence = new(
+        @"[^.!?]*\bShift Briefing\b[^.!?]*\bUAT\b[^.!?]*[.!?]?|[^.!?]*\bUAT\b[^.!?]*\bShift Briefing\b[^.!?]*[.!?]?",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    private static readonly Regex ItAtUat = new(
+        @"\b(it)(?:'s|\s+is)\s+(?:now\s+)?(?:at\s+the\s+UAT\s+stage|in\s+UAT|UAT-ready)(?:\s+(?:now|right\s+now))?",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    private static readonly Regex ReadAndSignName = new(@"\bRead\s+(?:and|&)\s+Sign\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    private const string SbInDev = "Shift Briefing is still in development.";
+
     private static readonly Regex OldSbMetricSentence = new(
         @"(?<=^|[.!?]\s)[^.!?]*(?:\b(?:five|5) days\b[^.!?]*UAT|20 person-days|US\$100|\b75%|\b4x\b|\b4\u00d7|four times faster|\b83%|\b60 man-?days?\b|\b60 man-day\b|48,000)[^.!?]*[.!?]\s*",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -315,7 +328,26 @@ public static class BiographyGuard
         result = SbFinishedSentence.Replace(result, m =>
             NegationWords.IsMatch(m.Value) || m.Value.Contains("in progress", StringComparison.OrdinalIgnoreCase)
                 ? m.Value
-                : (m.Value.StartsWith(" ") ? " " : "") + "Shift Briefing is still in progress. It's at the UAT stage.");
+                : (m.Value.StartsWith(" ") ? " " : "") + SbInDev);
+        if (result.Contains("Shift Briefing", StringComparison.OrdinalIgnoreCase))
+        {
+            result = SbUatSentence.Replace(result, m =>
+            {
+                var v = m.Value;
+                if (v.Contains("in development", StringComparison.OrdinalIgnoreCase)
+                    || v.Contains("n't", StringComparison.OrdinalIgnoreCase)
+                    || Regex.IsMatch(v, @"\bnot\b", RegexOptions.IgnoreCase))
+                    return v;
+                var lead = v.StartsWith(" ") ? " " : "";
+                return lead + (ReadAndSignName.IsMatch(v)
+                    ? "Read and Sign is at the UAT stage, and Shift Briefing is still in development."
+                    : SbInDev);
+            });
+            if (!ReadAndSignName.IsMatch(result))
+            {
+                result = ItAtUat.Replace(result, m => (char.IsUpper(m.Groups[1].Value[0]) ? "It" : "it") + "'s still in development");
+            }
+        }
         result = AiAssistedFullStackDev.Replace(result, "full-stack development with an AI-native SDLC");
         result = AiAssistedDev.Replace(result, "an AI-native SDLC");
         result = ReviewedEveryDiff.Replace(result, "");

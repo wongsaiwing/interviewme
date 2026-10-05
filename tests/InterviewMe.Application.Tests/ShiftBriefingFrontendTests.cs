@@ -20,9 +20,9 @@ public class ShiftBriefingFrontendTests
     public void Default_answers_scope_80_percent_to_frontend()
     {
         var sb = PromptBuilder.ShiftBriefingDirective;
-        Assert.Contains("I built it with an AI-native SDLC using an agentic CLI, and it cut frontend delivery time and man-hour cost by 80%. It's at the UAT stage now.", sb);
-        Assert.Contains("I built Shift Briefing with an AI-native SDLC, using an agentic CLI for the .NET and React development. It cut frontend delivery time and man-hour cost by 80%, and it's at the UAT stage.", sb);
-        Assert.Contains("On Shift Briefing, the AI-native SDLC cut frontend delivery time and man-hour cost by 80%. I used an agentic CLI for the .NET and React work. It's at the UAT stage.", sb);
+        Assert.Contains("I built it with an AI-native SDLC using an agentic CLI, and it cut frontend delivery time and man-hour cost by 80%. It's still in development.", sb);
+        Assert.Contains("I built Shift Briefing with an AI-native SDLC, using an agentic CLI for the .NET and React development. It cut frontend delivery time and man-hour cost by 80%, and it's still in development.", sb);
+        Assert.Contains("On Shift Briefing, the AI-native SDLC cut frontend delivery time and man-hour cost by 80%. I used an agentic CLI for the .NET and React work. It's still in development.", sb);
         Assert.Contains("Never say the whole project or delivery saved 80%.", sb);
         Assert.Contains("Cut frontend delivery time and man-hour cost by 80% by adopting an AI-native SDLC.", File.ReadAllText(Path.Combine(Root, "facts", "haeco.md")));
     }
@@ -48,27 +48,27 @@ public class ShiftBriefingFrontendTests
     }
 
     [Fact]
-    public void Finished_question_says_still_in_progress()
+    public void Finished_question_says_still_in_development()
     {
         const string q = "Is Shift Briefing finished?";
         Assert.True(PromptBuilder.LooksLikeShiftBriefing(q));
         Assert.True(PromptBuilder.LooksLikeSbFinishedQuestion(q));
         Assert.Contains(PromptBuilder.ShiftBriefingFinishedDirective, Build(q));
-        Assert.Contains("\"No, the project is still in progress. It's at the UAT stage.\"", PromptBuilder.ShiftBriefingFinishedDirective);
+        Assert.Contains("\"No, the project is still in development.\"", PromptBuilder.ShiftBriefingFinishedDirective);
         Assert.DoesNotContain("Feature-complete", PromptBuilder.ShiftBriefingDirective);
-        Assert.Contains("still in progress", File.ReadAllText(Path.Combine(Root, "facts", "production.md")));
+        Assert.Contains("still in development", File.ReadAllText(Path.Combine(Root, "facts", "production.md")));
     }
 
     [Theory]
     [InlineData("On Shift Briefing it cut delivery time by 80% and man-hour cost by 80%.", "On Shift Briefing it cut frontend delivery time and man-hour cost by 80%.")]
     [InlineData("Shift Briefing cut delivery time by 80%.", "Shift Briefing cut frontend delivery time by 80%.")]
     [InlineData("The AI-native SDLC reduced delivery time and man-hour cost by 80%.", "The AI-native SDLC reduced frontend delivery time and man-hour cost by 80%.")]
-    [InlineData("Shift Briefing is finished and live now.", "Shift Briefing is still in progress. It's at the UAT stage.")]
+    [InlineData("Shift Briefing is finished and live now.", "Shift Briefing is still in development.")]
     public void Guard_scopes_and_unfinishes(string raw, string expected) => Assert.Equal(expected, BiographyGuard.Sanitize(raw));
 
     [Theory]
-    [InlineData("It cut frontend delivery time and man-hour cost by 80%, and it's at the UAT stage.")]
-    [InlineData("No, the project is still in progress. It's at the UAT stage.")]
+    [InlineData("It cut frontend delivery time and man-hour cost by 80%, and it's still in development.")]
+    [InlineData("No, the project is still in development.")]
     [InlineData("Shift Briefing isn't finished yet.")]
     public void Guard_keeps_scoped_and_in_progress(string s) => Assert.Equal(s, BiographyGuard.Sanitize(s));
 
@@ -81,7 +81,7 @@ public class ShiftBriefingFrontendTests
         Assert.Contains("HKD 35,000 per month.", PromptBuilder.ExpectedSalaryDirective);
         Assert.Contains("\"Yes, at HAECO I used Git on Azure DevOps.\"", PromptBuilder.GitDirective);
         Assert.Contains("Yes. At HAECO I used the existing CI/CD pipelines", PromptBuilder.CiCdDirective);
-        Assert.Contains("It's in UAT right now. We're working through UAT, and production comes after that.", PromptBuilder.ShiftBriefingDirective);
+        Assert.Contains("It's still in development.", PromptBuilder.ShiftBriefingDirective);
         Assert.Contains("HK$2,000", PromptBuilder.ShiftBriefingCostDirective);
         Assert.DoesNotContain("50 man-days", PromptBuilder.ShiftBriefingDirective);
     }
