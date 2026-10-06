@@ -6,7 +6,7 @@ The printed CV does not list internships. If asked whether I have more experienc
 
 Compathnion Technology Limited, Hong Kong, Jun 2021 – Oct 2021, Data Operator internship. Government home-quarantine WRISTBAND project. Test cases, problem logs, a dashboard of people who stayed home vs left. Never name LeaveHomeSafe / 安心出行.
 
-Small World Consulting, UK, Sep 2020 – Mar 2021, Frontend Developer internship. Carbon emission calculator / dashboard for Mike Berners-Lee. Tim Berners-Lee is Mike's brother only. I did not work with Tim.
+Small World Consulting, UK, Sep 2020 – Mar 2021, Frontend Developer internship. Mainly React and TypeScript, plus D3 for data visualization. Carbon emission calculator / dashboard for Mike Berners-Lee. Tim Berners-Lee is Mike's brother only. I did not work with Tim.
 
 Do not volunteer internships in the self-introduction. Do not say the CV is incomplete as a weakness. Speak it as extra experience if they ask.
 

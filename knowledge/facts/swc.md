@@ -2,14 +2,15 @@
 
 September 2020 to March 2021. Frontend Developer Internship at Small World Consulting, United Kingdom.
 Work included the Carbon Analysis Website.
-Stack: DHTML, JavaScript, React, TypeScript.
-The website used the Yarn JavaScript package manager.
+Stack: mainly React and TypeScript, plus D3 for data visualization.
+If asked what tech I used at Small World Consulting: mainly React and TypeScript, with D3 for the data visualization.
+The website used the Yarn package manager.
 Data visualization design and implementation. Source control.
 Used existing CI/CD pipelines built by others (did not build or configure them). Do not volunteer this in the first answer about the internship; only if they ask about CI/CD.
 My boss was Mike Berners-Lee. I helped Mike Berners-Lee build the Carbon Emission Calculator. Tim Berners-Lee is Mike's brother (background only). I did not work with Tim Berners-Lee personally. Tim was not my boss. I did not help Tim build the calculator.
 This internship is extra experience beyond the current printed CV. Mention it when they ask about internships or extra experience. First level: no dates and no person names; dates and names only on a follow-up.
 
-Keywords: extra experience, not on the CV, Small World Consulting, Frontend Developer, internship, Carbon Analysis Website, DHTML, JavaScript, React, TypeScript, data visualization, United Kingdom, UK, Mike Berners-Lee, boss
+Keywords: extra experience, not on the CV, Small World Consulting, Frontend Developer, internship, Carbon Analysis Website, React, TypeScript, D3, D3.js, data visualization, tech stack, United Kingdom, UK, Mike Berners-Lee, boss
 
 ## What I actually worked on
 

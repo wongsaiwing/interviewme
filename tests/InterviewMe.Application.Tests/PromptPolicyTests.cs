@@ -1305,4 +1305,28 @@ public class PromptPolicyTests
         Assert.Contains("(Stop there. Add nothing about a dissertation title, team, grade, or supervisor.)", toneFyp);
         Assert.Contains("mobile HCI", studied); // the HCI full-name change is UAT-only
     }
+    [Fact]
+    public void Swc_stack_is_mainly_React_and_TypeScript_plus_D3_not_JavaScript()
+    {
+        // Live hotfix 2026-10-06 23:47: SWC was mainly React and TypeScript, plus D3 for data visualization;
+        // never described as mainly or purely JavaScript.
+        var root = TestSupport.FindKnowledgePath();
+        var swc = File.ReadAllText(Path.Combine(root, "facts", "swc.md"));
+        var extra = File.ReadAllText(Path.Combine(root, "facts", "extra-experience.md"));
+        var extraSwc = extra.Split("\n").First(l => l.StartsWith("Small World Consulting"));
+        var keywords = swc.Split("\n").First(l => l.StartsWith("Keywords: extra experience"));
+        Assert.Contains("Stack: mainly React and TypeScript, plus D3 for data visualization.", swc);
+        Assert.Contains("If asked what tech I used at Small World Consulting: mainly React and TypeScript, with D3 for the data visualization.", swc);
+        Assert.Contains("Mainly React and TypeScript, plus D3 for data visualization.", extraSwc);
+        foreach (var keyword in new[] { "React", "TypeScript", "D3", "data visualization" })
+            Assert.Contains(keyword, keywords);
+        Assert.DoesNotContain("JavaScript", keywords);
+        Assert.DoesNotContain("DHTML", swc);
+        var wrong = new Regex(@"(mainly|purely|primarily|mostly|only)\s+(in\s+)?(vanilla\s+)?(JavaScript|JS)\b|vanilla\s+(JavaScript|JS)\b|Stack:[^\n]*JavaScript", RegexOptions.IgnoreCase);
+        foreach (var text in new[] { swc, extraSwc, PromptBuilder.ExtraExperienceDirective })
+            Assert.DoesNotMatch(wrong, text);
+        // Existing SWC facts stay: role, place, dates, CI/CD lock.
+        Assert.Contains("September 2020 to March 2021. Frontend Developer Internship at Small World Consulting, United Kingdom.", swc);
+        Assert.Contains("Used existing CI/CD pipelines built by others (did not build or configure them).", swc);
+    }
 }
