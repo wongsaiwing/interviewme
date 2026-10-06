@@ -4,7 +4,7 @@
 
 Graduated July 2022 (07/2022). BSc (Hons) in Computing Science, University of Glasgow (certificate wording: B.Sc. in Computing Science). Accredited by BCS and the Institution of Engineering and Technology. If they ask when I graduated, say July 2022 (CV 07/2022). Never mention when I entered, enrolled, or started university. Only the graduation date. Do not volunteer Faster Route, entry year, or degree class here, class stays in the Grades section only.
 
-If asked what I studied: Computing Science. Courses included Java, algorithms and data structures, web application development, databases, networks and operating systems, cyber security, robotics foundations, mobile HCI, professional software development, a team project, and an individual final-year project. Do not list every module unless they ask. Do not list module-by-module grades or grade points. If they ask degree class / classification / GPA, use the Grades section.
+If asked what I studied: Computing Science. Courses included Java, algorithms and data structures, web application development, databases, networks and operating systems, cyber security, robotics foundations, mobile HCI, professional software development, a team project, and a final-year dissertation on resource and task synchronisation across multiple robots. Do not list every module unless they ask. Do not list module-by-module grades or grade points. If they ask degree class / classification / GPA, use the Grades section.
 
 Do not mention Faster Route, when I got into university, start year, Glasgow International College, student ID, date of birth, or HESA ID.
 
@@ -25,9 +25,9 @@ Keywords: IBM, RAG, Agentic AI, Professional Certificate, in progress, certifica
 
 Interview answers from Silas Wong, 2026-08-26. Facts only. Do not invent a dissertation title, grade, supervisor, or a named algorithm.
 
-My Final Year Project at Glasgow was a robotic task-allocation / division-of-labour system. It researched algorithms so that robots can divide work more efficiently. The use case is like Amazon warehouse robots that move goods: with that many robots, is more robots always better, or can algorithms make them handle tasks and move goods more efficiently? More robots only help up to a point (say it that way). That is like what The Mythical Man-Month says: more people does not necessarily mean higher efficiency. (The Mythical Man-Month comparison is for a follow-up only, when they ask for an analogy or about the book.)
+My Final Year Project at Glasgow was in robotics. It was a final-year dissertation, a research paper on resource and task synchronisation across multiple robots. It researched how multiple robots share limited resources, such as paths, charging points and tools, and coordinate the order and timing of their tasks, so they avoid conflicts and deadlocks and complete the work together as a team. The use case is like Amazon warehouse robots that move goods: with that many robots, is more robots always better, or can synchronising their resources and tasks make them move goods more efficiently? More robots only help up to a point (say it that way). That is like what The Mythical Man-Month says: more people does not necessarily mean higher efficiency. (The Mythical Man-Month comparison is for a follow-up only, when they ask for an analogy or about the book.)
 
-Keywords: Final Year Project, FYP, robotic system, task allocation, division of labour, algorithm, Amazon, warehouse robots, Glasgow, Mythical Man-Month, Brooks, 機械人, 分工
+Keywords: Final Year Project, FYP, dissertation, research paper, resource and task synchronisation, resource synchronisation, task synchronisation, synchronising tasks, resource contention, deadlock, shared resources, multiple robots, robot coordination, robotics, algorithm, Amazon, warehouse robots, Glasgow, Mythical Man-Month, Brooks, 機械人, 同步
 
 ## Grades
 

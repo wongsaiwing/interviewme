@@ -1135,7 +1135,7 @@ public class PromptPolicyTests
         Assert.Contains("so it's easy to track who has read and acknowledged each document", tone);
         var education = File.ReadAllText(Path.Combine(root, "facts", "education.md"));
         Assert.Contains("The Mythical Man-Month comparison is for a follow-up only", education);
-        Assert.Contains("Add nothing about the project format, team, grade, or supervisor.", tone);
+        Assert.Contains("Add nothing about a dissertation title, team, grade, or supervisor.", tone); // 2026-10-06: the dissertation format is a fact
         Assert.DoesNotContain("Mythical", tone);
     }
 
@@ -1277,5 +1277,32 @@ public class PromptPolicyTests
     public void Guard_removes_filler_actually_only()
     {
         Assert.Equal("The answers stay closer to what I did.", BiographyGuard.Sanitize("The answers stay closer to what I actually did."));
+    }
+
+    [Fact]
+    public void Fyp_is_resource_and_task_synchronisation_across_multiple_robots_only()
+    {
+        // Live hotfix 2026-10-06 23:38: the FYP is described only as resource and task synchronisation across
+        // multiple robots; no task-allocation / division-of-labour / divide-work / named-algorithm wording.
+        var root = TestSupport.FindKnowledgePath();
+        var education = File.ReadAllText(Path.Combine(root, "facts", "education.md"));
+        var fyp = education.Split("## Final Year Project")[1].Split("\n## ")[0];
+        var studied = education.Split("\n").First(l => l.StartsWith("If asked what I studied"));
+        var tone = File.ReadAllText(Path.Combine(root, "tone", "professional.md"));
+        var toneFyp = tone.Split("Example, \"Tell me about your Final Year Project.\":")[1].Split("\n\n")[0];
+        var banned = new Regex(@"allocat|division[ -]of[ -]labou?r|divid(e|es|ing) (the )?work|分工|researched algorithms", RegexOptions.IgnoreCase);
+        foreach (var text in new[] { fyp, studied, toneFyp })
+        {
+            Assert.Contains("resource and task synchronisation across multiple robots", text);
+            Assert.DoesNotMatch(banned, text);
+        }
+        Assert.Contains("It was a final-year dissertation, a research paper on resource and task synchronisation across multiple robots.", fyp);
+        Assert.Contains("share limited resources, such as paths, charging points and tools, and coordinate the order and timing of their tasks, so they avoid conflicts and deadlocks", fyp);
+        foreach (var keyword in new[] { "resource synchronisation", "resource contention", "deadlock", "shared resources" })
+            Assert.Contains(keyword, fyp);
+        Assert.Contains("It was my final-year dissertation, a research paper on resource and task synchronisation across multiple robots.", toneFyp);
+        Assert.Contains("where more robots only help up to a point.", toneFyp);
+        Assert.Contains("(Stop there. Add nothing about a dissertation title, team, grade, or supervisor.)", toneFyp);
+        Assert.Contains("mobile HCI", studied); // the HCI full-name change is UAT-only
     }
 }
