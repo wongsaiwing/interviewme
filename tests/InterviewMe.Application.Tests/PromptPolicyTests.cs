@@ -1323,8 +1323,13 @@ public class PromptPolicyTests
         Assert.DoesNotContain("JavaScript", keywords);
         Assert.DoesNotContain("DHTML", swc);
         var wrong = new Regex(@"(mainly|purely|primarily|mostly|only)\s+(in\s+)?(vanilla\s+)?(JavaScript|JS)\b|vanilla\s+(JavaScript|JS)\b|Stack:[^\n]*JavaScript", RegexOptions.IgnoreCase);
-        foreach (var text in new[] { swc, extraSwc, PromptBuilder.ExtraExperienceDirective })
+        Assert.Contains("SWC", keywords);
+        foreach (var text in new[] { swc, extraSwc, PromptBuilder.ExtraExperienceDirective, PromptBuilder.TechStackDirective })
             Assert.DoesNotMatch(wrong, text);
+        // An SWC stack question routes to the tech-stack directive, which must carry the SWC stack.
+        Assert.True(PromptBuilder.LooksLikeTechStack("What tech stack did you use at SWC?"));
+        Assert.Contains("If they ask about the stack at Small World Consulting (SWC) specifically, answer only that internship: mainly React and TypeScript, plus D3 for the data visualization.", PromptBuilder.TechStackDirective);
+        Assert.Contains("Answer .NET Core, C#, React, TypeScript, React Native, RESTful APIs, gRPC, MSSQL, MongoDB, Git.", PromptBuilder.TechStackDirective);
         // Existing SWC facts stay: role, place, dates, CI/CD lock.
         Assert.Contains("September 2020 to March 2021. Frontend Developer Internship at Small World Consulting, United Kingdom.", swc);
         Assert.Contains("Used existing CI/CD pipelines built by others (did not build or configure them).", swc);

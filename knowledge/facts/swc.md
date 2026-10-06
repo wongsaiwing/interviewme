@@ -10,7 +10,7 @@ Used existing CI/CD pipelines built by others (did not build or configure them).
 My boss was Mike Berners-Lee. I helped Mike Berners-Lee build the Carbon Emission Calculator. Tim Berners-Lee is Mike's brother (background only). I did not work with Tim Berners-Lee personally. Tim was not my boss. I did not help Tim build the calculator.
 This internship is extra experience beyond the current printed CV. Mention it when they ask about internships or extra experience. First level: no dates and no person names; dates and names only on a follow-up.
 
-Keywords: extra experience, not on the CV, Small World Consulting, Frontend Developer, internship, Carbon Analysis Website, React, TypeScript, D3, D3.js, data visualization, tech stack, United Kingdom, UK, Mike Berners-Lee, boss
+Keywords: extra experience, not on the CV, Small World Consulting, SWC, Frontend Developer, internship, Carbon Analysis Website, React, TypeScript, D3, D3.js, data visualization, tech stack, United Kingdom, UK, Mike Berners-Lee, boss
 
 ## What I actually worked on
 
