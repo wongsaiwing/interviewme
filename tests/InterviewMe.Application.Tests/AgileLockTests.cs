@@ -67,16 +67,16 @@ public class AgileLockTests
     [Fact]
     public void Other_locks_unchanged()
     {
-        Assert.Contains("At HAECO I'm an Assistant Solution Analyst on MRO engineering IT solutions. I cover the full cycle from requirements and specs through full-stack delivery, UAT, go-live and support, and on some work I partner with our Mainland team more as a technical BA.", PromptBuilder.HaecoGenericDirective);
-        Assert.Contains("I built Shift Briefing with an AI-native SDLC, using an agentic CLI for the .NET and React development. It cut frontend delivery time and man-hour cost by 80%, and it's still in development.", PromptBuilder.ShiftBriefingDirective);
-        Assert.Contains("For the frontend, the original estimate was 50 man-days, and with the AI-native SDLC it took 10.", PromptBuilder.ShiftBriefingEstimateDirective);
-        Assert.Contains("net savings were HK$38,000", PromptBuilder.ShiftBriefingCostDirective);
+        Assert.Contains("At HAECO I'm an Assistant Business Analyst on MRO engineering IT solutions. I elicit and analyse requirements for MRO modules, follow agile delivery through UAT, and on some modules I own both the BA and full-stack work end-to-end.", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("I built Shift Briefing with an AI-native SDLC, using an agentic CLI for the .NET and React development, and it's still in active development.", PromptBuilder.ShiftBriefingDirective);
+        Assert.Contains("prior manual workflow", PromptBuilder.ShiftBriefingEstimateDirective);
+        Assert.Contains("83%", PromptBuilder.ShiftBriefingCostDirective);
         Assert.Contains("Read and Sign is a system where staff read a document and then sign it off", PromptBuilder.ReadAndSignDirective);
-        Assert.Contains("It depends on the system. The largest was Read and Sign, which covers more than 70 departments company-wide, and I worked with more than 10 stakeholders on it.", PromptBuilder.StakeholderCountDirective);
+        Assert.Contains("It depends on the module. The largest spanned more than 10 stakeholders", PromptBuilder.StakeholderCountDirective);
         Assert.Contains("Towing is the system that moves aircraft between bays. It has more integrations than the earlier systems I worked on. I worked out the requirements with a BA, then built it full-stack myself and took it through UAT to production.", PromptBuilder.TowingDirective);
-        Assert.Contains("At TradeLink I was a Programmer, working on web-based applications in .NET Framework and the portal backend.", PromptBuilder.TradeLinkGenericDirective);
+        Assert.Contains("At TradeLink I was a Programmer. I developed and maintained web application backends in .NET Framework", PromptBuilder.TradeLinkGenericDirective);
         Assert.Contains("I have the IBM Professional Certificate in Data Engineering. The IBM Professional Certificate in RAG and Agentic AI is in progress.", PromptBuilder.CertificationsDirective);
-        Assert.Contains("AI-native SDLC, Spec-Driven Development, Human-in-the-Loop, Context Engineering, Context as Code, MCP, and RAG", PromptBuilder.AiSkillsDirective);
+        Assert.Contains("AI-native SDLC, Spec-Driven Development, Human-in-the-Loop, Context Engineering, MCP, and RAG", PromptBuilder.AiSkillsDirective);
         Assert.Contains("Yes. I've connected existing MCP servers to an agent.", PromptBuilder.McpDirective);
         Assert.Contains("HKD 35,000 per month.", PromptBuilder.ExpectedSalaryDirective);
         Assert.Contains("July 2022", PromptBuilder.HardBiographyDirective);

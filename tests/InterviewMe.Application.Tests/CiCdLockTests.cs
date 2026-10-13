@@ -43,7 +43,7 @@ public class CiCdLockTests
         Assert.Contains("Never say I built, set up, configured, or maintained pipelines.", PromptBuilder.CiCdDirective);
         Assert.DoesNotContain("No, I haven't worked with CI/CD", PromptBuilder.CiCdDirective + Fact("skills.md"));
         var skills = Fact("skills.md");
-        Assert.Equal("React, React Native, TypeScript. .NET Core, C#, RESTful APIs, gRPC. MSSQL, MongoDB. Git.", skills.Split('\n')[2]);
+        Assert.Contains("Frontend: React, React Native, TypeScript, Vue.js, uni-app.", skills.Split('\n')[2]);
         Assert.Contains(Answer, skills);
         Assert.Contains(SetupAnswer, skills);
         Assert.Contains("None at TradeLink.", skills);
@@ -81,8 +81,8 @@ public class CiCdLockTests
         Assert.Contains("https://github.com/wongsaiwing/interviewme", PromptBuilder.GitHubDirective);
         Assert.Contains("\"No, I haven't used Jira.\"", PromptBuilder.NeverUsedToolsDirective);
         Assert.Contains("\"Yes, I've worked in Agile.\"", PromptBuilder.AgileDirective);
-        Assert.Contains("At TradeLink I was a Programmer, working on web-based applications in .NET Framework and the portal backend.", PromptBuilder.TradeLinkGenericDirective);
-        Assert.Contains("At HAECO I'm an Assistant Solution Analyst on MRO engineering IT solutions.", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("At TradeLink I was a Programmer. I developed and maintained web application backends in .NET Framework", PromptBuilder.TradeLinkGenericDirective);
+        Assert.Contains("At HAECO I'm an Assistant Business Analyst on MRO engineering IT solutions.", PromptBuilder.HaecoGenericDirective);
         Assert.False(PromptBuilder.LooksLikeCiCd("Have you used Git?"));
         Assert.False(PromptBuilder.LooksLikeCiCd("Did you build data pipelines at TradeLink?"));
     }

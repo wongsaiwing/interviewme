@@ -25,7 +25,7 @@ Keywords: first job, explore the market, HAECO, 轉工
 ## What I actually worked on
 
 Interview answers from Silas Wong, 2026-08-26. Facts only. Do not invent product names.
-When asked generally what I did at TradeLink, say I was a Programmer and give a short summary (web-based applications in .NET Framework and the portal backend, database, RFID/barcode tracking). Name .NET Framework in that first answer. Do not call myself a full-stack developer at TradeLink. Do not dump ETL, SSIS, SSRS unless they ask. Do not invent product names.
+When asked generally what I did at TradeLink, say I was a Programmer and give a short summary aligned with the CV: web application backends in .NET Framework for high-volume supply chain data platforms; ETL data pipelines with SSIS; ERDs, table schemas, and SSRS reports. Name .NET Framework in that first answer. RFID/barcode tracking is fine as business context. Do not call myself a full-stack developer at TradeLink. Do not invent product names.
 
 
 At TradeLink, most of the work was the portal's main technologies and development, from the backend. I did do the database work as well: designing the database and creating the tables.

@@ -178,15 +178,15 @@ public static class BiographyGuard
 
     // Shift Briefing 80% is frontend phase only; project not finished (Scyko 2026-10-05).
     private static readonly Regex UnscopedSbBoth = new(
-        @"\b(cut|cuts|cutting|reduced|reduces)\s+(?:the\s+|our\s+)?(?!frontend\b)(?:project\s+|overall\s+|total\s+)?delivery\s+time\s+by\s+80%\s*,?\s+and\s+(?:the\s+)?man-hour\s+cost\s+by\s+80%",
+        @"\b(cut|cuts|cutting|reduced|reduces)\s+(?:the\s+|our\s+)?(?:frontend\s+|project\s+|overall\s+|total\s+)?delivery\s+time\s+by\s+80%\s*,?\s+and\s+(?:the\s+)?man-hour\s+cost\s+by\s+80%",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
     private static readonly Regex UnscopedSbPair = new(
-        @"(?<!frontend\s)\b(?:project\s+|overall\s+|total\s+)?delivery\s+time\s+and\s+man-hour\s+cost\s+by\s+80%",
+        @"\b(?:frontend\s+|project\s+|overall\s+|total\s+)?delivery\s+time\s+and\s+man-hour\s+cost\s+by\s+80%",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
     private static readonly Regex UnscopedSbDelivery = new(
-        @"\b(cut|cuts|cutting|reduced|reduces)\s+(?:the\s+|our\s+)?(?!frontend\b)(?:project\s+|overall\s+|total\s+)?delivery\s+(?:time\s+)?by\s+80%",
+        @"\b(cut|cuts|cutting|reduced|reduces)\s+(?:the\s+|our\s+)?(?:frontend\s+|project\s+|overall\s+|total\s+)?delivery\s+(?:time\s+)?by\s+80%",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
     private static readonly Regex SbFinishedSentence = new(
@@ -204,10 +204,10 @@ public static class BiographyGuard
 
     private static readonly Regex ReadAndSignName = new(@"\bRead\s+(?:and|&)\s+Sign\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-    private const string SbInDev = "Shift Briefing is still in development.";
+    private const string SbInDev = "Shift Briefing is still in active development.";
 
     private static readonly Regex OldSbMetricSentence = new(
-        @"(?<=^|[.!?]\s)[^.!?]*(?:\b(?:five|5) days\b[^.!?]*UAT|20 person-days|US\$100|\b75%|\b4x\b|\b4\u00d7|four times faster|\b83%|\b60 man-?days?\b|\b60 man-day\b|48,000)[^.!?]*[.!?]\s*",
+        @"(?<=^|[.!?]\s)[^.!?]*(?:\b(?:five|5) days\b[^.!?]*UAT|20 person-days|US\$100|\b75%|\b4x\b|\b4\u00d7|four times faster|\b60 man-?days?\b|\b60 man-day\b|48,000|HK\$2,000|HK\$38,000|\b50 man-?days?\b)[^.!?]*[.!?]\s*",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
     // Method wording: AI-assisted -> AI-native SDLC (prompt is primary; this only catches slips).
@@ -315,16 +315,18 @@ public static class BiographyGuard
         {
             result = GlasgowJune.Replace(result, m => m.Value.Contains('/') ? "07/2022" : "July 2022");
         }
-        result = OldSbMetricsClause.Replace(result, "It cut frontend delivery time and man-hour cost by 80%");
-        result = RetiredSbMetricsClause.Replace(result, "cut frontend delivery time and man-hour cost by 80%");
+        result = OldSbMetricsClause.Replace(result, "It cut delivery time by 83% and man-hour cost by 81% against the prior manual workflow");
+        result = RetiredSbMetricsClause.Replace(result, "cut delivery time by 83% and man-hour cost by 81%");
         result = OldSbMetricSentence.Replace(result, "");
         if (result.Contains("80%", StringComparison.Ordinal))
         {
-            result = UnscopedSbBoth.Replace(result, m => m.Groups[1].Value + " frontend delivery time and man-hour cost by 80%");
-            result = UnscopedSbPair.Replace(result, "frontend delivery time and man-hour cost by 80%");
-            result = UnscopedSbDelivery.Replace(result, m => m.Groups[1].Value + " frontend delivery time by 80%");
-            result = Regex.Replace(result, @"\b(?:the\s+)?(?:whole|entire|overall)\s+project\s+(?=(?:saved|cut|was)\b[^.!?]*80%)", "the frontend phase ", RegexOptions.IgnoreCase);
+            result = UnscopedSbBoth.Replace(result, m => m.Groups[1].Value + " delivery time by 83% and man-hour cost by 81%");
+            result = UnscopedSbPair.Replace(result, "delivery time by 83% and man-hour cost by 81%");
+            result = UnscopedSbDelivery.Replace(result, m => m.Groups[1].Value + " delivery time by 83%");
+            result = Regex.Replace(result, @"\bfrontend\s+delivery\s+time\s+and\s+man-hour\s+cost\s+by\s+80%", "delivery time by 83% and man-hour cost by 81%", RegexOptions.IgnoreCase);
+            result = Regex.Replace(result, @"\bfrontend\s+delivery\s+time\s+by\s+80%", "delivery time by 83%", RegexOptions.IgnoreCase);
         }
+        result = Regex.Replace(result, @"\bContext as Code\b,?\s*", "", RegexOptions.IgnoreCase);
         result = SbFinishedSentence.Replace(result, m =>
             NegationWords.IsMatch(m.Value) || m.Value.Contains("in progress", StringComparison.OrdinalIgnoreCase)
                 ? m.Value
@@ -340,12 +342,12 @@ public static class BiographyGuard
                     return v;
                 var lead = v.StartsWith(" ") ? " " : "";
                 return lead + (ReadAndSignName.IsMatch(v)
-                    ? "Read and Sign is at the UAT stage, and Shift Briefing is still in development."
+                    ? "Read and Sign is at the UAT stage, and Shift Briefing is still in active development."
                     : SbInDev);
             });
             if (!ReadAndSignName.IsMatch(result))
             {
-                result = ItAtUat.Replace(result, m => (char.IsUpper(m.Groups[1].Value[0]) ? "It" : "it") + "'s still in development");
+                result = ItAtUat.Replace(result, m => (char.IsUpper(m.Groups[1].Value[0]) ? "It" : "it") + "'s still in active development");
             }
         }
         result = AiAssistedFullStackDev.Replace(result, "full-stack development with an AI-native SDLC");

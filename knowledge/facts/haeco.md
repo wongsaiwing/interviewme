@@ -1,54 +1,72 @@
 # HAECO
 
-July 2024 – now. Assistant Solution Analyst, HAECO Digital, working on operation systems for aviation MRO (Maintenance, Repair, Overhaul), covering aircraft maintenance. Main stack .NET and React.
+## Current role  -  Assistant Business Analyst (01/2026 – Current)
 
-## Generic what I do
+Assistant Business Analyst at Hong Kong Aircraft Engineering Company Limited (HAECO), Hong Kong. HAECO Digital, operation systems for aviation MRO (Maintenance, Repair, Overhaul), covering aircraft maintenance. Main stack .NET and React.
 
-When asked generally what I do at HAECO ("what did you do at HAECO", "what do you do at HAECO", "tell me about your current role"): say this high-level answer and stop: "At HAECO I'm an Assistant Solution Analyst on MRO engineering IT solutions. I cover the full cycle from requirements and specs through full-stack delivery, UAT, go-live and support, and on some work I partner with our Mainland team more as a technical BA." Details wait for a follow-up (which systems, a named project, how I code). Do not mention team size here. Do not dump all seven system names unless they ask which systems or a named project. Do not invent metrics. Do not open with Yeah. Do not say outsourced, replaced, or fired.
+When asked generally what I do at HAECO ("what did you do at HAECO", "what do you do at HAECO", "tell me about your current role"): say this high-level answer and stop: "At HAECO I'm an Assistant Business Analyst on MRO engineering IT solutions. I elicit and analyse requirements for MRO modules, follow agile delivery through UAT, and on some modules I own both the BA and full-stack work end-to-end." Details wait for a follow-up (titles, which modules, AI-native SDLC, named projects). Do not mention team size here. Do not dump module or microservice counts unless they ask which systems or how many. Do not invent metrics beyond the locked AI-native SDLC figures when asked about that. Do not open with Yeah. Do not say outsourced, replaced, or fired. Do not say Assistant Solution Analyst as the current title.
 
-Keywords: HAECO, what did you do at HAECO, what do you do at HAECO, current role, MRO, Digital, .NET, React, React Native, SDLC, 香港飛機工程
+Keywords: HAECO, what did you do at HAECO, what do you do at HAECO, current role, Assistant Business Analyst, ABA, MRO, Digital, .NET, React, React Native, SDLC, 香港飛機工程
 
-## Fluid Use
+## Previous title  -  Assistant Solution Analyst (07/2024 – 12/2025)
 
-First project. Fluid Use is for mechanics when they add oil or fluids during airframe maintenance. CRUD plus integrate. I did FE/BE through UAT to production. Hand-coded, pre-AI. I was NOT the requirements owner. Separate from Operation Remarks. If they say Fuller Use, they mean Fluid Use.
+Assistant Solution Analyst at HAECO, July 2024 to December 2025. Same company, previous title before Assistant Business Analyst.
 
+Designed solution architecture, ERDs, and database schemas for 3 full-stack MRO microservices, including system integration across interdependent modules.
+Delivered 3 full-stack MRO microservices hands-on to go-live, with release management.
+Owned post-implementation support, bug fixes, and root cause analysis to keep core operations running 24/7.
+
+Only when they ask about the Assistant Solution Analyst title, the earlier HAECO period, architecture, ERDs, or the three microservices. Do not open a generic current-role answer with this title.
+
+Keywords: Assistant Solution Analyst, ASA, 07/2024, 12/2025, three microservices, 3 microservices, architecture, ERD, ERDs, database schema, release management, 24/7, root cause analysis, RCA, post-implementation
+
+## ABA delivery (01/2026 – Current)
+
+Under the Assistant Business Analyst title:
+Elicited and analysed requirements for four MRO modules, the largest spanning 10+ stakeholders across operations departments for a company-wide, audit-subject system.
+Shadowed operations on the floor to surface pain points and evaluated solution options against business value, including feasibility studies.
+Wrote product backlog items and followed delivery with the development team in an agile style, including UAT testing, workshops, and user guidelines.
+For two of the modules, owned both the BA and full-stack developer roles end-to-end, from requirements through hands-on build.
+Pioneered a team-wide AI-native SDLC, cutting delivery time by 83% and man-hour cost by 81% (baseline: prior manual workflow); the flagship system is currently in UAT.
+Delivered two full-stack MRO modules to go-live, with one in User Acceptance Testing and one in active development.
+
+When they ask which systems / how many systems / delivery split: speak the CV split, not the old seven-system split. ABA: four MRO modules (two go-live, one UAT, one active development). ASA: three full-stack MRO microservices to go-live. Do not invent a combined "seven systems" count as the primary answer.
+
+AI-native SDLC metrics (83% delivery time, 81% man-hour cost, baseline prior manual workflow) are the locked CV figures. The flagship is currently in UAT. Do not invent retired frontend-only percentage or man-day cost figures for Shift Briefing.
+
+Keywords: four modules, 10+ stakeholders, floor, shadow, feasibility, PBI, agile, workshops, user guidelines, BA and full-stack, end-to-end, 83%, 81%, AI-native SDLC, flagship, UAT, active development, go-live
+
+## Named systems (follow-up only)
+
+Named project detail only when they ask about a named system. These sit under the HAECO MRO work; do not use them to reopen the old seven-system primary split.
+
+### Fluid Use
+First project in the earlier ASA period. Fluid Use is for mechanics when they add oil or fluids during airframe maintenance. CRUD plus integrate. I did FE/BE through UAT to production. Hand-coded, pre-AI. I was NOT the requirements owner. Separate from Operation Remarks. If they say Fuller Use, they mean Fluid Use.
 Keywords: Fluid Use, Fuller Use, 入油, CRUD
 
-## Operation Remarks
-
-Engineers write remarks from mechanics’ reports / situation, engineers do not personally maintain the aircraft themselves. FE/BE through UAT to production. Hand-coded. Separate from Fluid Use. Do not say old "mechanics leave handover remarks when handing a task" framing as the main definition.
-
+### Operation Remarks
+Engineers write remarks from mechanics’ reports / situation; engineers do not personally maintain the aircraft themselves. FE/BE through UAT to production. Hand-coded. Separate from Fluid Use.
 Keywords: Operation Remarks, remarks, engineers, mechanics’ reports
 
-## Towing
-
+### Towing
 Tow aircraft between bays for specific repair/maintain. More integrations. I worked out the requirements with a BA, then built it full-stack myself and took it through UAT to production. After go-live I own the follow-ups (detail for a follow-up question). 飛 means bay. Never "incoming aircraft status".
-
 Keywords: Towing, 接機, 拖機, bay, 飛
 
-## Daily Operation Monitor
-
+### Daily Operation Monitor
 DOM: from LM aircraft status maintenance through to actual departure (放得行未). I acted as technical BA: requirements, clear blockers, Agile PBIs for Shenzhen Dev, UAT and onboarding. Shenzhen Dev does the coding; my focus was the BA side. PBI is OK to say. Separate from Towing. Do not pad my self-built count with DOM.
-
 Keywords: Daily Operation Monitor, DOM, 放得行, PBI, technical BA
 
-## Capacity Checker
-
+### Capacity Checker
 After DOM, before Read and Sign. Requirements and blockers; Shenzhen Dev does the coding. Manhour / task allocation plus attendance ratios for managers; ADD allocation edits; future allocation focus. Shenzhen-collab style with DOM.
-
 Keywords: Capacity Checker, manhour, allocation, attendance, ADD
 
-## Read and Sign
+### Read and Sign
+Built full-stack using an AI-native SDLC with an agentic CLI (if asked which tool: GitHub Copilot CLI). Company-wide notice / document sign-off; requirements from departments; audit. At the UAT stage, not production. Matches the CV flagship currently in UAT. Largest stakeholder span: I worked with more than 10 stakeholders on it (Read and Sign / flagship only; say it only on a follow-up about Read and Sign, the flagship, or stakeholders; never apply it to other systems or to HAECO overall). Do not claim production. Do not say Re-Ensign. Do not invent automated email product or user counts. Audit snapshot reports for coordinators still fine if asked.
+Keywords: Read and Sign, Read & Sign, Copilot CLI, AI-native SDLC, 簽署, UAT, stakeholders, departments, audit, flagship
 
-Built full-stack using an AI-native SDLC with an agentic CLI (if asked which tool: GitHub Copilot CLI). Company-wide notice / document sign-off; requirements from departments; audit. At the UAT stage, not production. Largest scope of the seven: it covers more than 70 departments company-wide, and I worked with more than 10 stakeholders on it (two separate facts; never say the stakeholders were spread across the departments; Read and Sign only; say it only on a follow-up about Read and Sign or about stakeholders; never apply it to other systems or to HAECO overall). Do not claim production or near-complete-as-production. Do not say Re-Ensign. Do not invent automated email product or user counts. "Vibe-coded" / AI-native SDLC framing OK chronologically. Audit snapshot reports for coordinators still fine if asked.
-
-Keywords: Read and Sign, Read & Sign, Copilot CLI, AI-native SDLC, 簽署, UAT, stakeholders, departments, audit
-
-## Shift Briefing
-
-Pre-shift briefing with task-suggested content and staff ID scan sign. Built with an AI-native SDLC, using an agentic CLI for the .NET / React full-stack development (if asked which tool: GitHub Copilot CLI). Default claim (matches the CV: "Cut frontend delivery time and man-hour cost by 80% by adopting an AI-native SDLC."): it cut frontend delivery time and man-hour cost by 80%. Estimate follow-up only (when they ask how it was estimated or the baseline): for the frontend, the original estimate was 50 man-days, and with the AI-native SDLC it took 10 man-days (Figma UI details may still be incomplete). Cost follow-up only (when they ask what it cost or about the savings): token cost was HK$200 per day x 10 days = HK$2,000; net savings HK$38,000 (40 man-days saved at HK$1,000 per person per day = HK$40,000, minus the HK$2,000 token cost). All of these numbers are for the frontend phase only. The 80% applies only to the frontend phase, not the whole project; never say the whole project saved 80%. Shift Briefing is not finished: if asked whether it is finished or done, say "No, the project is still in development." It is only in the dev environment, not at UAT. Never say it is finished, live, or in production. Do NOT say already in production. Do NOT say UI fully matches Figma. These numbers are Shift Briefing only, do not apply them to other projects. Do not invent other Shift Briefing metrics beyond this lock. When asked how you built or started Shift Briefing, say: I built it with an AI-native SDLC, using an agentic CLI for the .NET and React development; then "it cut frontend delivery time and man-hour cost by 80%", and close with "It's still in development." Man-day numbers only on an estimate follow-up; token cost and net savings only on a cost follow-up. Never claim it is in production. Nothing else about method.
-
-Keywords: Shift Briefing, staff ID, pre-shift, in development, dev environment, 80%, frontend, finished, 10 man-days, 50 man-days, estimate, baseline, token cost, HK$2,000, net savings, HK$38,000, impact, AI-native SDLC, agentic CLI, Copilot CLI, which tool, .NET, React, how did you build Shift Briefing
+### Shift Briefing
+Pre-shift briefing with task-suggested content and staff ID scan sign. Built with an AI-native SDLC, using an agentic CLI for the .NET / React full-stack development (if asked which tool: GitHub Copilot CLI). Matches the CV module in active development. If asked whether it is finished or done, say "No, the project is still in active development." Never say it is finished, live, or in production. Do NOT say already in production. Do NOT say UI fully matches Figma. Do not invent retired frontend-only percentage or man-day cost figures. When asked how you built Shift Briefing, say you built it with an AI-native SDLC using an agentic CLI for the .NET and React development, and that it is still in active development. Team-wide AI-native SDLC impact figures (83% / 81%) belong to the ABA AI-native SDLC lock, not as Shift Briefing-only frontend metrics.
+Keywords: Shift Briefing, staff ID, pre-shift, active development, in development, AI-native SDLC, agentic CLI, Copilot CLI, which tool, .NET, React, how did you build Shift Briefing
 
 ## Team
 
@@ -80,6 +98,6 @@ Keywords: PDF, HTML, CSS, report
 
 ## How I deliver
 
-Ownership depends on the project: some I own FE/BE through UAT and production (Fluid Use, Operation Remarks, Towing); DOM and Capacity Checker I do as technical BA (req, blockers, PBIs, UAT/onboarding) with Shenzhen Dev coding; Read and Sign is full-stack using an AI-native SDLC with an agentic CLI, at the UAT stage; Shift Briefing is built with an AI-native SDLC and still in development. Core high-value scope first; later asks from users and coordinators are enhancements (background, not a line to say). Do not invent a release cycle. Do not invent conflict, sudden requirement bombs, or difficult-stakeholder stories.
+Ownership depends on the period and the work: as Assistant Solution Analyst I designed architecture / ERDs for three full-stack MRO microservices and took three to go-live with release management and 24/7 support. As Assistant Business Analyst I elicit requirements for four MRO modules, follow PBI / agile delivery including UAT, workshops, and user guidelines; for two modules I own BA and full-stack end-to-end; delivery status is two go-live, one UAT (flagship), one active development. Named follow-ups: Fluid Use, Operation Remarks, and Towing went FE/BE through production; DOM and Capacity Checker I do as technical BA with Shenzhen Dev coding; Read and Sign is full-stack with an AI-native SDLC at UAT; Shift Briefing is AI-native SDLC and still in active development. Core high-value scope first; later asks from users and coordinators are enhancements (background, not a line to say). Do not invent a release cycle. Do not invent conflict, sudden requirement bombs, or difficult-stakeholder stories.
 
 Keywords: UAT, enhancement, elicit, PBI

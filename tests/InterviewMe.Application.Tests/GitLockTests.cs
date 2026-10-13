@@ -76,9 +76,9 @@ public class GitLockTests
     {
         Assert.Contains("\"Yes, I've worked in Agile.\"", PromptBuilder.AgileDirective);
         Assert.Contains("\"No, I haven't used Jira.\"", PromptBuilder.NeverUsedToolsDirective);
-        Assert.Contains("At TradeLink I was a Programmer, working on web-based applications in .NET Framework and the portal backend.", PromptBuilder.TradeLinkGenericDirective);
-        Assert.Contains("If they ask only about backend: .NET Core, C#, RESTful APIs, gRPC.", PromptBuilder.TechStackDirective);
+        Assert.Contains("At TradeLink I was a Programmer. I developed and maintained web application backends in .NET Framework", PromptBuilder.TradeLinkGenericDirective);
+        Assert.Contains("If they ask only about backend: .NET Core, C#, RESTful APIs, gRPC, Java.", PromptBuilder.TechStackDirective);
         Assert.Contains("GitHub Copilot CLI", PromptBuilder.WhichToolDirective);
-        Assert.Contains("At HAECO I'm an Assistant Solution Analyst on MRO engineering IT solutions.", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("At HAECO I'm an Assistant Business Analyst on MRO engineering IT solutions.", PromptBuilder.HaecoGenericDirective);
     }
 }

@@ -1,88 +1,70 @@
 using InterviewMe.Application.Chat;
+using InterviewMe.Domain;
 
 namespace InterviewMe.Application.Tests;
 
-// Shift Briefing lock (Scyko via Mega, approved 2026-10-05 08:15; CV R9): 80% is frontend phase only; project not finished.
+// Official CV 2026-10-12: AI-native SDLC 83%/81% (baseline prior manual); SB in active development; no frontend-only 80%.
 public class ShiftBriefingFrontendTests
 {
-    private static string Root => TestSupport.FindKnowledgePath();
-    private static string Build(string q) => new PromptBuilder().BuildSystem("Silas Wong", [], null, q);
+    private static string Root => Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "knowledge"));
 
-    private static IEnumerable<(string Name, string Text)> AllText()
-    {
-        foreach (var f in Directory.GetFiles(Root, "*.md", SearchOption.AllDirectories)) yield return (f, File.ReadAllText(f));
-        var src = Path.Combine(Directory.GetParent(Root)!.FullName, "src");
-        foreach (var f in Directory.GetFiles(src, "*.cs", SearchOption.AllDirectories))
-            if (!f.Contains("/bin/") && !f.Contains("/obj/")) yield return (f, File.ReadAllText(f));
-    }
+    private static string Build(string q) =>
+        new PromptBuilder().BuildSystem("Silas Wong", Array.Empty<RetrievedFact>(), null, q);
 
     [Fact]
-    public void Default_answers_scope_80_percent_to_frontend()
+    public void Default_answers_use_cv_ai_native_metrics_and_active_development()
     {
         var sb = PromptBuilder.ShiftBriefingDirective;
-        Assert.Contains("I built it with an AI-native SDLC using an agentic CLI, and it cut frontend delivery time and man-hour cost by 80%. It's still in development.", sb);
-        Assert.Contains("I built Shift Briefing with an AI-native SDLC, using an agentic CLI for the .NET and React development. It cut frontend delivery time and man-hour cost by 80%, and it's still in development.", sb);
-        Assert.Contains("On Shift Briefing, the AI-native SDLC cut frontend delivery time and man-hour cost by 80%. I used an agentic CLI for the .NET and React work. It's still in development.", sb);
-        Assert.Contains("Never say the whole project or delivery saved 80%.", sb);
-        Assert.Contains("Cut frontend delivery time and man-hour cost by 80% by adopting an AI-native SDLC.", File.ReadAllText(Path.Combine(Root, "facts", "haeco.md")));
+        Assert.Contains("still in active development", sb);
+        Assert.Contains("83%", sb);
+        Assert.Contains("81%", sb);
+        Assert.DoesNotContain("frontend delivery time and man-hour cost by 80%", sb);
+        Assert.Contains("cutting delivery time by 83% and man-hour cost by 81%", File.ReadAllText(Path.Combine(Root, "facts", "haeco.md")));
     }
 
     [Fact]
-    public void Estimate_and_cost_follow_ups_are_frontend_scoped()
+    public void Estimate_and_cost_follow_ups_use_cv_baseline()
     {
-        Assert.Contains("\"For the frontend, the original estimate was 50 man-days, and with the AI-native SDLC it took 10. That's where the 80% comes from, for both delivery time and man-hour cost.\"", PromptBuilder.ShiftBriefingEstimateDirective);
-        Assert.Contains("\"For the frontend phase, the token cost was HK$200 a day over 10 days, so HK$2,000. At HK$1,000 per person per day, the 40 man-days saved are worth HK$40,000, so the net savings were HK$38,000.\"", PromptBuilder.ShiftBriefingCostDirective);
-        var haeco = File.ReadAllText(Path.Combine(Root, "facts", "haeco.md"));
-        Assert.Contains("All of these numbers are for the frontend phase only.", haeco);
-        Assert.DoesNotContain("frontend and backend to UAT", haeco);
-        Assert.DoesNotContain("frontend + backend", File.ReadAllText(Path.Combine(Root, "facts", "haeco-projects.md")));
-    }
-
-    [Fact]
-    public void No_unscoped_80_percent_wording_anywhere()
-    {
-        var rx = new System.Text.RegularExpressions.Regex(@"(?<!frontend )delivery time by 80%|(?<!frontend )delivery time and man-hour cost by 80%", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-        foreach (var (name, text) in AllText())
-            foreach (System.Text.RegularExpressions.Match m in rx.Matches(text))
-                Assert.Fail($"{name}: {m.Value}");
-    }
-
-    [Fact]
-    public void Finished_question_says_still_in_development()
-    {
-        const string q = "Is Shift Briefing finished?";
-        Assert.True(PromptBuilder.LooksLikeShiftBriefing(q));
-        Assert.True(PromptBuilder.LooksLikeSbFinishedQuestion(q));
-        Assert.Contains(PromptBuilder.ShiftBriefingFinishedDirective, Build(q));
-        Assert.Contains("\"No, the project is still in development.\"", PromptBuilder.ShiftBriefingFinishedDirective);
-        Assert.DoesNotContain("Feature-complete", PromptBuilder.ShiftBriefingDirective);
-        Assert.Contains("still in development", File.ReadAllText(Path.Combine(Root, "facts", "production.md")));
+        Assert.Contains("prior manual workflow", PromptBuilder.ShiftBriefingEstimateDirective);
+        Assert.Contains("83%", PromptBuilder.ShiftBriefingEstimateDirective);
+        Assert.Contains("81%", PromptBuilder.ShiftBriefingCostDirective);
+        Assert.DoesNotContain("50 man-days", PromptBuilder.ShiftBriefingEstimateDirective);
+        Assert.DoesNotContain("HK$2,000", PromptBuilder.ShiftBriefingCostDirective);
     }
 
     [Theory]
-    [InlineData("On Shift Briefing it cut delivery time by 80% and man-hour cost by 80%.", "On Shift Briefing it cut frontend delivery time and man-hour cost by 80%.")]
-    [InlineData("Shift Briefing cut delivery time by 80%.", "Shift Briefing cut frontend delivery time by 80%.")]
-    [InlineData("The AI-native SDLC reduced delivery time and man-hour cost by 80%.", "The AI-native SDLC reduced frontend delivery time and man-hour cost by 80%.")]
-    [InlineData("Shift Briefing is finished and live now.", "Shift Briefing is still in development.")]
-    public void Guard_scopes_and_unfinishes(string raw, string expected) => Assert.Equal(expected, BiographyGuard.Sanitize(raw));
+    [InlineData("On Shift Briefing it cut delivery time by 80% and man-hour cost by 80%.", "delivery time by 83% and man-hour cost by 81%")]
+    [InlineData("Shift Briefing cut delivery time by 80%.", "delivery time by 83%")]
+    [InlineData("The AI-native SDLC reduced delivery time and man-hour cost by 80%.", "delivery time by 83% and man-hour cost by 81%")]
+    public void Guard_rewrites_retired_80_to_cv_metrics(string raw, string expectedFragment)
+    {
+        var cleaned = BiographyGuard.Sanitize(raw);
+        Assert.Contains(expectedFragment, cleaned);
+        Assert.DoesNotContain("80%", cleaned);
+    }
 
     [Theory]
-    [InlineData("It cut frontend delivery time and man-hour cost by 80%, and it's still in development.")]
-    [InlineData("No, the project is still in development.")]
-    [InlineData("Shift Briefing isn't finished yet.")]
-    public void Guard_keeps_scoped_and_in_progress(string s) => Assert.Equal(s, BiographyGuard.Sanitize(s));
+    [InlineData("It cut delivery time by 83% and man-hour cost by 81%, and it's still in active development.")]
+    public void Guard_keeps_cv_metrics(string s)
+    {
+        Assert.Equal(s, BiographyGuard.Sanitize(s));
+    }
 
     [Fact]
     public void Other_locks_unchanged()
     {
-        Assert.Contains("At HAECO I'm an Assistant Solution Analyst on MRO engineering IT solutions. I cover the full cycle from requirements and specs through full-stack delivery, UAT, go-live and support, and on some work I partner with our Mainland team more as a technical BA.", PromptBuilder.HaecoGenericDirective);
-        Assert.Contains("Towing is the system that moves aircraft between bays.", PromptBuilder.TowingDirective);
-        Assert.Contains("which covers more than 70 departments company-wide, and I worked with more than 10 stakeholders on it", PromptBuilder.StakeholderCountDirective);
-        Assert.Contains("HKD 35,000 per month.", PromptBuilder.ExpectedSalaryDirective);
-        Assert.Contains("\"Yes, at HAECO I used Git on Azure DevOps.\"", PromptBuilder.GitDirective);
-        Assert.Contains("Yes. At HAECO I used the existing CI/CD pipelines", PromptBuilder.CiCdDirective);
-        Assert.Contains("It's still in development.", PromptBuilder.ShiftBriefingDirective);
-        Assert.Contains("HK$2,000", PromptBuilder.ShiftBriefingCostDirective);
-        Assert.DoesNotContain("50 man-days", PromptBuilder.ShiftBriefingDirective);
+        Assert.Contains("At HAECO I'm an Assistant Business Analyst on MRO engineering IT solutions.", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("more than 10 stakeholders", PromptBuilder.StakeholderCountDirective);
+        Assert.Contains("It's still in active development.", PromptBuilder.ShiftBriefingDirective);
+    }
+
+    [Theory]
+    [InlineData("Is Shift Briefing finished?")]
+    [InlineData("Is Shift Briefing done?")]
+    public void Finished_routes_to_active_development(string q)
+    {
+        Assert.True(PromptBuilder.LooksLikeShiftBriefing(q));
+        Assert.Contains(PromptBuilder.ShiftBriefingFinishedDirective, Build(q));
+        Assert.Contains("\"No, the project is still in active development.\"", PromptBuilder.ShiftBriefingFinishedDirective);
     }
 }

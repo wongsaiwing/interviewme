@@ -2,13 +2,13 @@
 
 ## University of Glasgow
 
-Graduated July 2022 (07/2022). BSc (Hons) in Computing Science, University of Glasgow (certificate wording: B.Sc. in Computing Science). Accredited by BCS and the Institution of Engineering and Technology. If they ask when I graduated, say July 2022 (CV 07/2022). Never mention when I entered, enrolled, or started university. Only the graduation date. Do not volunteer Faster Route, entry year, or degree class here, class stays in the Grades section only.
+BSc (Hons) Computing Science, University of Glasgow, 09/2018 – 07/2022 (certificate wording: B.Sc. in Computing Science). Accredited by BCS and the Institution of Engineering and Technology. Graduated July 2022 (07/2022). If they ask when I graduated, say July 2022 (CV 07/2022). If they ask the education period or dates on the CV, say 09/2018 – 07/2022. Do not volunteer Faster Route, Glasgow International College, or degree class here; class stays in the Grades section only.
 
 If asked what I studied: Computing Science. Courses included Java, algorithms and data structures, web application development, databases, networks and operating systems, cyber security, robotics foundations, mobile HCI, professional software development, a team project, and a final-year dissertation on resource and task synchronisation across multiple robots. Do not list every module unless they ask. Do not list module-by-module grades or grade points. If they ask degree class / classification / GPA, use the Grades section.
 
 Do not mention Faster Route, when I got into university, start year, Glasgow International College, student ID, date of birth, or HESA ID.
 
-Keywords: University of Glasgow, 格拉斯哥大學, BSc, Computing Science, Computer Science, Scotland, degree, 學歷, BCS, IET, Java, algorithms, database, cyber security, robotics, web, graduated, graduation, 07/2022, July 2022
+Keywords: University of Glasgow, 格拉斯哥大學, BSc, Computing Science, Computer Science, Scotland, degree, 學歷, BCS, IET, Java, algorithms, database, cyber security, robotics, web, graduated, graduation, 09/2018, 07/2022, July 2022
 
 ## IBM Professional Certificate in Data Engineering Specialization
 

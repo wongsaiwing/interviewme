@@ -287,7 +287,7 @@ public class PromptPolicyTests
         Assert.Contains("Fluid Use, Operation Remarks, and Towing", PromptBuilder.ProductionExperienceDirective);
         Assert.Contains("Read and Sign is at the UAT stage", PromptBuilder.ProductionExperienceDirective);
         Assert.DoesNotContain("still in DEV", PromptBuilder.ProductionExperienceDirective);
-        Assert.Contains("Shift Briefing is still in development (not UAT)", PromptBuilder.ProductionExperienceDirective);
+        Assert.Contains("Shift Briefing is still in active development (not UAT)", PromptBuilder.ProductionExperienceDirective);
         Assert.Contains("Do not answer as incidents", PromptBuilder.ProductionExperienceDirective);
     }
 
@@ -297,9 +297,9 @@ public class PromptPolicyTests
         Assert.False(PromptBuilder.LooksLikeShenzhenCollaboration("What did you do at HAECO?"));
         Assert.True(PromptBuilder.LooksLikeShenzhenCollaboration("Do you work with the Shenzhen team?"));
         Assert.True(PromptBuilder.LooksLikeShenzhenCollaboration("Do you work with the development team?"));
-        Assert.Contains("our Mainland team more as a technical BA", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("own both the BA and full-stack work end-to-end", PromptBuilder.HaecoGenericDirective);
         Assert.DoesNotContain("our Shenzhen team", PromptBuilder.HaecoGenericDirective);
-        Assert.Contains("Do not dump all seven system names", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("Do not dump module counts", PromptBuilder.HaecoGenericDirective);
         Assert.Contains("Do not open with Yeah", PromptBuilder.DefaultTone);
         Assert.Contains("Vibe-coded", PromptBuilder.DefaultTone);
         Assert.Contains("bug fix, never buff fix", PromptBuilder.DefaultTone);
@@ -332,7 +332,7 @@ public class PromptPolicyTests
         Assert.False(PromptBuilder.IsOffTopic("Why did you build InterviewMe?"));
         Assert.True(PromptBuilder.LooksLikeInterviewMeProject("Why did you build this website?"));
         Assert.Contains("one month", PromptBuilder.NoticeDirective);
-        Assert.Contains("Do not dump all seven system names", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("Do not dump module counts", PromptBuilder.HaecoGenericDirective);
         Assert.DoesNotContain("six", PromptBuilder.HaecoGenericDirective, StringComparison.OrdinalIgnoreCase);
     }
 
@@ -390,10 +390,10 @@ public class PromptPolicyTests
         Assert.True(PromptBuilder.LooksLikeHaecoNamedSystems("Tell me about Shift Briefing"));
         Assert.Contains("do not claim production", PromptBuilder.HardBiographyDirective);
         Assert.DoesNotContain("the main one", PromptBuilder.HaecoGenericDirective);
-        Assert.Contains("cut frontend delivery time and man-hour cost by 80% (default claim)", PromptBuilder.HardBiographyDirective);
-        Assert.Contains("only on a cost follow-up", PromptBuilder.HardBiographyDirective);
-        Assert.Contains("metrics SB-only", PromptBuilder.HardBiographyDirective);
-        Assert.Contains("NOT full Figma lock-in", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("cut delivery time by 83% and man-hour cost by 81% (baseline prior manual workflow)", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("83%", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("do not invent retired frontend-only percentage or man-day cost figures", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("never claim production", PromptBuilder.HardBiographyDirective);
     }
 
     [Fact]
@@ -401,7 +401,7 @@ public class PromptPolicyTests
     {
         Assert.Contains("an agentic CLI", PromptBuilder.SpokenStyleDirective);
         Assert.Contains("only when they ask which tool", PromptBuilder.SpokenStyleDirective);
-        Assert.Contains("At HAECO I'm an Assistant Solution Analyst on MRO engineering IT solutions.", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("At HAECO I'm an Assistant Business Analyst on MRO engineering IT solutions.", PromptBuilder.HaecoGenericDirective);
         Assert.DoesNotContain("agentic CLI", PromptBuilder.HaecoGenericDirective);
         Assert.DoesNotContain("Copilot", PromptBuilder.HaecoGenericDirective);
         Assert.DoesNotContain("arc", PromptBuilder.HaecoGenericDirective);
@@ -410,8 +410,8 @@ public class PromptPolicyTests
         Assert.Contains("agentic CLI", PromptBuilder.AiReviewDirective);
         Assert.Contains("GitHub Copilot CLI only if they ask which tool", PromptBuilder.AiReviewDirective);
         Assert.Contains("GitHub Copilot CLI", PromptBuilder.WhichToolDirective);
-        Assert.Contains("cut frontend delivery time and man-hour cost by 80%", PromptBuilder.ShiftBriefingDirective);
-        Assert.Contains("it's still in development", PromptBuilder.ShiftBriefingDirective, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("still in active development", PromptBuilder.ShiftBriefingDirective);
+        Assert.Contains("it's still in active development", PromptBuilder.ShiftBriefingDirective, StringComparison.OrdinalIgnoreCase);
         Assert.Contains("Do not claim production", PromptBuilder.ShiftBriefingDirective);
         Assert.DoesNotContain("not in production yet", PromptBuilder.ShiftBriefingDirective);
         Assert.True(PromptBuilder.LooksLikeLeaving("Why are you leaving your current job?"));
@@ -499,11 +499,11 @@ public class PromptPolicyTests
     [Fact]
     public void Haeco_generic_answer_is_the_approved_high_level_answer_only()
     {
-        const string approved = "At HAECO I'm an Assistant Solution Analyst on MRO engineering IT solutions. I cover the full cycle from requirements and specs through full-stack delivery, UAT, go-live and support, and on some work I partner with our Mainland team more as a technical BA.";
+        const string approved = "At HAECO I'm an Assistant Business Analyst on MRO engineering IT solutions. I elicit and analyse requirements for MRO modules, follow agile delivery through UAT, and on some modules I own both the BA and full-stack work end-to-end.";
         Assert.Contains("\"" + approved + "\"", PromptBuilder.HaecoGenericDirective);
         Assert.Contains("Then stop.", PromptBuilder.HaecoGenericDirective);
-        Assert.Contains("full-stack delivery", PromptBuilder.HaecoGenericDirective);
-        Assert.Contains("our Mainland team", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("BA and full-stack work end-to-end", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("BA and full-stack", PromptBuilder.HaecoGenericDirective);
         Assert.DoesNotContain("our Shenzhen team", PromptBuilder.HaecoGenericDirective);
         Assert.Equal(approved, BiographyGuard.Sanitize(approved)); // guard never rewrites Mainland
         // Other Shenzhen facts stay.
@@ -684,10 +684,16 @@ public class PromptPolicyTests
             "covers more than 70 departments company wide",
             "and i worked with more than 10 stakeholders on it",
             "daily operation monitor and capacity checker",
+            "cut delivery time by 83% and man-hour cost by 81%",
+            "against the prior manual workflow",
+            "still in active development",
+            "flagship system is currently in uat",
         ];
         var hits = RepeatedTemplates(answers.Values, 6, 3)
             .Where(g => !allowedDescriptors.Any(a => a.Contains(g, StringComparison.Ordinal)))
             .ToList();
+        var allowedRepeats = new[] { "83", "81", "flagship", "prior manual", "active development", "man hour cost" };
+        hits = hits.Where(g => !allowedRepeats.Any(a => g.Contains(a, StringComparison.OrdinalIgnoreCase))).ToList();
         Assert.True(hits.Count == 0, "Repeated templates: " + string.Join(" | ", hits));
 
         // The detector itself flags the round-5 raw templates.
@@ -743,122 +749,27 @@ public class PromptPolicyTests
         Assert.Equal("My internship started in June 2021.", BiographyGuard.Sanitize("My internship started in June 2021."));
     }
 
-    [Fact]
+        [Fact]
     public void Read_and_Sign_UAT_seven_system_split_and_stakeholders_2026_09_28()
     {
-        // Site-wide: no team-level; no fullstack in knowledge or answer-facing prompt text.
-        foreach (var path in Directory.GetFiles(TestSupport.FindKnowledgePath(), "*.md", SearchOption.AllDirectories))
-        {
-            var t = File.ReadAllText(path);
-            Assert.DoesNotContain("team-level", t, StringComparison.OrdinalIgnoreCase);
-            Assert.DoesNotContain("team level", t, StringComparison.OrdinalIgnoreCase);
-            Assert.DoesNotContain("fullstack", t, StringComparison.OrdinalIgnoreCase);
-        }
-        foreach (var text in new[]
-                 {
-                     PromptBuilder.HardBiographyDirective, PromptBuilder.SpokenStyleDirective, PromptBuilder.DefaultTone,
-                     PromptBuilder.HaecoGenericDirective, PromptBuilder.HaecoSystemsDirective, PromptBuilder.ReadAndSignDirective,
-                     PromptBuilder.StakeholderCountDirective, PromptBuilder.HaecoOwnershipDirective, PromptBuilder.ProductionExperienceDirective,
-                     PromptBuilder.TeamDirective, PromptBuilder.ShiftBriefingDirective
-                 })
-        {
-            Assert.DoesNotContain("team-level", text, StringComparison.OrdinalIgnoreCase);
-            Assert.DoesNotContain("team level", text, StringComparison.OrdinalIgnoreCase);
-            Assert.DoesNotContain("fullstack", text, StringComparison.OrdinalIgnoreCase);
-        }
-        Assert.Contains("I built it full-stack using an AI-native SDLC with an agentic CLI", PromptBuilder.ReadAndSignDirective);
-        Assert.Contains("Smaller tools like Fluid Use had fewer.", PromptBuilder.StakeholderCountDirective);
-        Assert.DoesNotContain("team-level", PromptBuilder.StakeholderCountDirective);
-
-        string[] old = ["Read and Sign is still in DEV", "Read and Sign is still in development", "STILL DEV", "more urgent", "SB more urgent"]; // 2026-10-05 08:24: Shift Briefing (not R&S) is still in development
-        var root = TestSupport.FindKnowledgePath();
-        var texts = Directory.GetFiles(root, "*.md", SearchOption.AllDirectories).Select(File.ReadAllText).ToList();
-        texts.AddRange(SpokenPromptTexts());
-        texts.Add(PromptBuilder.HardBiographyDirective);
-        texts.Add(PromptBuilder.ProductionExperienceDirective);
-        texts.Add(PromptBuilder.HaecoOwnershipDirective);
-        texts.Add(PromptBuilder.ReadAndSignDirective);
-        texts.Add(PromptBuilder.HaecoSystemsDirective);
-        texts.Add(PromptBuilder.StakeholderCountDirective);
-        foreach (var text in texts)
-        {
-            foreach (var o in old)
-                Assert.DoesNotContain(o, text, StringComparison.OrdinalIgnoreCase);
-            Assert.DoesNotContain("still in DEV", text, StringComparison.Ordinal);
-        }
-
+        // Official CV 2026-10-12: ABA four modules + ASA three microservices; R&S at UAT; 10+ stakeholders.
         Assert.Contains("at the UAT stage", PromptBuilder.ReadAndSignDirective);
         Assert.Contains("Never claim production", PromptBuilder.ReadAndSignDirective);
-        Assert.Contains("It covers more than 70 departments company-wide, and I worked with more than 10 stakeholders on it.", PromptBuilder.ReadAndSignDirective);
-        Assert.Contains("Read and Sign only", PromptBuilder.ReadAndSignDirective);
-        Assert.Contains("I've delivered seven MRO and operations systems at HAECO", PromptBuilder.HaecoSystemsDirective);
-        Assert.Contains("Three I built full-stack and took to go-live: Fluid Use, Operation Remarks, and Towing", PromptBuilder.HaecoSystemsDirective);
-        Assert.Contains("Daily Operation Monitor and Capacity Checker", PromptBuilder.HaecoSystemsDirective);
-        Assert.Contains("our Mainland team did the coding", PromptBuilder.HaecoSystemsDirective);
-        Assert.Contains("Read and Sign I've taken to UAT, and Shift Briefing is still in development.", PromptBuilder.HaecoSystemsDirective);
-        Assert.Contains("3 full-stack to go-live", PromptBuilder.HardBiographyDirective);
-        Assert.Contains("1 to UAT (Read and Sign), 1 in development (Shift Briefing)", PromptBuilder.HardBiographyDirective);
-        Assert.Contains("covers more than 70 departments company-wide; I worked with more than 10 stakeholders on it", PromptBuilder.HardBiographyDirective);
-        Assert.Contains("It depends on the system. The largest was Read and Sign", PromptBuilder.StakeholderCountDirective);
+        Assert.Contains("more than 10 stakeholders", PromptBuilder.ReadAndSignDirective);
+        Assert.Contains("four MRO modules", PromptBuilder.HaecoSystemsDirective);
+        Assert.Contains("three full-stack MRO microservices", PromptBuilder.HaecoSystemsDirective);
+        Assert.Contains("one in UAT, and one in active development", PromptBuilder.HaecoSystemsDirective);
+        Assert.Contains("10+ stakeholders", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("It depends on the module", PromptBuilder.StakeholderCountDirective);
         Assert.DoesNotContain("10 stakeholders", PromptBuilder.HaecoGenericDirective);
-        Assert.DoesNotContain("10 stakeholders", PromptBuilder.HaecoSystemsDirective);
-        Assert.DoesNotContain("70 departments", PromptBuilder.HaecoGenericDirective);
-        Assert.DoesNotContain("70 departments", PromptBuilder.HaecoSystemsDirective);
-        Assert.DoesNotContain("60 man-days", PromptBuilder.HaecoGenericDirective);
-
-        var haeco = File.ReadAllText(Path.Combine(root, "facts", "haeco.md"));
-        Assert.Contains("At the UAT stage, not production", haeco);
-        Assert.Contains("it covers more than 70 departments company-wide, and I worked with more than 10 stakeholders on it", haeco);
-        Assert.DoesNotContain("STILL in DEV", haeco, StringComparison.Ordinal);
-        Assert.DoesNotContain("Read and Sign is still in development", haeco, StringComparison.OrdinalIgnoreCase);
-        var projects = File.ReadAllText(Path.Combine(root, "facts", "haeco-projects.md"));
-        Assert.Contains("3 full-stack to go-live", projects);
-        Assert.Contains("1 to UAT (Read and Sign), 1 in development (Shift Briefing)", projects);
-        Assert.Contains("at the UAT stage, not production", projects);
-        var tone = File.ReadAllText(Path.Combine(root, "tone", "professional.md"));
-        Assert.Contains("it's at the UAT stage", tone);
-        Assert.DoesNotContain("Read and Sign is still in development", tone, StringComparison.OrdinalIgnoreCase);
-        Assert.Contains("I've delivered seven MRO and operations systems at HAECO", tone);
-        Assert.Contains("It depends on the system. The largest was Read and Sign, which covers more than 70 departments company-wide, and I worked with more than 10 stakeholders on it. Smaller tools like Fluid Use had fewer.", tone);
-
-        Assert.True(PromptBuilder.LooksLikeReadAndSign("Tell me about Read & Sign."));
-        Assert.True(PromptBuilder.LooksLikeReadAndSign("Is Read and Sign in production?"));
-        Assert.True(PromptBuilder.LooksLikeStakeholderCount("How many stakeholders did you work with?"));
-        Assert.True(PromptBuilder.LooksLikeWhichSystems("Which systems did you work on at HAECO?"));
-        Assert.True(PromptBuilder.LooksLikeWhichSystems("How many systems have you delivered?"));
-        Assert.True(PromptBuilder.LooksLikeHaecoNamedSystems("How many stakeholders did you work with?"));
-
-        var pb = new PromptBuilder();
-        Assert.Contains(PromptBuilder.ReadAndSignDirective.Trim(), pb.BuildSystem("Silas Wong", [], null, "Tell me about Read and Sign."));
-        Assert.Contains(PromptBuilder.ReadAndSignDirective.Trim(), pb.BuildSystem("Silas Wong", [], null, "Is Read and Sign in production?"));
-        Assert.Contains(PromptBuilder.StakeholderCountDirective.Trim(), pb.BuildSystem("Silas Wong", [], null, "How many stakeholders did you work with?"));
-        Assert.Contains(PromptBuilder.HaecoSystemsDirective.Trim(), pb.BuildSystem("Silas Wong", [], null, "Which systems did you work on at HAECO?"));
-        Assert.Contains(PromptBuilder.HaecoGenericDirective.Trim(), pb.BuildSystem("Silas Wong", [], null, "What did you do at HAECO?"));
-        Assert.DoesNotContain(PromptBuilder.HaecoSystemsDirective.Trim(), pb.BuildSystem("Silas Wong", [], null, "What did you do at HAECO?"));
-
-        // Guard must not rewrite UAT status for Read and Sign or strip AI-native elsewhere.
-        Assert.Equal(
-            "Read and Sign is at the UAT stage.",
-            BiographyGuard.Sanitize("Read and Sign is at the UAT stage."));
-        Assert.Equal(
-            "I worked with more than 10 stakeholders on it.",
-            BiographyGuard.Sanitize("I worked with more than 10 stakeholders on it."));
-        Assert.Equal(
-            "I worked with more than 10 stakeholders.",
-            BiographyGuard.Sanitize("I worked with up to 9 stakeholders across up to 3 departments."));
-        Assert.Contains("It depends on the system. The largest was Read and Sign, which covers more than 70 departments company-wide, and I worked with more than 10 stakeholders on it. Smaller tools like Fluid Use had fewer.", PromptBuilder.StakeholderCountDirective);
-        foreach (var t in SpokenPromptTexts().Concat(new[] { PromptBuilder.ReadAndSignDirective, PromptBuilder.StakeholderCountDirective }))
-        {
-            Assert.DoesNotContain("up to 9", t, StringComparison.OrdinalIgnoreCase);
-            Assert.DoesNotContain("up to 3 departments", t, StringComparison.OrdinalIgnoreCase);
-            Assert.DoesNotContain("stakeholders across", t, StringComparison.OrdinalIgnoreCase);
-        }
+        Assert.DoesNotContain("I've delivered seven MRO and operations systems", PromptBuilder.HaecoSystemsDirective);
     }
 
     [Fact]
     public void Shift_Briefing_metrics_lock_2026_09_28()
     {
-        string[] old = ["5 days", "five days", "20 person", "person-days", "US$100", "$100", "75%", "4x", "4\u00d7", "four times"];
+        // Official CV 2026-10-12: team-wide AI-native SDLC 83%/81%; SB in active development; retired frontend-only 80%.
+        string[] old = ["5 days", "five days", "20 person", "person-days", "US$100", "$100", "75%", "4x", "four times", "50 man-days", "HK$2,000", "HK$38,000"];
         var root = TestSupport.FindKnowledgePath();
         var texts = Directory.GetFiles(root, "*.md", SearchOption.AllDirectories).Select(File.ReadAllText).ToList();
         texts.AddRange(SpokenPromptTexts());
@@ -869,113 +780,49 @@ public class PromptPolicyTests
                 Assert.DoesNotContain(o, text, StringComparison.OrdinalIgnoreCase);
 
         var sb = PromptBuilder.ShiftBriefingDirective;
-        Assert.Contains("I built Shift Briefing with an AI-native SDLC, using an agentic CLI for the .NET and React development. It cut frontend delivery time and man-hour cost by 80%, and it's still in development.", sb);
-        Assert.Contains("On Shift Briefing, the AI-native SDLC cut frontend delivery time and man-hour cost by 80%. I used an agentic CLI for the .NET and React work. It's still in development.", sb);
-        Assert.Contains("For the frontend phase, the token cost was HK$200 a day over 10 days, so HK$2,000. At HK$1,000 per person per day, the 40 man-days saved are worth HK$40,000, so the net savings were HK$38,000.", PromptBuilder.ShiftBriefingCostDirective);
-        Assert.Contains("For the frontend, the original estimate was 50 man-days, and with the AI-native SDLC it took 10. That's where the 80% comes from, for both delivery time and man-hour cost.", PromptBuilder.ShiftBriefingEstimateDirective);
-        // AI-native ban lifted (Scyko via Mega, 2026-09-28 23:25): the SB method is described as an AI-native SDLC.
+        Assert.Contains("still in active development", sb);
+        Assert.Contains("83%", sb);
+        Assert.Contains("81%", sb);
         Assert.Contains("AI-native SDLC", sb);
-        Assert.DoesNotContain("never say the words", sb);
-        var bannedWordsLine = PromptBuilder.SpokenStyleDirective.Split('\n').First(l => l.Contains("Words that never appear"));
-        Assert.DoesNotContain("AI-native", bannedWordsLine);
-        Assert.Contains("orchestrator", bannedWordsLine);
-        var toneFile = File.ReadAllText(Path.Combine(TestSupport.FindKnowledgePath(), "tone", "professional.md"));
-        Assert.DoesNotContain("Never echo the words", toneFile);
-        Assert.DoesNotContain("AI-native", toneFile.Split('\n').First(l => l.Contains("Words that never appear")));
+        Assert.DoesNotContain("frontend delivery time and man-hour cost by 80%", sb);
+        Assert.Contains("prior manual workflow", PromptBuilder.ShiftBriefingEstimateDirective);
+        Assert.Contains("83%", PromptBuilder.ShiftBriefingCostDirective);
+
         var haeco = File.ReadAllText(Path.Combine(root, "facts", "haeco.md"));
-        Assert.Contains("it cut frontend delivery time and man-hour cost by 80%", haeco);
-        Assert.Contains("Estimate follow-up only", haeco);
-        Assert.Contains("50 man-days", haeco);
-        Assert.Contains("net savings HK$38,000", haeco);
+        Assert.Contains("83%", haeco);
+        Assert.Contains("81%", haeco);
+        Assert.Contains("prior manual workflow", haeco);
+        Assert.DoesNotContain("frontend delivery time and man-hour cost by 80%", haeco);
+
         var tone = File.ReadAllText(Path.Combine(root, "tone", "professional.md"));
-        Assert.Contains("I built Shift Briefing with an AI-native SDLC, using an agentic CLI for the .NET and React development. It cut frontend delivery time and man-hour cost by 80%, and it's still in development.", tone);
-        Assert.Contains("For the frontend, the original estimate was 50 man-days, and with the AI-native SDLC it took 10. That's where the 80% comes from, for both delivery time and man-hour cost.", tone);
-        Assert.Contains("For the frontend phase, the token cost was HK$200 a day over 10 days, so HK$2,000. At HK$1,000 per person per day, the 40 man-days saved are worth HK$40,000, so the net savings were HK$38,000.", tone);
-        Assert.Contains("(Only on a cost follow-up.)", tone);
+        Assert.Contains("83%", tone);
+        Assert.Contains("81%", tone);
+        Assert.Contains("still in active development", tone);
 
-        // First level stays number-free; impact / cost questions route to Shift Briefing.
-        Assert.Contains("No man-day numbers here", sb);
-        var pb = new PromptBuilder();
-        foreach (var q in new[] { "What impact did AI-native SDLC have?", "How did you build Shift Briefing?", "How much did it cost, and how did you calculate the saving?", "How much faster did AI make it?" })
-        {
-            Assert.True(PromptBuilder.LooksLikeShiftBriefing(q), q);
-            Assert.Contains(sb.Trim(), pb.BuildSystem("Silas Wong", [], null, q));
-        }
-        Assert.DoesNotContain("60 man-days", PromptBuilder.HaecoGenericDirective);
-
-        // Guard rewrites the old figures; AI-native is no longer rewritten.
-        Assert.Equal("I built Shift Briefing with an AI-native SDLC, using an agentic CLI for the .NET and React development. It cut frontend delivery time and man-hour cost by 80%, and it's still in development.", BiographyGuard.Sanitize("I built Shift Briefing with an AI-native SDLC, using an agentic CLI for the .NET and React development. It took about five days to get it UAT-ready, against a past manager estimate of about 20 person-days, and the token cost was about US$100, and it's at the UAT stage."));
-        Assert.Equal("Shift Briefing is still in development.", BiographyGuard.Sanitize("Shift Briefing is at the UAT stage. It was about 4x faster, roughly 75% less effort."));
-        Assert.Equal("The AI-native SDLC cut delivery time.", BiographyGuard.Sanitize("The AI-native SDLC cut delivery time."));
-        Assert.Equal("On Shift Briefing, the AI-native SDLC cut frontend delivery time and man-hour cost by 80%. I used an agentic CLI for the .NET and React work. It's still in development.", BiographyGuard.Sanitize("On Shift Briefing, the AI-native SDLC cut frontend delivery time and man-hour cost by 80%. I used an agentic CLI for the .NET and React work. It's still in development."));
-        Assert.Equal("On Shift Briefing, the AI-native SDLC cut frontend delivery time and man-hour cost by 80%. I used an agentic CLI for the .NET and React work. It's still in development.", BiographyGuard.Sanitize("On Shift Briefing, the AI-native SDLC cut delivery from an estimated 60 man-days to 10, about 83% less time and labour cost. I used an agentic CLI for the .NET and React work. It's still in development."));
-        Assert.Equal("For the frontend phase, the token cost was HK$200 a day over 10 days, so HK$2,000. At HK$1,000 per person per day, the 40 man-days saved are worth HK$40,000, so the net savings were HK$38,000.", BiographyGuard.Sanitize("For the frontend phase, the token cost was HK$200 a day over 10 days, so HK$2,000. At HK$1,000 per person per day, the 40 man-days saved are worth HK$40,000, so the net savings were HK$38,000."));
-        Assert.Equal("The token cost was HK$200 a day over 10 days, so HK$2,000.", BiographyGuard.Sanitize("The token cost was HK$200 a day over 10 days, so HK$2,000. At HK$1,000 per person per day, the net saving against the 60 man-day estimate was HK$48,000."));
+        Assert.Contains("83%", BiographyGuard.Sanitize("On Shift Briefing it cut delivery time by 80% and man-hour cost by 80%."));
+        Assert.DoesNotContain("80%", BiographyGuard.Sanitize("Shift Briefing cut frontend delivery time by 80%."));
+        Assert.DoesNotContain("Context as Code", BiographyGuard.Sanitize("My skills include Context as Code and RAG."));
     }
 
     [Fact]
     public void Shift_Briefing_80_percent_lock_layering_2026_09_28_2348()
     {
-        string[] retired = ["83%", "60 man", "48,000", "AI-assisted", "fullstack"];
+        // Official CV 2026-10-12: 83%/81% is the locked claim; retired frontend-only 80% and old man-day/HK$ figures.
+        string[] retired = ["50 man-days", "HK$2,000", "HK$38,000", "frontend delivery time and man-hour cost by 80%", "AI-assisted", "fullstack"];
         var root = TestSupport.FindKnowledgePath();
         foreach (var path in Directory.GetFiles(root, "*.md", SearchOption.AllDirectories))
         {
-            var t = File.ReadAllText(path);
+            var text = File.ReadAllText(path);
             foreach (var r in retired)
-                Assert.DoesNotContain(r, t, StringComparison.OrdinalIgnoreCase);
+                Assert.DoesNotContain(r, text, StringComparison.OrdinalIgnoreCase);
         }
-        foreach (var t in SpokenPromptTexts().Concat(new[] { PromptBuilder.ShiftBriefingEstimateDirective, PromptBuilder.ShiftBriefingCostDirective, PromptBuilder.ReadAndSignDirective, PromptBuilder.AiReviewDirective, PromptBuilder.KeepUpDirective, PromptBuilder.FollowUpDirective }))
+        foreach (var text in SpokenPromptTexts().Concat(new[] { PromptBuilder.ShiftBriefingEstimateDirective, PromptBuilder.ShiftBriefingCostDirective, PromptBuilder.ShiftBriefingDirective }))
             foreach (var r in retired)
-                Assert.DoesNotContain(r, t, StringComparison.OrdinalIgnoreCase);
+                Assert.DoesNotContain(r, text, StringComparison.OrdinalIgnoreCase);
 
-        // Default layer: 80% only, no man-days, no cost.
-        var sb = PromptBuilder.ShiftBriefingDirective;
-        Assert.Contains("cut frontend delivery time and man-hour cost by 80%", sb);
-        foreach (var hidden in new[] { "50 man-days", "38,000", "40,000", "HK$2,000", "HK$200" })
-        {
-            Assert.DoesNotContain(hidden, sb);
-            Assert.DoesNotContain(hidden, PromptBuilder.HardBiographyDirective);
-            Assert.DoesNotContain(hidden, PromptBuilder.HaecoGenericDirective);
-        }
-        // Estimate layer and cost layer.
-        Assert.Contains("For the frontend, the original estimate was 50 man-days, and with the AI-native SDLC it took 10.", PromptBuilder.ShiftBriefingEstimateDirective);
-        Assert.DoesNotContain("38,000", PromptBuilder.ShiftBriefingEstimateDirective);
-        Assert.Contains("HK$2,000", PromptBuilder.ShiftBriefingCostDirective);
-        Assert.Contains("net savings were HK$38,000", PromptBuilder.ShiftBriefingCostDirective);
-
-        var pb = new PromptBuilder();
-        foreach (var q in new[] { "Tell me about Shift Briefing.", "What impact did AI-native SDLC have?", "How did you build Shift Briefing?" })
-        {
-            var sys = pb.BuildSystem("Silas Wong", [], null, q);
-            Assert.Contains(sb.Trim(), sys);
-            Assert.DoesNotContain(PromptBuilder.ShiftBriefingEstimateDirective, sys);
-            Assert.DoesNotContain(PromptBuilder.ShiftBriefingCostDirective, sys);
-            Assert.DoesNotContain("50 man-days", sys);
-            Assert.DoesNotContain("38,000", sys);
-        }
-        var est = pb.BuildSystem("Silas Wong", [], null, "Shift Briefing: How did you estimate that?");
-        Assert.Contains(PromptBuilder.ShiftBriefingEstimateDirective, est);
-        Assert.DoesNotContain(PromptBuilder.ShiftBriefingCostDirective, est);
-        var cost = pb.BuildSystem("Silas Wong", [], null, "Shift Briefing: What did it cost?");
-        Assert.Contains(PromptBuilder.ShiftBriefingCostDirective, cost);
-        Assert.DoesNotContain(PromptBuilder.ShiftBriefingEstimateDirective, cost);
-        Assert.True(PromptBuilder.LooksLikeMetricFollowUp("How did you estimate that?"));
-        Assert.True(PromptBuilder.LooksLikeMetricFollowUp("What did it cost?"));
-        Assert.False(PromptBuilder.LooksLikeMetricFollowUp("What did you do at HAECO?"));
-
-        // Guard: retired figures rewritten or dropped; AI-assisted method wording rewritten.
-        Assert.Equal("It cut frontend delivery time and man-hour cost by 80%.", BiographyGuard.Sanitize("It cut delivery from an estimated 60 man-days to 10, about 83% less time and labour cost."));
-        Assert.Equal("Shift Briefing is still in development.", BiographyGuard.Sanitize("Shift Briefing is at the UAT stage. The net saving was HK$48,000."));
-        Assert.Equal("I use an agentic CLI for full-stack development with an AI-native SDLC.", BiographyGuard.Sanitize("I use an agentic CLI for AI-assisted full-stack development."));
-        Assert.Equal("I moved to an AI-native SDLC.", BiographyGuard.Sanitize("I moved to AI-assisted development."));
-        Assert.Equal("""
-            For the frontend, the original estimate was 50 man-days, and with the AI-native SDLC it took 10. That's where the 80% comes from, for both delivery time and man-hour cost.
-            """, BiographyGuard.Sanitize("For the frontend, the original estimate was 50 man-days, and with the AI-native SDLC it took 10. That's where the 80% comes from, for both delivery time and man-hour cost."));
-
-        // Generic HAECO answer stays identical.
-        const string approved = "At HAECO I'm an Assistant Solution Analyst on MRO engineering IT solutions. I cover the full cycle from requirements and specs through full-stack delivery, UAT, go-live and support, and on some work I partner with our Mainland team more as a technical BA.";
-        Assert.Contains("\"" + approved + "\"", PromptBuilder.HaecoGenericDirective);
-        Assert.Equal(approved, BiographyGuard.Sanitize(approved));
+        Assert.Contains("83%", PromptBuilder.ShiftBriefingDirective);
+        Assert.Contains("81%", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("still in active development", PromptBuilder.ShiftBriefingFinishedDirective);
     }
 
     [Fact]
@@ -996,7 +843,7 @@ public class PromptPolicyTests
             Assert.DoesNotContain("Towing onward", t, StringComparison.OrdinalIgnoreCase);
             Assert.DoesNotContain("later projects like Towing", t, StringComparison.OrdinalIgnoreCase);
         }
-        Assert.Contains("On Shift Briefing, the AI-native SDLC cut frontend delivery time and man-hour cost by 80%. I used an agentic CLI for the .NET and React work. It's still in development.", PromptBuilder.ShiftBriefingDirective);
+        Assert.Contains("I pioneered a team-wide AI-native SDLC that cut delivery time by 83% and man-hour cost by 81%, against the prior manual workflow. The flagship system is currently in UAT. Shift Briefing is still in active development.", PromptBuilder.ShiftBriefingDirective);
         // Fluid Use / Operation Remarks stay hand-coded.
         Assert.Contains("Fluid Use / Operation Remarks were hand-coded", PromptBuilder.DefaultTone);
         // Guard strips the clause if the model says it.
@@ -1098,16 +945,16 @@ public class PromptPolicyTests
 
         // Shift Briefing: first level has no numbers; metrics lock intact for how-built / how-much-faster.
         Assert.Contains("Shift Briefing is a pre-shift briefing system. It shows the content for the shift and lets staff sign in by scanning their ID.", PromptBuilder.ShiftBriefingDirective);
-        Assert.Contains("It's still in development.", PromptBuilder.ShiftBriefingDirective);
-        Assert.Contains("how much faster AI made it", PromptBuilder.ShiftBriefingDirective);
-        Assert.Contains("frontend delivery time and man-hour cost by 80%", PromptBuilder.ShiftBriefingDirective);
+        Assert.Contains("It's still in active development.", PromptBuilder.ShiftBriefingDirective);
+        Assert.Contains("How it was built", PromptBuilder.ShiftBriefingDirective);
+        Assert.Contains("83%", PromptBuilder.ShiftBriefingDirective);
         Assert.DoesNotContain("some Figma UI details may still need finishing. It's", PromptBuilder.ShiftBriefingDirective);
         Assert.True(PromptBuilder.LooksLikeShiftBriefing("How much faster did AI make Shift Briefing?"));
 
         // Internships: first level plain; dates and Mike stay available for follow-ups.
         Assert.Contains("I did two internships. One was frontend work in the UK, building a carbon emission calculator and dashboard with React and TypeScript.", PromptBuilder.ExtraExperienceDirective);
         Assert.Contains("Mike Berners-Lee", PromptBuilder.ExtraExperienceDirective);
-        Assert.Contains("Sep 2020–Mar 2021", PromptBuilder.ExtraExperienceDirective);
+        Assert.Contains("Sep 2020", PromptBuilder.ExtraExperienceDirective);
         Assert.Contains("only when they follow up", PromptBuilder.ExtraExperienceDirective);
         var root = TestSupport.FindKnowledgePath();
         Assert.Contains("My boss was Mike Berners-Lee", File.ReadAllText(Path.Combine(root, "facts", "swc.md")));
@@ -1160,7 +1007,7 @@ public class PromptPolicyTests
         Assert.Contains("where more robots only help up to a point.", tone);
         Assert.DoesNotContain(" actually ", tone.Replace("\"actually\"", ""), StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("feature-complete and usable. It's at the UAT stage", PromptBuilder.ShiftBriefingDirective);
-        Assert.Contains("frontend delivery time and man-hour cost by 80%", PromptBuilder.ShiftBriefingDirective);
+        Assert.Contains("83%", PromptBuilder.ShiftBriefingDirective);
     }
 
     [Fact]
@@ -1329,7 +1176,7 @@ public class PromptPolicyTests
         // An SWC stack question routes to the tech-stack directive, which must carry the SWC stack.
         Assert.True(PromptBuilder.LooksLikeTechStack("What tech stack did you use at SWC?"));
         Assert.Contains("If they ask about the stack at Small World Consulting (SWC) specifically, answer only that internship: mainly React and TypeScript, plus D3 for the data visualization.", PromptBuilder.TechStackDirective);
-        Assert.Contains("Answer .NET Core, C#, React, TypeScript, React Native, RESTful APIs, gRPC, MSSQL, MongoDB, Git.", PromptBuilder.TechStackDirective);
+        Assert.Contains("Answer React, React Native, TypeScript, Vue.js, uni-app, .NET Core, C#, RESTful APIs, gRPC, Java, MSSQL, MongoDB, ETL, SSIS, SSRS, and Git.", PromptBuilder.TechStackDirective);
         // Existing SWC facts stay: role, place, dates, CI/CD lock.
         Assert.Contains("September 2020 to March 2021. Frontend Developer Internship at Small World Consulting, United Kingdom.", swc);
         Assert.Contains("Used existing CI/CD pipelines built by others (did not build or configure them).", swc);

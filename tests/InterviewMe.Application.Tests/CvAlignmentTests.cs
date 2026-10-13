@@ -67,7 +67,7 @@ public class CvAlignmentTests
         Assert.False(PromptBuilder.LooksLikeTradeLinkGeneric("Why did you leave TradeLink?"));
         Assert.Contains(PromptBuilder.TradeLinkGenericDirective, Build(q));
         var answer = PromptBuilder.TradeLinkGenericDirective.Split('"')[1].Replace("\\", "");
-        Assert.Contains("At TradeLink I was a Programmer, working on web-based applications in .NET Framework and the portal backend.", PromptBuilder.TradeLinkGenericDirective);
+        Assert.Contains("At TradeLink I was a Programmer. I developed and maintained web application backends in .NET Framework", PromptBuilder.TradeLinkGenericDirective);
         Assert.Contains(".NET Framework", answer);
         Assert.DoesNotContain("React", answer);
         var tl = Fact("tradelink.md");
@@ -80,13 +80,14 @@ public class CvAlignmentTests
     [Fact]
     public void Item3_agentic_ai_skills_and_bans_lifted()
     {
-        const string list = "AI-native SDLC, Spec-Driven Development, Human-in-the-Loop, Context Engineering, Context as Code, MCP, and RAG";
+        const string list = "AI-native SDLC, Spec-Driven Development, Human-in-the-Loop, Context Engineering, MCP, and RAG";
         Assert.Contains(list, PromptBuilder.AiSkillsDirective);
         Assert.Contains("Do not invent project stories", PromptBuilder.AiSkillsDirective);
         Assert.True(PromptBuilder.LooksLikeAiSkills("What AI skills do you have?"));
         Assert.Contains(PromptBuilder.AiSkillsDirective, Build("What AI skills do you have?"));
         Assert.Contains("Mention them only when they ask about AI skills or it is relevant", PromptBuilder.HardBiographyDirective);
-        Assert.Contains("Context as Code", Fact("skills.md"));
+        Assert.Contains("Never say Context as Code", Fact("skills.md"));
+        Assert.DoesNotContain("Context as Code, MCP", Fact("skills.md"));
         Assert.Contains("do not invent project stories", Fact("ai-practice.md"));
         Assert.DoesNotContain("CV Skills AI evidence lock: answer only with the agentic CLI, RAG, and context engineering", Fact("ai-practice.md"));
 
@@ -128,8 +129,8 @@ public class CvAlignmentTests
     public void Item4_backend_lists_grpc()
     {
         Assert.Contains(".NET Core, C#, RESTful APIs, gRPC", Fact("skills.md"));
-        Assert.Contains("If they ask only about backend: .NET Core, C#, RESTful APIs, gRPC.", PromptBuilder.TechStackDirective);
-        Assert.Contains("do not invent a project or detail", PromptBuilder.TechStackDirective);
+        Assert.Contains("If they ask only about backend: .NET Core, C#, RESTful APIs, gRPC, Java.", PromptBuilder.TechStackDirective);
+        Assert.Contains("gRPC and Java are listed skills only", PromptBuilder.TechStackDirective);
         Assert.Contains("gRPC", PromptBuilder.HardBiographyDirective);
         Assert.True(PromptBuilder.LooksLikeTechStack("What backend technologies do you know?"));
         Assert.Contains(PromptBuilder.TechStackDirective, Build("What backend technologies do you know?"));
@@ -152,7 +153,7 @@ public class CvAlignmentTests
     [Fact]
     public void Existing_locks_kept()
     {
-        Assert.Contains("At HAECO I'm an Assistant Solution Analyst on MRO engineering IT solutions. I cover the full cycle from requirements and specs through full-stack delivery, UAT, go-live and support, and on some work I partner with our Mainland team more as a technical BA.", PromptBuilder.HaecoGenericDirective);
+        Assert.Contains("At HAECO I'm an Assistant Business Analyst on MRO engineering IT solutions. I elicit and analyse requirements for MRO modules, follow agile delivery through UAT, and on some modules I own both the BA and full-stack work end-to-end.", PromptBuilder.HaecoGenericDirective);
         Assert.Contains("Towing is the system that moves aircraft between bays.", PromptBuilder.TowingDirective);
     }
 }
