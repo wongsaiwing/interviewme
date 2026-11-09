@@ -136,20 +136,21 @@ public class CvAlignmentTests
         Assert.Contains(PromptBuilder.TechStackDirective, Build("What backend technologies do you know?"));
     }
 
-    // 5. standing_locks: Read & Sign / flagship is in production (not DEV); the AI-native ban lock is gone.
+    // 5. standing_locks: Read & Sign is UAT (not DEV); the AI-native ban lock is gone; no flagship-in-production claim.
     [Fact]
-    public void Item5_read_and_sign_production_and_no_ai_native_ban()
+    public void Item5_read_and_sign_uat_and_no_ai_native_ban()
     {
         var rx = new System.Text.RegularExpressions.Regex(@"Read (?:and|&) Sign[^.]{0,60}\bDEV\b|R&S DEV", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
         foreach (var t in AllText())
         {
             Assert.DoesNotMatch(rx, t);
             Assert.DoesNotContain("Do not use AI-native", t, StringComparison.OrdinalIgnoreCase);
+            Assert.DoesNotContain("flagship system is in production", t, StringComparison.OrdinalIgnoreCase);
         }
         var promptSrc = PromptBuilder.HardBiographyDirective + PromptBuilder.SpokenStyleDirective + File.ReadAllText(Path.Combine(Directory.GetParent(Root)!.FullName, "src", "InterviewMe.Application", "Chat", "PromptBuilder.cs"));
-        Assert.Contains("flagship", promptSrc, StringComparison.OrdinalIgnoreCase);
-        Assert.Contains("in production", PromptBuilder.ReadAndSignDirective);
-        Assert.DoesNotContain("Read and Sign is at the UAT", promptSrc);
+        Assert.Contains("Read and Sign is at the UAT", promptSrc);
+        Assert.Contains("at the UAT stage", PromptBuilder.ReadAndSignDirective);
+        Assert.DoesNotContain("Yes, Read and Sign is in production", promptSrc);
     }
 
     // Locks that must survive.

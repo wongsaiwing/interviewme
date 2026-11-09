@@ -285,10 +285,9 @@ public class PromptPolicyTests
         Assert.False(PromptBuilder.LooksLikeProductionExperience("How do you handle production incidents?"));
         Assert.False(PromptBuilder.LooksLikeProductionExperience("Tell me about a hotfix"));
         Assert.Contains("Fluid Use, Operation Remarks, and Towing", PromptBuilder.ProductionExperienceDirective);
-        Assert.Contains("Read and Sign (the flagship) is in production", PromptBuilder.ProductionExperienceDirective);
+        Assert.Contains("Read and Sign is at the UAT stage", PromptBuilder.ProductionExperienceDirective);
         Assert.DoesNotContain("still in DEV", PromptBuilder.ProductionExperienceDirective);
-        Assert.Contains("Shift Briefing is still in active development", PromptBuilder.ProductionExperienceDirective);
-        Assert.Contains("do not claim production for Shift Briefing", PromptBuilder.ProductionExperienceDirective);
+        Assert.Contains("Shift Briefing is still in active development (not UAT)", PromptBuilder.ProductionExperienceDirective);
         Assert.Contains("Do not answer as incidents", PromptBuilder.ProductionExperienceDirective);
     }
 
@@ -389,12 +388,12 @@ public class PromptPolicyTests
         Assert.True(PromptBuilder.LooksLikeHaecoNamedSystems("Tell me about Read and Sign"));
         Assert.True(PromptBuilder.LooksLikeHaecoNamedSystems("What is Capacity Checker?"));
         Assert.True(PromptBuilder.LooksLikeHaecoNamedSystems("Tell me about Shift Briefing"));
-        Assert.Contains("never claim finished, live, or production", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("do not claim production", PromptBuilder.HardBiographyDirective);
         Assert.DoesNotContain("the main one", PromptBuilder.HaecoGenericDirective);
         Assert.Contains("cut delivery time by 83% and man-hour cost by 81% (baseline prior manual workflow)", PromptBuilder.HardBiographyDirective);
         Assert.Contains("83%", PromptBuilder.HardBiographyDirective);
         Assert.Contains("do not invent retired frontend-only percentage or man-day cost figures", PromptBuilder.HardBiographyDirective);
-        Assert.Contains("flagship is in production", PromptBuilder.HardBiographyDirective);
+        Assert.Contains("never claim production", PromptBuilder.HardBiographyDirective);
     }
 
     [Fact]
@@ -688,7 +687,7 @@ public class PromptPolicyTests
             "cut delivery time by 83% and man-hour cost by 81%",
             "against the prior manual workflow",
             "still in active development",
-            "flagship system is in production",
+            "flagship system is currently in uat",  // allowed historical descriptor; AI-native answers must not append flagship status
         ];
         var hits = RepeatedTemplates(answers.Values, 6, 3)
             .Where(g => !allowedDescriptors.Any(a => a.Contains(g, StringComparison.Ordinal)))
@@ -753,9 +752,9 @@ public class PromptPolicyTests
         [Fact]
     public void Read_and_Sign_UAT_seven_system_split_and_stakeholders_2026_09_28()
     {
-        // Official CV 2026-11-09: ABA four modules + ASA three microservices; R&S / flagship in production; 10+ stakeholders.
-        Assert.Contains("it's in production", PromptBuilder.ReadAndSignDirective);
-        Assert.Contains("Yes, Read and Sign is in production", PromptBuilder.ReadAndSignDirective);
+        // Official CV 2026-11-09: ABA four modules + ASA three microservices; R&S at UAT (flagship); 10+ stakeholders; AI-native impact has no flagship trailer.
+        Assert.Contains("at the UAT stage", PromptBuilder.ReadAndSignDirective);
+        Assert.Contains("Never claim production", PromptBuilder.ReadAndSignDirective);
         Assert.Contains("more than 10 stakeholders", PromptBuilder.ReadAndSignDirective);
         Assert.Contains("four MRO modules", PromptBuilder.HaecoSystemsDirective);
         Assert.Contains("three full-stack MRO microservices", PromptBuilder.HaecoSystemsDirective);
@@ -844,7 +843,8 @@ public class PromptPolicyTests
             Assert.DoesNotContain("Towing onward", t, StringComparison.OrdinalIgnoreCase);
             Assert.DoesNotContain("later projects like Towing", t, StringComparison.OrdinalIgnoreCase);
         }
-        Assert.Contains("I pioneered a team-wide AI-native SDLC that cut delivery time by 83% and man-hour cost by 81%, against the prior manual workflow. The flagship system is in production. Shift Briefing is still in active development.", PromptBuilder.ShiftBriefingDirective);
+        Assert.Contains("I pioneered a team-wide AI-native SDLC that cut delivery time by 83% and man-hour cost by 81%, against the prior manual workflow. Shift Briefing is still in active development.", PromptBuilder.ShiftBriefingDirective);
+        Assert.DoesNotContain("flagship system is in production", PromptBuilder.ShiftBriefingDirective);
         // Fluid Use / Operation Remarks stay hand-coded.
         Assert.Contains("Fluid Use / Operation Remarks were hand-coded", PromptBuilder.DefaultTone);
         // Guard strips the clause if the model says it.

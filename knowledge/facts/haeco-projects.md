@@ -5,7 +5,7 @@ For follow-up questions about which systems, how many systems, titles, or a name
 ## CV delivery split (primary)
 
 When they ask which systems / how many systems / delivery split, use the official CV split:
-- Assistant Business Analyst (01/2026 – Current): four MRO modules; two delivered to go-live, one in User Acceptance Testing, one in active development. The flagship system is in production. Largest spanned 10+ stakeholders for a company-wide audit-subject system. Two of the four: owned BA and full-stack end-to-end. Team-wide AI-native SDLC cut delivery time by 83% and man-hour cost by 81% (baseline: prior manual workflow).
+- Assistant Business Analyst (01/2026 – Current): four MRO modules; two delivered to go-live, one in UAT (flagship), one in active development. Largest spanned 10+ stakeholders for a company-wide audit-subject system. Two of the four: owned BA and full-stack end-to-end. Team-wide AI-native SDLC cut delivery time by 83% and man-hour cost by 81% (baseline: prior manual workflow).
 - Assistant Solution Analyst (07/2024 – 12/2025): designed solution architecture, ERDs, and database schemas for 3 full-stack MRO microservices including system integration; delivered 3 to go-live with release management; post-implementation support, bug fixes, root cause analysis, 24/7.
 
 Do not lead with the retired "seven MRO and operations systems" / "3 full-stack, 2 requirements, 1 UAT, 1 in development" CV bullet. Named systems below are follow-up detail only.
@@ -17,7 +17,7 @@ Do not lead with the retired "seven MRO and operations systems" / "3 full-stack,
 3. Towing  -  tow between bays; more integrations; I worked out the requirements with a BA, then built it full-stack myself and took it through UAT to production.
 4. Daily Operation Monitor (DOM)  -  technical BA: req, blockers, Agile PBIs for Shenzhen Dev, UAT+onboarding; Shenzhen Dev codes.
 5. Capacity Checker  -  after DOM before Read and Sign; req+blockers; manhour/task allocation + attendance; Shenzhen-collab with DOM.
-6. Read and Sign  -  full-stack AI-native SDLC (agentic CLI); company-wide notice sign-off; audit; CV flagship in production / go-live. More than 10 stakeholders (Read and Sign / flagship only).
+6. Read and Sign  -  full-stack AI-native SDLC (agentic CLI); company-wide notice sign-off; audit; at UAT (CV flagship in UAT). More than 10 stakeholders (Read and Sign / flagship only). Do not claim production.
 7. Shift Briefing  -  pre-shift + ID scan; AI-native SDLC; still in active development (CV active-development module). Do not claim production. Do not invent retired frontend-only percentage or man-day cost figures.
 
 Do not invent metrics beyond the locked 83%/81% AI-native SDLC figures. Do not call Towing "incoming aircraft". Do not mix Operation Remarks with Fluid Use. Do not pad self-built inventory with DOM or Capacity Checker.
