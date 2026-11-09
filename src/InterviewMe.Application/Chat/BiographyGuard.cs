@@ -342,7 +342,7 @@ public static class BiographyGuard
                     return v;
                 var lead = v.StartsWith(" ") ? " " : "";
                 return lead + (ReadAndSignName.IsMatch(v)
-                    ? "Read and Sign is at the UAT stage, and Shift Briefing is still in active development."
+                    ? "Read and Sign is in production, and Shift Briefing is still in active development."
                     : SbInDev);
             });
             if (!ReadAndSignName.IsMatch(result))

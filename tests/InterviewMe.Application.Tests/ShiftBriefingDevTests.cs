@@ -27,12 +27,12 @@ public class ShiftBriefingDevTests
     }
 
     [Fact]
-    public void Guard_keeps_read_and_sign_uat_and_dev_lines()
+    public void Guard_keeps_read_and_sign_production_and_dev_lines()
     {
-        var s = "Read and Sign I've taken to UAT, and Shift Briefing is still in active development.";
+        var s = "Read and Sign is in production, and Shift Briefing is still in active development.";
         var cleaned = BiographyGuard.Sanitize(s);
         Assert.Contains("Read and Sign", cleaned);
-        Assert.Contains("UAT", cleaned);
+        Assert.Contains("production", cleaned);
         Assert.Contains("active development", cleaned);
     }
 }
